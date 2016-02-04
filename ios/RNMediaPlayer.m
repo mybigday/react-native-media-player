@@ -58,7 +58,8 @@ RCT_EXPORT_METHOD(pushImage: (NSString *)path type:(NSString *)type duration:(NS
 		resolve(@{});
 	}
 	else{
-		reject([[NSError alloc] initWithDomain:@"Can't push image" code:0 userInfo:nil]);
+		NSError *err = [NSError errorWithDomain:@"Can't push image" code:-1 userInfo:nil];
+		reject([NSString stringWithFormat: @"%lu", (long)err.code], err.localizedDescription, err);
 	}
 }
 
@@ -68,7 +69,8 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 		resolve(@{});
 	}
 	else{
-		reject([[NSError alloc] initWithDomain:@"Can't push video" code:0 userInfo:nil]);
+		NSError *err = [NSError errorWithDomain:@"Can't push video" code:-1 userInfo:nil];
+		reject([NSString stringWithFormat: @"%lu", (long)err.code], err.localizedDescription, err);
 	}
 }
 

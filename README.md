@@ -5,7 +5,7 @@ This is a react native media player with external display controller. Support ph
 ## Installation
 ### Mostly automatic install
 1. `npm install rnpm --global`
-2. `npm install react-native-media-player@https://bitbucket.org/mlifeteam/react-native-media-player.git --save`
+2. `npm install react-native-media-player@git+ssh://git@bitbucket.org/mlifeteam/react-native-media-player.git --save`
 3. `rnpm link react-native-media-player`
 
 ### Manual install
