@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		56527DE31C637ED20096217F /* RNMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 56527DE21C637ED20096217F /* RNMediaPlayer.h */; };
+		567BA6CD1C63819800A60F96 /* RNMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */; };
+		567BA6D41C63828100A60F96 /* Container.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6CF1C63828100A60F96 /* Container.m */; };
+		567BA6D51C63828100A60F96 /* ImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6D11C63828100A60F96 /* ImageContainer.m */; };
+		567BA6D61C63828100A60F96 /* VideoContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6D31C63828100A60F96 /* VideoContainer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		56527DDD1C637ED20096217F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				56527DE31C637ED20096217F /* RNMediaPlayer.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		56527DDF1C637ED20096217F /* libRNMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		56527DE21C637ED20096217F /* RNMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNMediaPlayer.h; path = "/Users/pepper/Workspace/MyBigDay/mybigday-live-player/player_app/node_modules/react-native-media-player/ios/RNMediaPlayer.h"; sourceTree = "<absolute>"; };
+		567BA6CB1C63819800A60F96 /* RNMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNMediaPlayer.h; sourceTree = "<group>"; };
+		567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMediaPlayer.m; sourceTree = "<group>"; };
+		567BA6CE1C63828100A60F96 /* Container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Container.h; sourceTree = "<group>"; };
+		567BA6CF1C63828100A60F96 /* Container.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Container.m; sourceTree = "<group>"; };
+		567BA6D01C63828100A60F96 /* ImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContainer.h; sourceTree = "<group>"; };
+		567BA6D11C63828100A60F96 /* ImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContainer.m; sourceTree = "<group>"; };
+		567BA6D21C63828100A60F96 /* VideoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoContainer.h; sourceTree = "<group>"; };
+		567BA6D31C63828100A60F96 /* VideoContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoContainer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		56527DDC1C637ED20096217F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		56527DD61C637ED20096217F = {
+			isa = PBXGroup;
+			children = (
+				567BA6CE1C63828100A60F96 /* Container.h */,
+				567BA6CF1C63828100A60F96 /* Container.m */,
+				567BA6D01C63828100A60F96 /* ImageContainer.h */,
+				567BA6D11C63828100A60F96 /* ImageContainer.m */,
+				567BA6D21C63828100A60F96 /* VideoContainer.h */,
+				567BA6D31C63828100A60F96 /* VideoContainer.m */,
+				567BA6CB1C63819800A60F96 /* RNMediaPlayer.h */,
+				567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */,
+				56527DE01C637ED20096217F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		56527DE01C637ED20096217F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				56527DDF1C637ED20096217F /* libRNMediaPlayer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		56527DDE1C637ED20096217F /* RNMediaPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 56527DE81C637ED20096217F /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */;
+			buildPhases = (
+				56527DDB1C637ED20096217F /* Sources */,
+				56527DDC1C637ED20096217F /* Frameworks */,
+				56527DDD1C637ED20096217F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RNMediaPlayer;
+			productName = RNMediaPlayer;
+			productReference = 56527DDF1C637ED20096217F /* libRNMediaPlayer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		56527DD71C637ED20096217F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = MyBigDay;
+				TargetAttributes = {
+					56527DDE1C637ED20096217F = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 56527DDA1C637ED20096217F /* Build configuration list for PBXProject "RNMediaPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 56527DD61C637ED20096217F;
+			productRefGroup = 56527DE01C637ED20096217F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				56527DDE1C637ED20096217F /* RNMediaPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		56527DDB1C637ED20096217F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				567BA6CD1C63819800A60F96 /* RNMediaPlayer.m in Sources */,
+				567BA6D61C63828100A60F96 /* VideoContainer.m in Sources */,
+				567BA6D51C63828100A60F96 /* ImageContainer.m in Sources */,
+				567BA6D41C63828100A60F96 /* Container.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		56527DE61C637ED20096217F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		56527DE71C637ED20096217F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		56527DE91C637ED20096217F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../React/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		56527DEA1C637ED20096217F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../React/**",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		56527DDA1C637ED20096217F /* Build configuration list for PBXProject "RNMediaPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56527DE61C637ED20096217F /* Debug */,
+				56527DE71C637ED20096217F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		56527DE81C637ED20096217F /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				56527DE91C637ED20096217F /* Debug */,
+				56527DEA1C637ED20096217F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 56527DD71C637ED20096217F /* Project object */;
+}

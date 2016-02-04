@@ -1,0 +1,27 @@
+{
+  "name": "react-native-media-player",
+  "version": "0.0.1",
+  "description": "This is a react native media player with external display controller. Support photo, video, misic and background mode.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "native",
+    "external",
+    "display",
+    "media",
+    "player",
+    "react-component",
+    "android"
+  ],
+  "author": "Pepper Yen <pepper.yen@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-eslint": "^4.1.8",
+    "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.16.1"
+  }
+}
