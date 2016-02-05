@@ -7,41 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56527DE31C637ED20096217F /* RNMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 56527DE21C637ED20096217F /* RNMediaPlayer.h */; };
-		567BA6CD1C63819800A60F96 /* RNMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */; };
-		567BA6D41C63828100A60F96 /* Container.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6CF1C63828100A60F96 /* Container.m */; };
-		567BA6D51C63828100A60F96 /* ImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6D11C63828100A60F96 /* ImageContainer.m */; };
-		567BA6D61C63828100A60F96 /* VideoContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 567BA6D31C63828100A60F96 /* VideoContainer.m */; };
+		56C0CD7A1C6444FE006E08C2 /* RNMediaPlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 56C0CD791C6444FE006E08C2 /* RNMediaPlayer.h */; };
+		56C0CD7C1C6444FE006E08C2 /* RNMediaPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C0CD7B1C6444FE006E08C2 /* RNMediaPlayer.m */; };
+		56C0CD881C64453F006E08C2 /* Container.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C0CD831C64453F006E08C2 /* Container.m */; };
+		56C0CD891C64453F006E08C2 /* ImageContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C0CD851C64453F006E08C2 /* ImageContainer.m */; };
+		56C0CD8A1C64453F006E08C2 /* VideoContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C0CD871C64453F006E08C2 /* VideoContainer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		56527DDD1C637ED20096217F /* CopyFiles */ = {
+		56C0CD741C6444FE006E08C2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				56527DE31C637ED20096217F /* RNMediaPlayer.h in CopyFiles */,
+				56C0CD7A1C6444FE006E08C2 /* RNMediaPlayer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		56527DDF1C637ED20096217F /* libRNMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		56527DE21C637ED20096217F /* RNMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNMediaPlayer.h; path = "/Users/pepper/Workspace/MyBigDay/mybigday-live-player/player_app/node_modules/react-native-media-player/ios/RNMediaPlayer.h"; sourceTree = "<absolute>"; };
-		567BA6CB1C63819800A60F96 /* RNMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNMediaPlayer.h; sourceTree = "<group>"; };
-		567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNMediaPlayer.m; sourceTree = "<group>"; };
-		567BA6CE1C63828100A60F96 /* Container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Container.h; sourceTree = "<group>"; };
-		567BA6CF1C63828100A60F96 /* Container.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Container.m; sourceTree = "<group>"; };
-		567BA6D01C63828100A60F96 /* ImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContainer.h; sourceTree = "<group>"; };
-		567BA6D11C63828100A60F96 /* ImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContainer.m; sourceTree = "<group>"; };
-		567BA6D21C63828100A60F96 /* VideoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoContainer.h; sourceTree = "<group>"; };
-		567BA6D31C63828100A60F96 /* VideoContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoContainer.m; sourceTree = "<group>"; };
+		56C0CD761C6444FE006E08C2 /* libRNMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		56C0CD791C6444FE006E08C2 /* RNMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMediaPlayer.h; sourceTree = "<group>"; };
+		56C0CD7B1C6444FE006E08C2 /* RNMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMediaPlayer.m; sourceTree = "<group>"; };
+		56C0CD821C64453F006E08C2 /* Container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Container.h; sourceTree = "<group>"; };
+		56C0CD831C64453F006E08C2 /* Container.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Container.m; sourceTree = "<group>"; };
+		56C0CD841C64453F006E08C2 /* ImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContainer.h; sourceTree = "<group>"; };
+		56C0CD851C64453F006E08C2 /* ImageContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageContainer.m; sourceTree = "<group>"; };
+		56C0CD861C64453F006E08C2 /* VideoContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoContainer.h; sourceTree = "<group>"; };
+		56C0CD871C64453F006E08C2 /* VideoContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoContainer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		56527DDC1C637ED20096217F /* Frameworks */ = {
+		56C0CD731C6444FE006E08C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -51,39 +50,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		56527DD61C637ED20096217F = {
+		56C0CD6D1C6444FE006E08C2 = {
 			isa = PBXGroup;
 			children = (
-				567BA6CE1C63828100A60F96 /* Container.h */,
-				567BA6CF1C63828100A60F96 /* Container.m */,
-				567BA6D01C63828100A60F96 /* ImageContainer.h */,
-				567BA6D11C63828100A60F96 /* ImageContainer.m */,
-				567BA6D21C63828100A60F96 /* VideoContainer.h */,
-				567BA6D31C63828100A60F96 /* VideoContainer.m */,
-				567BA6CB1C63819800A60F96 /* RNMediaPlayer.h */,
-				567BA6CC1C63819800A60F96 /* RNMediaPlayer.m */,
-				56527DE01C637ED20096217F /* Products */,
+				56C0CD781C6444FE006E08C2 /* RNMediaPlayer */,
+				56C0CD771C6444FE006E08C2 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		56527DE01C637ED20096217F /* Products */ = {
+		56C0CD771C6444FE006E08C2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				56527DDF1C637ED20096217F /* libRNMediaPlayer.a */,
+				56C0CD761C6444FE006E08C2 /* libRNMediaPlayer.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		56C0CD781C6444FE006E08C2 /* RNMediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				56C0CD821C64453F006E08C2 /* Container.h */,
+				56C0CD831C64453F006E08C2 /* Container.m */,
+				56C0CD841C64453F006E08C2 /* ImageContainer.h */,
+				56C0CD851C64453F006E08C2 /* ImageContainer.m */,
+				56C0CD861C64453F006E08C2 /* VideoContainer.h */,
+				56C0CD871C64453F006E08C2 /* VideoContainer.m */,
+				56C0CD791C6444FE006E08C2 /* RNMediaPlayer.h */,
+				56C0CD7B1C6444FE006E08C2 /* RNMediaPlayer.m */,
+			);
+			path = RNMediaPlayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		56527DDE1C637ED20096217F /* RNMediaPlayer */ = {
+		56C0CD751C6444FE006E08C2 /* RNMediaPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 56527DE81C637ED20096217F /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */;
+			buildConfigurationList = 56C0CD7F1C6444FE006E08C2 /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */;
 			buildPhases = (
-				56527DDB1C637ED20096217F /* Sources */,
-				56527DDC1C637ED20096217F /* Frameworks */,
-				56527DDD1C637ED20096217F /* CopyFiles */,
+				56C0CD721C6444FE006E08C2 /* Sources */,
+				56C0CD731C6444FE006E08C2 /* Frameworks */,
+				56C0CD741C6444FE006E08C2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -91,56 +98,56 @@
 			);
 			name = RNMediaPlayer;
 			productName = RNMediaPlayer;
-			productReference = 56527DDF1C637ED20096217F /* libRNMediaPlayer.a */;
+			productReference = 56C0CD761C6444FE006E08C2 /* libRNMediaPlayer.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		56527DD71C637ED20096217F /* Project object */ = {
+		56C0CD6E1C6444FE006E08C2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = MyBigDay;
 				TargetAttributes = {
-					56527DDE1C637ED20096217F = {
+					56C0CD751C6444FE006E08C2 = {
 						CreatedOnToolsVersion = 7.2;
 					};
 				};
 			};
-			buildConfigurationList = 56527DDA1C637ED20096217F /* Build configuration list for PBXProject "RNMediaPlayer" */;
+			buildConfigurationList = 56C0CD711C6444FE006E08C2 /* Build configuration list for PBXProject "RNMediaPlayer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 56527DD61C637ED20096217F;
-			productRefGroup = 56527DE01C637ED20096217F /* Products */;
+			mainGroup = 56C0CD6D1C6444FE006E08C2;
+			productRefGroup = 56C0CD771C6444FE006E08C2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				56527DDE1C637ED20096217F /* RNMediaPlayer */,
+				56C0CD751C6444FE006E08C2 /* RNMediaPlayer */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		56527DDB1C637ED20096217F /* Sources */ = {
+		56C0CD721C6444FE006E08C2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				567BA6CD1C63819800A60F96 /* RNMediaPlayer.m in Sources */,
-				567BA6D61C63828100A60F96 /* VideoContainer.m in Sources */,
-				567BA6D51C63828100A60F96 /* ImageContainer.m in Sources */,
-				567BA6D41C63828100A60F96 /* Container.m in Sources */,
+				56C0CD7C1C6444FE006E08C2 /* RNMediaPlayer.m in Sources */,
+				56C0CD8A1C64453F006E08C2 /* VideoContainer.m in Sources */,
+				56C0CD891C64453F006E08C2 /* ImageContainer.m in Sources */,
+				56C0CD881C64453F006E08C2 /* Container.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		56527DE61C637ED20096217F /* Debug */ = {
+		56C0CD7D1C6444FE006E08C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -183,7 +190,7 @@
 			};
 			name = Debug;
 		};
-		56527DE71C637ED20096217F /* Release */ = {
+		56C0CD7E1C6444FE006E08C2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -220,7 +227,7 @@
 			};
 			name = Release;
 		};
-		56527DE91C637ED20096217F /* Debug */ = {
+		56C0CD801C6444FE006E08C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
@@ -233,7 +240,7 @@
 			};
 			name = Debug;
 		};
-		56527DEA1C637ED20096217F /* Release */ = {
+		56C0CD811C6444FE006E08C2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
@@ -249,25 +256,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		56527DDA1C637ED20096217F /* Build configuration list for PBXProject "RNMediaPlayer" */ = {
+		56C0CD711C6444FE006E08C2 /* Build configuration list for PBXProject "RNMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56527DE61C637ED20096217F /* Debug */,
-				56527DE71C637ED20096217F /* Release */,
+				56C0CD7D1C6444FE006E08C2 /* Debug */,
+				56C0CD7E1C6444FE006E08C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		56527DE81C637ED20096217F /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */ = {
+		56C0CD7F1C6444FE006E08C2 /* Build configuration list for PBXNativeTarget "RNMediaPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				56527DE91C637ED20096217F /* Debug */,
-				56527DEA1C637ED20096217F /* Release */,
+				56C0CD801C6444FE006E08C2 /* Debug */,
+				56C0CD811C6444FE006E08C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 56527DD71C637ED20096217F /* Project object */;
+	rootObject = 56C0CD6E1C6444FE006E08C2 /* Project object */;
 }

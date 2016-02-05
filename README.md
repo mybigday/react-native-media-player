@@ -31,6 +31,12 @@ TODO: Write usage instructions
 
 ## Known Issues
 
+## Roadmap
+
+- [ ] Test coverage
+- [ ] Image transitions
+- [ ] Music play
+
 ## History
 
 TODO: Write history

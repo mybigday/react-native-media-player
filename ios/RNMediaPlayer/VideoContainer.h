@@ -6,9 +6,9 @@
 //  Copyright © 2016年 Facebook. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
+@import Foundation;
+@import UIKit;
+@import AVFoundation;
 #import "Container.h"
 
 @interface VideoContainer : Container

@@ -6,8 +6,8 @@
 //  Copyright © 2016年 Facebook. All rights reserved.
 //
 
-@import UIKit;
 @import Foundation;
+@import UIKit;
 #import "RCTBridgeModule.h"
 #import "Container.h"
 #import "ImageContainer.h"
