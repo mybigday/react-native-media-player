@@ -9,6 +9,7 @@
 #import "RNMediaPlayer.h"
 
 @implementation RNMediaPlayer {
+	BOOL alreadyInitialize;
 	UIScreen *screen;
 	UIWindow *window;
 	UIViewController *viewController;
@@ -16,38 +17,52 @@
 	Container *rendoutContainer;
 }
 
+-(id)init {
+	if ( self = [super init] ) {
+		alreadyInitialize = NO;
+	}
+	return self;
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-	// Log documents path
-	NSString *documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-	NSLog(@"%@", documentsPath);
+	if(!alreadyInitialize){
+		// Initialize property
+		renderQueue = [[NSMutableArray alloc] init];
+		rendoutContainer = nil;
+	
+		// External screen connect notification
+		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+		[center addObserver:self selector:@selector(handleScreenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
+		[center addObserver:self selector:@selector(handleScreenDidDisconnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
+		
+		// Window initialize
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSArray *screens = [UIScreen screens];
+			if([screens count] > 1){
+				screen = [screens objectAtIndex:1];
+			}
+			else{
+				screen = [screens objectAtIndex:0];
+			}
+			window = [[UIWindow alloc] init];
+			[window setBackgroundColor:[UIColor redColor]];
+			viewController = [[UIViewController alloc] init];
+			window.rootViewController = viewController;
+			[self changeScreen];
+			
+			// Add UIPanGestureRecognizer
+			UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+			[window addGestureRecognizer:pan];
+			UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+			[window addGestureRecognizer:pinch];
 
-	// Initialize property
-	renderQueue = [[NSMutableArray alloc] init];
-	rendoutContainer = nil;
-
-	// External screen connect notification
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	[center addObserver:self selector:@selector(handleScreenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
-	[center addObserver:self selector:@selector(handleScreenDidDisconnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
-
-	// Window initialize
-	dispatch_async(dispatch_get_main_queue(), ^{
-		NSArray *screens = [UIScreen screens];
-		if([screens count] > 1){
-			screen = [screens objectAtIndex:1];
-		}
-		else{
-			screen = [screens objectAtIndex:0];
-		}
-		window = [[UIWindow alloc] init];
-		[window setBackgroundColor:[UIColor redColor]];
-		viewController = [[UIViewController alloc] init];
-		window.rootViewController = viewController;
-		[self changeScreen];
-		resolve(@{});
-	});
+			resolve(@{});
+		});
+		alreadyInitialize = YES;
+	}
+	[self clearAll];
 }
 
 RCT_EXPORT_METHOD(pushImage: (NSString *)path type:(NSString *)type duration:(NSTimeInterval)duration resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
@@ -74,6 +89,22 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 	}
 }
 
+RCT_EXPORT_METHOD(clearAll: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	[self clearAll];
+	resolve(@{});
+}
+
+-(void) clearAll{
+	if(rendoutContainer){
+		renderQueue = [[NSMutableArray alloc] init];
+	}
+	else if([renderQueue count] > 0){
+		Container *lastObject = [renderQueue lastObject];
+		[NSMutableArray arrayWithObject:lastObject];
+		[lastObject rendOut];
+	}
+}
+
 -(BOOL) pushContainer: (Container *)container withStringType:(NSString *)type{
 	enum ContainerPushType containerPushType = AtLast;
 	if([type isEqualToString:@"AfterNow"]){
@@ -95,13 +126,13 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 }
 
 -(void) handleScreenDidConnectNotification: (NSNotification *)notification{
+	// Must inishiate event
 	NSLog(@"Screen Connect");
 	// Change screen to external screen
 	NSArray *screens = [UIScreen screens];
 	if([screens count] > 1){
 		screen = [screens objectAtIndex:1];
 		[self changeScreen];
-		// Need change screen
 	}
 }
 
@@ -111,7 +142,6 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 	NSArray *screens = [UIScreen screens];
 	screen = [screens objectAtIndex:0];
 	[self changeScreen];
-	// Need change screen
 }
 
 -(BOOL) pushContainer: (Container *)container withType:(enum ContainerPushType) type{
@@ -166,11 +196,6 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 		Container *container = renderQueue.lastObject;
 		[container rendIn];
 	}
-	else{
-		// Push to background
-		//		self.backgroundMode()
-		//		self.eventDelegate.first?.queueEmpty()
-	}
 }
 
 -(void) containerRendInStart{
@@ -187,6 +212,19 @@ RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RC
 	NSLog(@"containerRendOutFinish");
 	rendoutContainer = nil;
 	[self showNextContent];
+}
+
+-(void) handlePan: (UIPanGestureRecognizer *)recognizer{
+	CGPoint translation = [recognizer translationInView:window];
+	recognizer.view.center = CGPointMake((recognizer.view.center.x + translation.x), (recognizer.view.center.y + translation.y));
+	[recognizer setTranslation:CGPointMake(0, 0) inView:window];
+}
+
+-(void) handlePinch: (UIPinchGestureRecognizer *)recognizer{
+	if(recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged){
+		recognizer.view.transform = CGAffineTransformScale(recognizer.view.transform, recognizer.scale, recognizer.scale);
+		recognizer.scale = 1;
+	}
 }
 
 @end

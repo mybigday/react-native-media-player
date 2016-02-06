@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://bitbucket.org/mlifeteam/react-native-media-player.git"
+    "type": "git",
+    "url": "https://bitbucket.org/mlifeteam/react-native-media-player.git"
   },
   "nativePackage": true,
   "keywords": [
@@ -24,6 +24,9 @@
   ],
   "author": "Pepper Yen <pepper.yen@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "react-native-fs": "^1.2.0"
+  },
   "devDependencies": {
     "babel-eslint": "^4.1.8",
     "eslint": "^1.10.3",

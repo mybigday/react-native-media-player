@@ -30,7 +30,7 @@
 /* Begin PBXFileReference section */
 		56C0CD761C6444FE006E08C2 /* libRNMediaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNMediaPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		56C0CD791C6444FE006E08C2 /* RNMediaPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNMediaPlayer.h; sourceTree = "<group>"; };
-		56C0CD7B1C6444FE006E08C2 /* RNMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMediaPlayer.m; sourceTree = "<group>"; };
+		56C0CD7B1C6444FE006E08C2 /* RNMediaPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNMediaPlayer.m; sourceTree = "<group>"; wrapsLines = 0; };
 		56C0CD821C64453F006E08C2 /* Container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Container.h; sourceTree = "<group>"; };
 		56C0CD831C64453F006E08C2 /* Container.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Container.m; sourceTree = "<group>"; };
 		56C0CD841C64453F006E08C2 /* ImageContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContainer.h; sourceTree = "<group>"; };
