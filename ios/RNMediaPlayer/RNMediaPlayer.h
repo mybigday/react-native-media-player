@@ -9,6 +9,7 @@
 @import Foundation;
 @import UIKit;
 #import "RCTBridgeModule.h"
+#import "RCTEventDispatcher.h"
 #import "Container.h"
 #import "ImageContainer.h"
 #import "VideoContainer.h"

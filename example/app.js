@@ -39,23 +39,32 @@ function showErrorMessage(error){
 class ExampleApp extends Component{
 	constructor(props){
 		super(props);
-		var dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		let dataSource1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		let dataSource2 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			current_jobs: 0,
 			finished_jobs: 0,
 			image_file_list: [],
-			image_list_data_source: dataSource.cloneWithRows([]),
-			selected_image_file_list: []
+			image_list_data_source: dataSource1.cloneWithRows([]),
+			selected_image_file_list: [],
+			video_file_list: [],
+			video_list_data_source: dataSource2.cloneWithRows([]),
+			selected_video_file_list: []
 		};
-		this.loadImage();
+		this.loadResource();
 	}
-	handleInitialize = () => {
-		MediaPlayer.initialize();
+	handleInitialize = async () => {
+		try{
+			await MediaPlayer.initialize();
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
 	};
-	handlePushImage = () => {
+	handlePushImage = async () => {
 		try{
 			if(this.state.selected_image_file_list.length > 0){
-				MediaPlayer.pushImage(this.state.selected_image_file_list[0], MediaPlayer.PUSH_TYPE.AfterNow, 60000);
+				let containerId = await MediaPlayer.pushImage(this.state.selected_image_file_list[0], 2000, MediaPlayer.PUSH_TYPE.AtLast);
 			}
 			else{
 				showErrorMessage("You need select a image file.");
@@ -65,7 +74,15 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
-	handleDownloadImage = () => {
+	handlePushVideo = async (path) => {
+		try{
+			let containerId = await MediaPlayer.pushVideo(path, MediaPlayer.PUSH_TYPE.AtLast);
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handleDownload = () => {
 		console.log(RNFS.DocumentDirectoryPath);
 		fetch("https://api.flickr.com/services/feeds/photos_faves.gne?id=49840387@N03&format=json").then((response) => response.text()).then((responseText) => {
 			let results = responseText.match(/"m":"https(.)+_m.jpg/g);
@@ -80,7 +97,7 @@ class ExampleApp extends Component{
 						this.setState({
 							finished_jobs: this.state.finished_jobs + 1
 						});
-						this.loadImage();
+						this.loadResource();
 					}
 				});
 				index++;
@@ -88,8 +105,29 @@ class ExampleApp extends Component{
 		}).catch((err) => {
 			showErrorMessage(err);
 		});
+		let videoUrlList = [
+			"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4",
+			"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4",
+			"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4"
+		];
+		let index = 1;
+		videoUrlList.forEach((url) => {
+			RNFS.downloadFile(url, RNFS.DocumentDirectoryPath + "/" + index + ".mp4", () => {
+				this.setState({
+					current_jobs: this.state.current_jobs + 1
+				});
+			}, (downloadResult) => {
+				if(downloadResult.contentLength == downloadResult.bytesWritten){
+					this.setState({
+						finished_jobs: this.state.finished_jobs + 1
+					});
+					this.loadResource();
+				}
+			});
+			index++;
+		});
 	};
-	loadImage = () => {
+	loadResource = () => {
 		RNFS.readDir(RNFS.DocumentDirectoryPath).then((files) => {
 			let imageFileList = files.filter((file) => (file.path.indexOf("jpg") >= 0)).map((file) => {
 				return {
@@ -97,9 +135,17 @@ class ExampleApp extends Component{
 					name: file.name
 				};
 			});
+			let videoFileList = files.filter((file) => (file.path.indexOf("mp4") >= 0)).map((file) => {
+				return {
+					path: file.path,
+					name: file.name
+				};
+			});
 			this.setState({
 				image_file_list: imageFileList,
-				image_list_data_source: this.state.image_list_data_source.cloneWithRows(imageFileList)
+				image_list_data_source: this.state.image_list_data_source.cloneWithRows(imageFileList),
+				video_file_list: videoFileList,
+				video_list_data_source: this.state.video_list_data_source.cloneWithRows(videoFileList)
 			});
 		}).catch((err) => {
 			showErrorMessage(err);
@@ -118,8 +164,8 @@ class ExampleApp extends Component{
 						onPress={this.handlePushImage}
 					/>
 					<Button
-						title={"Download Image " + ((this.state.current_jobs > 0)?"(" + this.state.finished_jobs + " / " + this.state.current_jobs + ")":"")}
-						onPress={this.handleDownloadImage}
+						title={"Download Resource" + ((this.state.current_jobs > 0)?" (" + this.state.finished_jobs + " / " + this.state.current_jobs + ")":"")}
+						onPress={this.handleDownload}
 					/>
 				</View>
 				<View style={styles.spaceContainer}></View>
@@ -127,11 +173,31 @@ class ExampleApp extends Component{
 					style={styles.imageContainer}
 					contentContainerStyle={styles.imageListContentContainer}
 					horizontal={true}
+					dataSource={this.state.video_list_data_source}
+					renderRow={(rowData) => (
+						<SelectableItem
+							type={"text"}
+							title={rowData.name}
+							onChangeState={(selected) => {
+								this.setState({
+									selected_video_file: rowData.path
+								});
+								this.handlePushVideo(rowData.path);
+							}}
+						/>
+					)}
+				/>
+				<ListView
+					style={styles.imageContainer}
+					contentContainerStyle={styles.imageListContentContainer}
+					horizontal={true}
 					dataSource={this.state.image_list_data_source}
 					renderRow={(rowData) => (
-						<SelectableImage
+						<SelectableItem
+							type={"image"}
 							name={rowData.name}
 							path={rowData.path}
+							enableCheckBox={true}
 							onChangeState={(selected) => {
 								var newSelectedImageFileList = [];
 								if(selected){
@@ -192,12 +258,21 @@ const selectableImageStyle = StyleSheet.create({
 	container:{
 		flex: 1,
 		position: "relative",
-		backgroundColor: "#333333"
+		backgroundColor: "#333333",
 	},
 	image:{
 		width: 100,
 		height: 100,
 		backgroundColor: "#444400"
+	},
+	text:{
+		width: 100,
+		height: 100,
+		fontSize: 14,
+		fontWeight: "bold",
+		color: "#FFFFFF",
+		textAlign: "center",
+		lineHeight: 50
 	},
 	selector:{
 		position: "absolute",
@@ -210,7 +285,7 @@ const selectableImageStyle = StyleSheet.create({
 		backgroundColor: "rgba(0, 0, 0, 0.7)"
 	}
 });
-class SelectableImage extends Component{
+class SelectableItem extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -228,13 +303,31 @@ class SelectableImage extends Component{
 		return (
 			<TouchableHighlight onPress={this.handlePress}>
 				<View style={selectableImageStyle.container}>
-					<Image
-						style={selectableImageStyle.image}
-						key={this.props.name}
-						resizeMode={"stretch"} 
-						source={{uri: this.props.path}}
-					/>
-					<View style={[selectableImageStyle.selector, (!this.state.selected && selectableImageStyle.notSelected)]}></View>
+					{
+						(this.props.type == "image")?
+						(
+							<Image
+								style={selectableImageStyle.image}
+								key={this.props.name}
+								resizeMode={"stretch"} 
+								source={{uri: this.props.path}}
+							/>
+						)
+						:
+						(
+							<Text style={selectableImageStyle.text}>{this.props.title}</Text>
+						)
+					}
+					{
+						(this.props.enableCheckBox)?
+						(
+							<View style={[selectableImageStyle.selector, (!this.state.selected && selectableImageStyle.notSelected)]}></View>
+						)
+						:
+						(
+							null
+						)
+					}
 				</View>
 			</TouchableHighlight>
 		);

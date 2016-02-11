@@ -12,6 +12,6 @@
 
 @interface ImageContainer : Container
 
--(id) initWithImage: (UIImage *)initImage duration: (NSTimeInterval)initDuration renderView: (UIView *) initRenderView;
+-(id) initWithImage: (UIImage *)initImage renderView: (UIView *) initRenderView;
 
 @end

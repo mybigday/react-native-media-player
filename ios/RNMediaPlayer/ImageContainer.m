@@ -12,8 +12,8 @@
 	UIImage *image;
 }
 
--(id) initWithImage: (UIImage *)initImage duration: (NSTimeInterval)initDuration renderView: (UIView *)initRenderView {
-	self = [super initWithRenderView:initRenderView inDuration:initDuration];
+-(id) initWithImage: (UIImage *)initImage renderView: (UIView *)initRenderView {
+	self = [super initWithRenderView:initRenderView];
 	if(self){
 		image = initImage;
 	}

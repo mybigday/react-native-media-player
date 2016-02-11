@@ -24,13 +24,12 @@ enum ContainerStatus{
 @property (nonatomic, retain) UIView *contentView;
 @property (nonatomic, retain) UIView *renderView;
 @property (nonatomic, retain) NSTimer *renderTimer;
-@property (nonatomic) NSTimeInterval duration;
+//@property (nonatomic) NSTimeInterval duration;
 @property (nonatomic) NSTimeInterval rendinAnimationDuration;
 @property (nonatomic) enum ContainerStatus rendState;
 @property (nonatomic, weak) id <RenderDelegate> delegate;
 
 -(id) initWithRenderView: (UIView *)initRenderView;
--(id) initWithRenderView: (UIView *)initRenderView inDuration:(NSTimeInterval)initDuration;
 -(void) rendIn;
 -(void) rendOut;
 

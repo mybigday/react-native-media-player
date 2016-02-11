@@ -32,7 +32,7 @@
 }
 
 -(id) initWithURL: (NSURL *)initUrl renderView: (UIView *) initRenderView {
-	self = [super initWithRenderView:initRenderView inDuration:0.0];
+	self = [super initWithRenderView:initRenderView];
 	if(self){
 		sourceFileURL = initUrl;
 	}

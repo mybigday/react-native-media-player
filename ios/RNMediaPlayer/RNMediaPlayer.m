@@ -13,9 +13,10 @@
 	UIScreen *screen;
 	UIWindow *window;
 	UIViewController *viewController;
-	NSMutableArray *renderQueue;
-	Container *rendoutContainer;
+	Container *currentContainer;
 }
+
+@synthesize bridge = _bridge;
 
 -(id)init {
 	if ( self = [super init] ) {
@@ -26,12 +27,8 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(initialize: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(initialize){
 	if(!alreadyInitialize){
-		// Initialize property
-		renderQueue = [[NSMutableArray alloc] init];
-		rendoutContainer = nil;
-	
 		// External screen connect notification
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		[center addObserver:self selector:@selector(handleScreenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
@@ -57,66 +54,40 @@ RCT_EXPORT_METHOD(initialize: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromi
 			[window addGestureRecognizer:pan];
 			UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
 			[window addGestureRecognizer:pinch];
-
-			resolve(@{});
 		});
 		alreadyInitialize = YES;
 	}
-	[self clearAll];
+//	[self clearAll];
 }
 
-RCT_EXPORT_METHOD(pushImage: (NSString *)path type:(NSString *)type duration:(NSTimeInterval)duration resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(rendImage: (NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
 	UIImage *image = [UIImage imageWithContentsOfFile:path];
-	NSLog(@"duration:%f", duration);
-	Container *container = [[ImageContainer alloc] initWithImage:image duration:duration renderView:window];
-	if([self pushContainer:container withStringType:type]){
+	Container *container = [[ImageContainer alloc] initWithImage:image renderView:window];
+	if([self rendin:container]){
 		resolve(@{});
 	}
 	else{
-		NSError *err = [NSError errorWithDomain:@"Can't push image" code:-1 userInfo:nil];
+		NSError *err = [NSError errorWithDomain:@"Can't push image, maybe need initialize MediaPlayer first." code:-11 userInfo:nil];
 		reject([NSString stringWithFormat: @"%lu", (long)err.code], err.localizedDescription, err);
 	}
 }
 
-RCT_EXPORT_METHOD(pushVideo: (NSString *)path type:(NSString *)type resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(rendVideo: (NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
 	Container *container = [[VideoContainer alloc] initWithURL:[NSURL URLWithString:path] renderView:window];
-	if([self pushContainer:container withStringType:type]){
+	if([self rendin:container]){
 		resolve(@{});
 	}
 	else{
-		NSError *err = [NSError errorWithDomain:@"Can't push video" code:-1 userInfo:nil];
+		NSError *err = [NSError errorWithDomain:@"Can't push video, maybe need initialize MediaPlayer first." code:-13 userInfo:nil];
 		reject([NSString stringWithFormat: @"%lu", (long)err.code], err.localizedDescription, err);
 	}
 }
 
-RCT_EXPORT_METHOD(clearAll: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-	[self clearAll];
+RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	if(currentContainer){
+		[currentContainer rendOut];
+	}
 	resolve(@{});
-}
-
--(void) clearAll{
-	if(rendoutContainer){
-		renderQueue = [[NSMutableArray alloc] init];
-	}
-	else if([renderQueue count] > 0){
-		Container *lastObject = [renderQueue lastObject];
-		[NSMutableArray arrayWithObject:lastObject];
-		[lastObject rendOut];
-	}
-}
-
--(BOOL) pushContainer: (Container *)container withStringType:(NSString *)type{
-	enum ContainerPushType containerPushType = AtLast;
-	if([type isEqualToString:@"AfterNow"]){
-		containerPushType = AfterNow;
-	}
-	else if([type isEqualToString:@"Interrupt"]){
-		containerPushType = Interrupt;
-	}
-	else if([type isEqualToString:@"ClearOther"]){
-		containerPushType = ClearOther;
-	}
-	return [self pushContainer:container withType:containerPushType];
 }
 
 -(void) changeScreen{
@@ -144,45 +115,11 @@ RCT_EXPORT_METHOD(clearAll: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 	[self changeScreen];
 }
 
--(BOOL) pushContainer: (Container *)container withType:(enum ContainerPushType) type{
-	if(renderQueue){
-		container.delegate = self;
-		switch(type){
-			case AtLast:
-				[renderQueue insertObject:container atIndex:0];
-				break;
-			case AfterNow:
-				if(rendoutContainer || [renderQueue count] == 0){
-					[renderQueue addObject:container];
-				}
-				else{
-					[renderQueue insertObject:container atIndex:([renderQueue count] - 1)];
-				}
-				break;
-			case Interrupt:
-				if(rendoutContainer || [renderQueue count] == 0){
-					[renderQueue addObject:container];
-				}
-				else{
-					[renderQueue insertObject:container atIndex:([renderQueue count] - 1)];
-					[((Container *)[renderQueue lastObject]) rendOut];
-				}
-				break;
-			case ClearOther:
-				if(rendoutContainer || [renderQueue count] == 0){
-					renderQueue = [NSMutableArray arrayWithObject:container];
-				}
-				else{
-					Container *lastObject = [renderQueue lastObject];
-					renderQueue = [NSMutableArray arrayWithObject:container];
-					[renderQueue addObject:lastObject];
-					[lastObject rendOut];
-				}
-				break;
-		}
-		if(!rendoutContainer && [renderQueue count] == 1){
-			[self showNextContent];
-		}
+-(BOOL) rendin: (Container *)container{
+	if(alreadyInitialize){
+		currentContainer = container;
+		currentContainer.delegate = self;
+		[currentContainer rendIn];
 		return YES;
 	}
 	else{
@@ -190,28 +127,19 @@ RCT_EXPORT_METHOD(clearAll: (RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 	}
 }
 
--(void) showNextContent{
-	NSLog(@"showNextContent");
-	if([renderQueue count] > 0){
-		Container *container = renderQueue.lastObject;
-		[container rendIn];
-	}
-}
-
 -(void) containerRendInStart{
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendInStart" body:@{@"id": @"id", @"type": @"image"}];
 	NSLog(@"containerRendInStart");
 }
 
 -(void) containerRendOutStart{
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutStart" body:@{@"id": @"id", @"type": @"image"}];
 	NSLog(@"containerRendOutStart");
-	rendoutContainer = renderQueue.lastObject;
-	[renderQueue removeObjectAtIndex:[renderQueue count] - 1];
 }
 
 -(void) containerRendOutFinish{
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutFinish" body:@{@"id": @"id", @"type": @"image"}];
 	NSLog(@"containerRendOutFinish");
-	rendoutContainer = nil;
-	[self showNextContent];
 }
 
 -(void) handlePan: (UIPanGestureRecognizer *)recognizer{
