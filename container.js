@@ -42,6 +42,9 @@ class Container {
 			}
 		});
 	}
+	async rendOut(){
+		await RNMediaPlayer.rendOut();
+	}
 }
 
 class Image extends Container {
@@ -66,7 +69,7 @@ class Image extends Container {
 		await RNMediaPlayer.rendImage(this.filePath);
 		if(this.duration > 0){
 			this.countdownClock = setTimeout(async () => {
-				await RNMediaPlayer.rendOut();
+				await this.rendOut();
 				this.countdownClock = null;
 			}, this.duration);
 		}

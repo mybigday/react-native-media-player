@@ -53,18 +53,11 @@ class ExampleApp extends Component{
 		};
 		this.loadResource();
 	}
-	handleInitialize = async () => {
-		try{
-			await MediaPlayer.initialize();
-		}
-		catch(err){
-			showErrorMessage(err);
-		}
-	};
 	handlePushImage = async () => {
 		try{
 			if(this.state.selected_image_file_list.length > 0){
-				let containerId = await MediaPlayer.pushImage(this.state.selected_image_file_list[0], 2000, MediaPlayer.PUSH_TYPE.AtLast);
+				let containerId = await MediaPlayer.pushImage(this.state.selected_image_file_list[0], 2000, MediaPlayer.PUSH_WAY.AtLast);
+				console.log("Image Container ID:" + containerId);
 			}
 			else{
 				showErrorMessage("You need select a image file.");
@@ -74,9 +67,15 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
-	handlePushVideo = async (path) => {
+	handlePushVideo = async () => {
 		try{
-			let containerId = await MediaPlayer.pushVideo(path, MediaPlayer.PUSH_TYPE.AtLast);
+			if(this.state.selected_video_file_list.length > 0){
+				let containerId = await MediaPlayer.pushVideo(this.state.selected_video_file_list[0], MediaPlayer.PUSH_WAY.AtLast);
+				console.log("Video Container ID:" + containerId);
+			}
+			else{
+				showErrorMessage("You need select a video file.");
+			}
 		}
 		catch(err){
 			showErrorMessage(err);
@@ -151,21 +150,77 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		});
 	};
+
+	handleInitializeGroup = () => {
+		MediaPlayer.initializeGroup(false, false);
+	};
+	handlePushImageToGroup = async () => {
+		try{
+			if(this.state.selected_image_file_list.length > 0){
+				await MediaPlayer.pushImagesToGroup(this.state.selected_image_file_list, 2000, false);
+			}
+			else{
+				showErrorMessage("You need select one or more image file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handlePushVideoToGroup = async () => {
+		try{
+			if(this.state.selected_video_file_list.length > 0){
+				await MediaPlayer.pushVideosToGroup(this.state.selected_video_file_list, false);
+			}
+			else{
+				showErrorMessage("You need select one or more video file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handleStartGroup = async () => {
+		try{
+			await MediaPlayer.pushGroup();
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
 	render(){
 		return (
 			<View style={styles.container}>
 				<View style={styles.buttonContainer}>
 					<Button
-						title={"Initialize"}
-						onPress={this.handleInitialize}
+						title={"Push Image"}
+						onPress={this.handlePushImage}
 					/>
 					<Button
-						title={"Add Image"}
-						onPress={this.handlePushImage}
+						title={"Push Video"}
+						onPress={this.handlePushVideo}
 					/>
 					<Button
 						title={"Download Resource" + ((this.state.current_jobs > 0)?" (" + this.state.finished_jobs + " / " + this.state.current_jobs + ")":"")}
 						onPress={this.handleDownload}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
+						title={"Initialize Group"}
+						onPress={this.handleInitializeGroup}
+					/>
+					<Button
+						title={"Add Image To Group"}
+						onPress={this.handlePushImageToGroup}
+					/>
+					<Button
+						title={"Add Video To Group"}
+						onPress={this.handlePushVideoToGroup}
+					/>
+					<Button
+						title={"Start Group"}
+						onPress={this.handleStartGroup}
 					/>
 				</View>
 				<View style={styles.spaceContainer}></View>
@@ -178,11 +233,25 @@ class ExampleApp extends Component{
 						<SelectableItem
 							type={"text"}
 							title={rowData.name}
+							enableCheckBox={true}
 							onChangeState={(selected) => {
+								var newSelectedVideoFileList = [];
+								if(selected){
+									newSelectedVideoFileList = _(this.state.selected_video_file_list).union(this.state.selected_video_file_list, [rowData.path]);
+								}
+								else{
+									newSelectedVideoFileList = _(this.state.selected_video_file_list).without(this.state.selected_video_file_list, rowData.path);
+								}
+								console.log(newSelectedVideoFileList);
 								this.setState({
-									selected_video_file: rowData.path
+									selected_video_file_list: newSelectedVideoFileList
 								});
-								this.handlePushVideo(rowData.path);
+
+
+								// this.setState({
+								// 	selected_video_file: rowData.path
+								// });
+								// this.handlePushVideo(rowData.path);
 							}}
 						/>
 					)}

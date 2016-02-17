@@ -19,7 +19,56 @@ This is a react native media player with external display controller. Support ph
 
 ## Usage
 
-TODO: Write usage instructions
+### Initialize
+You just simply need to import react-native-media-player in your js world
+
+```
+import MediaPlayer from "react-native-media-player";
+```
+
+### Push Image or Video
+Currently only support rend image file type `*.png`, `*.jpg` and video file type `*.mp4`.
+
+```
+// Push Image
+// path:     string        # The absolute path for image source
+// duration: number        # Image rend duration in milliseconds
+// pushWay:  string[enum]  # The way push this media (see Push Way above)
+
+try{
+	let containerId = await MediaPlayer.pushImage(image_file_path, 2000, MediaPlayer.PUSH_WAY.AtLast);
+	console.log("Image Container ID:" + containerId);
+}
+catch(err){
+	showErrorMessage(err);
+}
+
+// Push Video
+// path:     string        # The absolute path for video source
+// pushWay:  string[enum]  # The way push this media (see Push Way above)
+try{
+	let containerId = await MediaPlayer.pushVideo(video_file_path, MediaPlayer.PUSH_WAY.AtLast);
+	console.log("Video Container ID:" + containerId);
+}
+catch(err){
+	showErrorMessage(err);
+}
+```
+
+### Push Way
+This player have a simple rend queue. So you can push your media with four kind of way:
+
+| Push Way | Description |
+|---|---|
+| **MediaPlayer.PUSH_WAY.AtLast** | Place the media at end of queue |
+| **MediaPlayer.PUSH_WAY.AfterNow** | Place the media next rend position, it will rend after current rending media finish his own job |
+| **MediaPlayer.PUSH_WAY.Interrupt** | This will rendout current rending media and rendin new media immediately, the other media which already in queue will still rend after this finish |
+| **MediaPlayer.PUSH_WAY.ClearOther** | This will rendout current rending media and rendin new media immediately, and clear all other media which already in queue |
+
+
+
+
+
 
 ## Contributing
 
@@ -31,11 +80,14 @@ TODO: Write usage instructions
 
 ## Known Issues
 
+- Will crash after react native hot reload.
+
 ## Roadmap
 
 - [ ] Test coverage
 - [ ] Image transitions
 - [ ] Music play
+- [ ] Support react native reload
 
 ## History
 

@@ -4,7 +4,7 @@ const RenderStatusList = [
 	"RendOut"
 ];
 
-const PushTypeList = [
+const PushWayList = [
 	"AtLast",
 	"AfterNow",
 	"Interrupt",
@@ -15,12 +15,12 @@ let RENDER_STATUS = {};
 RenderStatusList.forEach((renderStatus) => {
 	RENDER_STATUS[renderStatus] = renderStatus;
 });
-let PUSH_TYPE = {};
-PushTypeList.forEach((pushType) => {
-	PUSH_TYPE[pushType] = pushType;
+let PUSH_WAY = {};
+PushWayList.forEach((pushWay) => {
+	PUSH_WAY[pushWay] = pushWay;
 });
 
 module.exports = {
 	RENDER_STATUS: RENDER_STATUS,
-	PUSH_TYPE: PUSH_TYPE
+	PUSH_WAY: PUSH_WAY
 };

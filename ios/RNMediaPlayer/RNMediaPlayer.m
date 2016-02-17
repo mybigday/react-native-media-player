@@ -18,13 +18,6 @@
 
 @synthesize bridge = _bridge;
 
--(id)init {
-	if ( self = [super init] ) {
-		alreadyInitialize = NO;
-	}
-	return self;
-}
-
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(initialize){
@@ -57,7 +50,10 @@ RCT_EXPORT_METHOD(initialize){
 		});
 		alreadyInitialize = YES;
 	}
-//	[self clearAll];
+	if(currentContainer){
+		[currentContainer rendOut];
+	}
+	//	[self clearAll];
 }
 
 RCT_EXPORT_METHOD(rendImage: (NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
