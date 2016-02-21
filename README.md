@@ -46,6 +46,7 @@ catch(err){
 // Push Video
 // path:     string        # The absolute path for video source
 // pushWay:  string[enum]  # The way push this media (see Push Way above)
+
 try{
 	let containerId = await MediaPlayer.pushVideo(video_file_path, MediaPlayer.PUSH_WAY.AtLast);
 	console.log("Video Container ID:" + containerId);
@@ -65,10 +66,56 @@ This player have a simple rend queue. So you can push your media with four kind 
 | **MediaPlayer.PUSH_WAY.Interrupt** | This will rendout current rending media and rendin new media immediately, the other media which already in queue will still rend after this finish |
 | **MediaPlayer.PUSH_WAY.ClearOther** | This will rendout current rending media and rendin new media immediately, and clear all other media which already in queue |
 
+### Clear Queue
+You can simply call `clear()` to remove all item in playlist.
 
+```
+// Clear all item
+// keepCurrentPlaying: bool   # Set true if you do not want to disturb current playing item 
 
+let keepCurrentPlaying = true;
+MediaPlayer.clear(keepCurrentPlaying);
 
+```
 
+### Group
+This player support a single group let you can play a bunch of media with random order or repeat mode. When using group you must create `group` first and then add some image or video. After you setup all your metarial just call `play()` the group will auto control those media as you want.
+
+#### Create your group first
+
+```
+// repeat: bool    # Group will auto replay when all item rend finished
+// random: bool    # Group will random the queue order every time to start playing group
+
+MediaPlayer.createGroup(repeat, random);
+```
+
+#### Make your playlist
+Like the queue, you can push image, video, audio(not support yet) to rend.
+
+```
+// Push image or video
+// pathList:  string        # The absolute path list for images source
+// duration:  number        # Image rend duration in milliseconds
+// reRendAll: bool          # When push a new item to group rerend all item immediately
+MediaPlayer.group.pushImages(pathList, duration, reRendAll);
+MediaPlayer.group.pushVideos(pathList, reRendAll);
+```
+
+#### Let's rock
+Now you can play your playlist just one call, sure you can stop it. The better thing is we will keep the group let you start again util you delete it.
+
+```
+MediaPlayer.group.start();
+MediaPlayer.group.stop();
+```
+
+#### Delete group
+Currently you can only have one group at a time, so when you need a new group you will need delete old group first.
+
+```
+MediaPlayer.deleteGroup();
+```
 
 ## Contributing
 
@@ -81,6 +128,7 @@ This player have a simple rend queue. So you can push your media with four kind 
 ## Known Issues
 
 - Will crash after react native hot reload.
+- Frequently call start and stop group will crash.
 
 ## Roadmap
 

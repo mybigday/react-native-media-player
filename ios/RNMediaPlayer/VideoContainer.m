@@ -58,12 +58,12 @@
 
 - (void) videoEnd: (NSNotification *)notification{
 	NSLog(@"videoEnd");
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:avPlayerItem];
 	[self rendOut];
 }
 
 - (void) afterRendOut{
-	[avPlayerItem removeObserver:self forKeyPath:@"status"];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:avPlayerItem];
+	
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
@@ -72,6 +72,7 @@
 			case AVPlayerItemStatusReadyToPlay:
 				NSLog(@"AVPlayerItemStatusReadyToPlay");
 				[avPlayer play];
+				[avPlayerItem removeObserver:self forKeyPath:@"status"];
 				break;
 			case AVPlayerItemStatusFailed:
 				NSLog(@"AVPlayerItemStatusFailed");

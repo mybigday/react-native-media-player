@@ -4,6 +4,7 @@ const RNMediaPlayer = NativeModules.RNMediaPlayer;
 
 import { RENDER_STATUS, PUSH_WAY } from "./constant";
 import { Image, Video } from "./container";
+import Group from "./group";
 
 class MedaiPlayer {
 	constructor(){
@@ -87,110 +88,42 @@ class MedaiPlayer {
 			this.rending = item;
 			await item.rendIn();
 		}
+		else if(this.group){
+			this.group.finish();
+		}
 	}
-
-	remove(id){
+	async remove(id){
 		if(this.rending && this.rending.id == id){
 			// Call rendout
-			this.rending.rendOut();
+			await this.rending.rendOut();
 			this.rending = null;
 		}
 		else{
 			this.queue = this.queue.filter((item) => (item.id != id));
 		}
 	}
-	clear(){
+
+	async clear(keepCurrentPlaying){
 		this.queue = [];
 		
 		// Call rendout
-		if(this.rending){
-			this.rending.rendOut();
+		if(this.rending && !keepCurrentPlaying){
+			await this.rending.rendOut();
 			this.rending = null;
 		}
 	}
 
 	// Group feature
-	initializeGroup(replay, random){
-		this.groupList = [];
-		if(replay == true){
-			this.replay = true;
+	async createGroup(replay, random){
+		await this.deleteGroup();
+		this.group = new Group(this, replay, random);
+	}
+	async deleteGroup(){
+		if(this.group){
+			await this.group.stop();
+			this.group = null;
 		}
-		if(random == true){
-			this.random = true;
-		}
-		this.clear();
 	}
-	async pushImagesToGroup(pathList, dutation, rePushAll){
-		await this.pushItemsToGroup(pathList.map((path) => {
-			return {
-				type: "image",
-				path: path,
-				dutation: dutation
-			}
-		}), rePushAll);
-	}
-	async pushVideosToGroup(pathList, rePushAll){
-		await this.pushItemsToGroup(pathList.map((path) => {
-			return {
-				type: "video",
-				path: path
-			}
-		}), rePushAll);
-	}
-	async pushItemsToGroup(itemList, rePushAll){
-		return new Promise(async (resolve, reject) => {
-			if(this.groupList){
-				itemList.forEach((item) => {
-					this.groupList.push(item);
-				});
-				try{
-					if(rePushAll){
-						await this.pushGroup();
-					}
-					resolve();
-				}
-				catch(err){
-					reject(err);
-				}
-			}
-			else{
-				reject(new Error("Must initialize group first."));
-			}
-		});
-	}
-	async pushGroup(){
-		return new Promise(async (resolve, reject) => {
-			if(this.groupList && this.groupList.length > 0){
-				this.clear();
-				if(this.random){
-					this.groupList.sort(() => {
-						return Math.random() > 0.5;
-					});
-				}
-				let promiseList = this.groupList.map(async (item) => {
-					switch(item.type){
-						case "image":
-							return await this.pushImage(item.path, item.dutation, PUSH_WAY.AtLast);
-						case "video":
-							return await this.pushVideo(item.path, PUSH_WAY.AtLast);
-					}
-				});
-				try{
-					await Promise.all(promiseList);
-					resolve();
-				}
-				catch(err){
-					reject(err);
-				}
-			}
-			else{
-				reject(new Error("Must initialize group and push something to rend."));
-			}
-		});
-	}
-	getGroupList(){
-		return this.groupList;
-	}
-};
+}
 
 module.exports = new MedaiPlayer();

@@ -49,7 +49,9 @@ class ExampleApp extends Component{
 			selected_image_file_list: [],
 			video_file_list: [],
 			video_list_data_source: dataSource2.cloneWithRows([]),
-			selected_video_file_list: []
+			selected_video_file_list: [],
+			random: false,
+			repeat: false
 		};
 		this.loadResource();
 	}
@@ -151,13 +153,26 @@ class ExampleApp extends Component{
 		});
 	};
 
-	handleInitializeGroup = () => {
-		MediaPlayer.initializeGroup(false, false);
+	handleCreateGroup = () => {
+		MediaPlayer.createGroup(this.state.repeat, this.state.random);
+	};
+	handleDeleteGroup = () => {
+		MediaPlayer.deleteGroup();
+	};
+	handleToggleRandom = () => {
+		this.setState({
+			random: !this.state.random
+		});
+	};
+	handleToggleRepeat = () => {
+		this.setState({
+			repeat: !this.state.repeat
+		});
 	};
 	handlePushImageToGroup = async () => {
 		try{
 			if(this.state.selected_image_file_list.length > 0){
-				await MediaPlayer.pushImagesToGroup(this.state.selected_image_file_list, 2000, false);
+				await MediaPlayer.group.pushImages(this.state.selected_image_file_list, 2000, true);
 			}
 			else{
 				showErrorMessage("You need select one or more image file.");
@@ -170,7 +185,7 @@ class ExampleApp extends Component{
 	handlePushVideoToGroup = async () => {
 		try{
 			if(this.state.selected_video_file_list.length > 0){
-				await MediaPlayer.pushVideosToGroup(this.state.selected_video_file_list, false);
+				await MediaPlayer.group.pushVideos(this.state.selected_video_file_list, true);
 			}
 			else{
 				showErrorMessage("You need select one or more video file.");
@@ -182,7 +197,15 @@ class ExampleApp extends Component{
 	};
 	handleStartGroup = async () => {
 		try{
-			await MediaPlayer.pushGroup();
+			await MediaPlayer.group.start();
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handleStopGroup = async () => {
+		try{
+			await MediaPlayer.group.stop();
 		}
 		catch(err){
 			showErrorMessage(err);
@@ -207,9 +230,23 @@ class ExampleApp extends Component{
 				</View>
 				<View style={styles.buttonContainer}>
 					<Button
-						title={"Initialize Group"}
-						onPress={this.handleInitializeGroup}
+						title={"Create Group"}
+						onPress={this.handleCreateGroup}
 					/>
+					<Button
+						title={"Toggle Random: " + this.state.random}
+						onPress={this.handleToggleRandom}
+					/>
+					<Button
+						title={"Toggle Repeat: " + this.state.repeat}
+						onPress={this.handleToggleRepeat}
+					/>
+					<Button
+						title={"Delete Group"}
+						onPress={this.handleDeleteGroup}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
 					<Button
 						title={"Add Image To Group"}
 						onPress={this.handlePushImageToGroup}
@@ -221,6 +258,10 @@ class ExampleApp extends Component{
 					<Button
 						title={"Start Group"}
 						onPress={this.handleStartGroup}
+					/>
+					<Button
+						title={"Stop Group"}
+						onPress={this.handleStopGroup}
 					/>
 				</View>
 				<View style={styles.spaceContainer}></View>
@@ -246,12 +287,6 @@ class ExampleApp extends Component{
 								this.setState({
 									selected_video_file_list: newSelectedVideoFileList
 								});
-
-
-								// this.setState({
-								// 	selected_video_file: rowData.path
-								// });
-								// this.handlePushVideo(rowData.path);
 							}}
 						/>
 					)}
@@ -293,15 +328,15 @@ const buttonStyle = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		width: 300,
-		height: 60,
+		width: 200,
+		height: 40,
 		backgroundColor: "#333333",
 		margin: 5
 	},
 	text:{
 		color: "#FFFFFF",
 		fontWeight: "bold",
-		fontSize: 20
+		fontSize: 14
 	}
 });
 class Button extends Component{
