@@ -23,6 +23,7 @@ This is a react native media player with external display controller. Support ph
 You just simply need to import react-native-media-player in your js world
 
 ```
+:::javascript
 import MediaPlayer from "react-native-media-player";
 ```
 
@@ -30,6 +31,7 @@ import MediaPlayer from "react-native-media-player";
 Currently only support rend image file type `*.png`, `*.jpg` and video file type `*.mp4`.
 
 ```
+:::javascript
 // Push Image
 // path:     string        # The absolute path for image source
 // duration: number        # Image rend duration in milliseconds
@@ -70,6 +72,7 @@ This player have a simple rend queue. So you can push your media with four kind 
 You can simply call `clear()` to remove all item in playlist.
 
 ```
+:::javascript
 // Clear all item
 // keepCurrentPlaying: bool   # Set true if you do not want to disturb current playing item 
 
@@ -84,6 +87,7 @@ This player support a single group let you can play a bunch of media with random
 #### Create your group first
 
 ```
+:::javascript
 // repeat: bool    # Group will auto replay when all item rend finished
 // random: bool    # Group will random the queue order every time to start playing group
 
@@ -94,6 +98,7 @@ MediaPlayer.createGroup(repeat, random);
 Like the queue, you can push image, video, audio(not support yet) to rend.
 
 ```
+:::javascript
 // Push image or video
 // pathList:  string        # The absolute path list for images source
 // duration:  number        # Image rend duration in milliseconds
@@ -106,6 +111,7 @@ MediaPlayer.group.pushVideos(pathList, reRendAll);
 Now you can play your playlist just one call, sure you can stop it. The better thing is we will keep the group let you start again util you delete it.
 
 ```
+:::javascript
 MediaPlayer.group.start();
 MediaPlayer.group.stop();
 ```
@@ -114,6 +120,7 @@ MediaPlayer.group.stop();
 Currently you can only have one group at a time, so when you need a new group you will need delete old group first.
 
 ```
+:::javascript
 MediaPlayer.deleteGroup();
 ```
 
