@@ -5,12 +5,14 @@ module.exports = {
 		"strict": 0,
 		"indent": [
 			2,
-			"tab"
+			"tab",
+			{"SwitchCase": 1}
 		],
 		"quotes": [
 			2,
 			"double"
 		],
+		"jsx-quotes": [2, "prefer-double"],
 		"linebreak-style": [
 			2,
 			"unix"
@@ -20,7 +22,7 @@ module.exports = {
 			"always"
 		],
 		"no-console":0,
-
+		
 		// React part
 		"react/jsx-boolean-value": [1, "always"],
 		"react/jsx-closing-bracket-location": 1,
@@ -35,7 +37,6 @@ module.exports = {
 		"react/jsx-no-literals": 1,
 		"react/jsx-no-undef": 1,
 		"react/jsx-pascal-case": 1,
-		"react/jsx-quotes": 1,
 		"react/jsx-sort-prop-types": 1,
 		"react/jsx-uses-react": 1,
 		"react/jsx-uses-vars": 1,
@@ -55,7 +56,10 @@ module.exports = {
 		"react/require-extension": 1,
 		"react/self-closing-comp": 1,
 		"react/sort-comp": 1,
-		"react/wrap-multilines": 1
+		"react/wrap-multilines": 1,
+
+		// Mocha part
+		"mocha/no-exclusive-tests": 2
 	},
 	"env": {
 		"es6": true,
@@ -68,7 +72,8 @@ module.exports = {
 		"modules": true
 	},
 	"plugins": [
-		"react"
+		"react",
+		"mocha"
 	],
 	"settings": {
 		"react": {

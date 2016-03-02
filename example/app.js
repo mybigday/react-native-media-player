@@ -4,6 +4,7 @@ import React, {AppRegistry, Component, PropTypes, StyleSheet, View, Text, ListVi
 import MediaPlayer from "react-native-media-player";
 import RNFS from "react-native-fs";
 import _ from "underscore";
+import Toast from "react-native-root-toast";
 
 const styles = StyleSheet.create({
 	container:{
@@ -36,6 +37,17 @@ function showErrorMessage(error){
 	alert(error);
 }
 
+function showInfoMessage(message, position){
+	Toast.show(message, {
+		duration: Toast.durations.SHORT,
+		position: position,
+		shadow: true,
+		animation: true,
+		hideOnPress: true,
+		delay: 0
+	});
+}
+
 class ExampleApp extends Component{
 	constructor(props){
 		super(props);
@@ -54,6 +66,12 @@ class ExampleApp extends Component{
 			repeat: false
 		};
 		this.loadResource();
+		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, (stats, containerId) => {
+			showInfoMessage("Render: " + stats + " ID:" + containerId, Toast.positions.BOTTOM);
+		});
+		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, (stats) => {
+			showInfoMessage("Group: " + stats, Toast.positions.TOP);
+		});
 	}
 	handlePushImage = async () => {
 		try{
@@ -211,10 +229,27 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handleSetBackground = async () => {
+		try{
+			if(this.state.selected_image_file_list.length > 0){
+				await MediaPlayer.setBackground(this.state.selected_image_file_list[0]);
+			}
+			else{
+				showErrorMessage("You need select a image file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
 	render(){
 		return (
 			<View style={styles.container}>
 				<View style={styles.buttonContainer}>
+					<Button
+						title={"Set Background"}
+						onPress={this.handleSetBackground}
+					/>
 					<Button
 						title={"Push Image"}
 						onPress={this.handlePushImage}

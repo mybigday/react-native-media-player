@@ -1,4 +1,4 @@
-import { PUSH_WAY } from "./constant";
+import { EVENT_CHANNEL, PUSH_WAY, GROUP_STATUS } from "./constant";
 
 export default class Group {
 	constructor(player, replay, random){
@@ -30,13 +30,15 @@ export default class Group {
 		}), reRendAll);
 	}
 	async pushItems(itemList, reRendAll){
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Push);
 		return new Promise(async (resolve, reject) => {
 			if(this.groupList){
 				itemList.forEach((item) => {
 					this.groupList.push(item);
 				});
 				try{
-					if(reRendAll){
+					if(reRendAll && this.running){
+						this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.ReRend);
 						await this.player.clear(true);
 						await this.start(true);
 					}
@@ -55,7 +57,7 @@ export default class Group {
 		return this.groupList;
 	}
 	async start(keepCurrentQueue){
-		console.log("Group Start keepCurrentQueue:" + keepCurrentQueue);
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Start);
 		return new Promise(async (resolve, reject) => {
 			this.running = false;
 			if(this.groupList && this.groupList.length > 0){
@@ -92,15 +94,19 @@ export default class Group {
 	async stop(){
 		if(this.running == true){
 			this.running = false;
+			this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Stop);
 		}
 		await this.player.clear();
 	}
 	async finish(){
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Finished);
 		if(this.running == true && this.replay == true){
 			await this.start();
+			return false;
 		}
 		else{
 			await this.stop();
+			return true;
 		}
 	}
 }

@@ -1,16 +1,14 @@
-import RNFS from "react-native-fs";
-import { NativeModules, NativeAppEventEmitter } from "react-native";
-
-const RNMediaPlayer = NativeModules.RNMediaPlayer;
-
 let containerCounter = 0;
 
 class Container {
-	constructor(props){
+	constructor(props, mediaPlayer){
 		containerCounter++;
 		this.id = containerCounter;
 		this.type = props.type;
 		this.supportedTypeList = props.supportedTypeList;
+		this.rending = false;
+		this.RNMediaPlayer = mediaPlayer.RNMediaPlayer;
+		this.RNFS = mediaPlayer.RNFS;
 	}
 	async setPath(path){
 		this.filePath = path;
@@ -19,7 +17,7 @@ class Container {
 	}
 	checkFileExist(){
 		return new Promise((resolve, reject) => {
-			RNFS.stat(this.filePath).then(async (handler) => {
+			this.RNFS.stat(this.filePath).then(async (handler) => {
 				if(!handler.isFile()){
 					reject(new Error("File not exist or is directory path."));
 				}
@@ -33,7 +31,7 @@ class Container {
 	}
 	checkIsSupportedFile(){
 		return new Promise((resolve, reject) => {
-			let supportedType = new RegExp("\.(" + this.supportedTypeList.join("|") + ")$", 'i');
+			let supportedType = new RegExp("\.(" + this.supportedTypeList.join("|") + ")$", "i");
 			if(!supportedType.test(this.filePath)){
 				reject(new Error("Not supported file type [" + this.supportedTypeList.join() + "]."));
 			}
@@ -43,16 +41,17 @@ class Container {
 		});
 	}
 	async rendOut(){
-		await RNMediaPlayer.rendOut();
+		this.rending = false;
+		await this.RNMediaPlayer.rendOut();
 	}
 }
 
 class Image extends Container {
-	constructor(){
+	constructor(mediaPlayer){
 		super({
 			type: "image",
 			supportedTypeList: ["jpg", "jpeg", "png"]
-		});
+		}, mediaPlayer);
 	}
 	setDuration(duration){
 		return new Promise((resolve, reject) => {
@@ -66,7 +65,8 @@ class Image extends Container {
 		});
 	}
 	async rendIn(){
-		await RNMediaPlayer.rendImage(this.filePath);
+		this.rending = true;
+		await this.RNMediaPlayer.rendImage(this.filePath);
 		if(this.duration > 0){
 			this.countdownClock = setTimeout(async () => {
 				await this.rendOut();
@@ -74,21 +74,29 @@ class Image extends Container {
 			}, this.duration);
 		}
 	}
+	async rendOut(){
+		if(this.countdownClock){
+			clearTimeout(this.countdownClock);
+			this.countdownClock = null;
+		}
+		await super.rendOut();
+	}
 }
 
 class Video extends Container {
-	constructor(){
+	constructor(mediaPlayer){
 		super({
 			type: "video",
 			supportedTypeList: ["mp4"]
-		});
+		}, mediaPlayer);
 	}
 	async rendIn(){
-		await RNMediaPlayer.rendVideo(this.filePath);
+		this.rending = true;
+		await this.RNMediaPlayer.rendVideo(this.filePath);
 	}
 }
 
 module.exports = {
 	Image: Image,
 	Video: Video
-}
+};

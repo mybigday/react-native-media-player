@@ -35,7 +35,7 @@ Currently only support rend image file type `*.png`, `*.jpg` and video file type
 // Push Image
 // path:     string        # The absolute path for image source
 // duration: number        # Image rend duration in milliseconds
-// pushWay:  string[enum]  # The way push this media (see Push Way above)
+// pushWay:  string[enum]  # The way push this media (see Push Way below)
 
 try{
 	let containerId = await MediaPlayer.pushImage(image_file_path, 2000, MediaPlayer.PUSH_WAY.AtLast);
@@ -47,7 +47,7 @@ catch(err){
 
 // Push Video
 // path:     string        # The absolute path for video source
-// pushWay:  string[enum]  # The way push this media (see Push Way above)
+// pushWay:  string[enum]  # The way push this media (see Push Way below)
 
 try{
 	let containerId = await MediaPlayer.pushVideo(video_file_path, MediaPlayer.PUSH_WAY.AtLast);
@@ -79,6 +79,14 @@ You can simply call `clear()` to remove all item in playlist.
 let keepCurrentPlaying = true;
 MediaPlayer.clear(keepCurrentPlaying);
 
+```
+
+### Backgroud
+If set the backgroud image for media player. The image will auto rend when render is idle.
+
+```
+:::javascript
+MediaPlayer.setBackground(background_image_path);
 ```
 
 ### Group
@@ -123,6 +131,26 @@ Currently you can only have one group at a time, so when you need a new group yo
 :::javascript
 MediaPlayer.deleteGroup();
 ```
+
+### Event
+Media player will emit render status and group status. You can subscribe the channel to receive below event.
+
+```
+:::javascript
+MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, callback);
+MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
+```
+
+| Channel | Status | Parameter | Description |
+|---|---|---|---|
+| **EVENT\_CHANNEL.RENDER\_STATUS** | **Idle** | containerId | Fire when there is no item to rend |
+| **EVENT\_CHANNEL.RENDER\_STATUS** | **Rending** | containerId | Start rend an item |
+| **EVENT\_CHANNEL.RENDER\_STATUS** | **RendOut** |  | Fire when an item **start rend out** |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Start** |  | Start rend a group, include auto replay |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Stop** |  | Stop rend a group |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Finished** |  | All item in group are rended once, both before replay group and stop rend a group will fire this event  |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **ReRend** |  | When push a new item and set reRendAll |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Push** |  | Add new item to rend |
 
 ## Contributing
 
