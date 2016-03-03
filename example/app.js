@@ -34,7 +34,14 @@ const styles = StyleSheet.create({
 });
 
 function showErrorMessage(error){
-	alert(error);
+	Toast.show(error, {
+		duration: Toast.durations.LONG,
+		position: Toast.positions.BOTTOM,
+		shadow: true,
+		animation: true,
+		hideOnPress: true,
+		delay: 0
+	});
 }
 
 function showInfoMessage(message, position){

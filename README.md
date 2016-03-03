@@ -2,6 +2,10 @@
 
 This is a react native media player with external display controller. Support photo, video, misic and background mode.
 
+## Known Issues
+
+- Don't use `alert` at javascript world this make whole app crash, because alert at iOS platform will find current key window to add NSAlertView when key window is external display it will crash.
+
 ## Installation
 ### Mostly automatic install
 1. `npm install rnpm --global`
@@ -160,10 +164,6 @@ MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## Known Issues
-
-- Will crash after react native hot reload.
-- Frequently call start and stop group will crash.
 
 ## Roadmap
 
