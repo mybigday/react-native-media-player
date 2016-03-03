@@ -34,8 +34,8 @@ export default class MediaPlayer {
 			}
 		}));
 		this.subscription.push(nativeAppEventEmitter.addListener("RendOutStart",() => {
+			this.renderStatus = RENDER_STATUS.RendOut;
 			if(this.rending){
-				this.renderStatus = RENDER_STATUS.RendOut;
 				this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.RendOut, this.rending.id);
 				this.rending = null;
 			}
@@ -64,11 +64,17 @@ export default class MediaPlayer {
 		this.emitter.removeListener(channel, listener);
 	}
 	async setBackground(path){
+		let oldBackground = this.background;
 		let image = new Image(this);
 		await image.setPath(path);
 		await image.setDuration(0);
 		this.background = image;
-		await this.pushBackground();
+		if(oldBackground && oldBackground.rending){
+			oldBackground.rendOut();
+		}
+		else{
+			await this.pushBackground();
+		}
 	}
 	async pushImage(path, duration, way){
 		let image = new Image(this);
