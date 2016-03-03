@@ -30,17 +30,19 @@ RCT_EXPORT_METHOD(initialize){
 		// Window initialize
 		dispatch_async(dispatch_get_main_queue(), ^{
 			NSArray *screens = [UIScreen screens];
+			CGFloat ratio = 1.0f;
 			if([screens count] > 1){
 				screen = [screens objectAtIndex:1];
 			}
 			else{
 				screen = [screens objectAtIndex:0];
+				ratio = 0.3f;
 			}
 			window = [[UIWindow alloc] init];
-			[window setBackgroundColor:[UIColor redColor]];
+			[window setBackgroundColor:[UIColor blackColor]];
 			viewController = [[UIViewController alloc] init];
 			window.rootViewController = viewController;
-			[self changeScreen];
+			[self changeScreen:ratio];
 			
 			// Add UIPanGestureRecognizer
 			UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
@@ -86,9 +88,9 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 	resolve(@{});
 }
 
--(void) changeScreen{
+-(void) changeScreen: (CGFloat)ratio{
 	window.screen = screen;
-	window.frame = CGRectMake(0, 0, screen.bounds.size.width / 2, screen.bounds.size.height / 2);
+	window.frame = CGRectMake(0, 0, screen.bounds.size.width * ratio, screen.bounds.size.height * ratio);
 	[window makeKeyAndVisible];
 }
 
@@ -99,7 +101,7 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 	NSArray *screens = [UIScreen screens];
 	if([screens count] > 1){
 		screen = [screens objectAtIndex:1];
-		[self changeScreen];
+		[self changeScreen:1.0f];
 	}
 }
 
@@ -108,7 +110,7 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 	// Change screen to internal screen
 	NSArray *screens = [UIScreen screens];
 	screen = [screens objectAtIndex:0];
-	[self changeScreen];
+	[self changeScreen:0.3f];
 }
 
 -(BOOL) rendin: (Container *)container{
@@ -124,18 +126,15 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 }
 
 -(void) containerRendInStart{
-	[self.bridge.eventDispatcher sendAppEventWithName:@"RendInStart" body:@{@"id": @"id", @"type": @"image"}];
-	NSLog(@"containerRendInStart");
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendInStart" body:@{}];
 }
 
 -(void) containerRendOutStart{
-	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutStart" body:@{@"id": @"id", @"type": @"image"}];
-	NSLog(@"containerRendOutStart");
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutStart" body:@{}];
 }
 
 -(void) containerRendOutFinish{
-	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutFinish" body:@{@"id": @"id", @"type": @"image"}];
-	NSLog(@"containerRendOutFinish");
+	[self.bridge.eventDispatcher sendAppEventWithName:@"RendOutFinish" body:@{}];
 }
 
 -(void) handlePan: (UIPanGestureRecognizer *)recognizer{
