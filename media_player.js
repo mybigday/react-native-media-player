@@ -1,5 +1,5 @@
 import { RENDER_STATUS, PUSH_WAY, EVENT_CHANNEL } from "./constant";
-import { Image, Video } from "./container";
+import { Image, Video, Music } from "./container";
 import Group from "./group";
 
 export default class MediaPlayer {
@@ -18,6 +18,10 @@ export default class MediaPlayer {
 		this.background = null;
 		this.renderStatus = RENDER_STATUS.Idle;
 
+		// Music
+		this.musicSet = {};
+
+		// Event
 		this.emitter = eventEmitter;
 
 		// RNMediaPlayer Init
@@ -149,6 +153,28 @@ export default class MediaPlayer {
 		}
 		else{
 			this.queue = this.queue.filter((item) => (item.id != id));
+		}
+	}
+	async playMusic(path, stopOther){
+		let music = new Music(this);
+		await music.setPath(path);
+		if(stopOther){
+			for(let key in this.musicSet) {
+				this.musicSet[key].stop();
+			}
+			this.musicSet = {};
+		}
+		await music.play();
+		this.musicSet[music.id] = music;
+		return {
+			id: music.id,
+			duration: music.duration
+		};
+	}
+	async stopMusic(id){
+		if(this.musicSet[id]){
+			this.musicSet[id].stop();
+			delete this.musicSet[id];
 		}
 	}
 

@@ -96,7 +96,28 @@ class Video extends Container {
 	}
 }
 
+class Music extends Container {
+	constructor(mediaPlayer){
+		super({
+			type: "music",
+			supportedTypeList: ["mp3"]
+		}, mediaPlayer);
+	}
+	async play(){
+		let music = await this.RNMediaPlayer.playMusic(this.filePath);
+		this.id = music.id;
+		this.duration = music.duration;
+	}
+	async stop(){
+		await this.rendOut();
+	}
+	async rendOut(){
+		await this.RNMediaPlayer.stopMusic(this.id);
+	}
+}
+
 module.exports = {
 	Image: Image,
-	Video: Video
+	Video: Video,
+	Music: Music
 };

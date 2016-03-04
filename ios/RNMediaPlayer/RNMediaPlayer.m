@@ -14,6 +14,7 @@
 	UIWindow *window;
 	UIViewController *viewController;
 	Container *currentContainer;
+	NSMutableDictionary *avAudioPlayerDictionary;
 }
 
 @synthesize bridge = _bridge;
@@ -50,6 +51,10 @@ RCT_EXPORT_METHOD(initialize){
 			UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
 			[window addGestureRecognizer:pinch];
 		});
+		
+		// Audio initialize
+		avAudioPlayerDictionary = [NSMutableDictionary new];
+		
 		alreadyInitialize = YES;
 	}
 	if(currentContainer){
@@ -86,6 +91,37 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 		[currentContainer rendOut];
 	}
 	resolve(@{});
+}
+
+RCT_EXPORT_METHOD(playMusic:(NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	NSError *error = nil;
+	AVAudioPlayer *avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:path] error:&error];
+	if(error){
+		return reject([NSString stringWithFormat: @"%lu", (long)error.code], error.localizedDescription, error);
+	}
+	NSString *avAudioPlayerId = [[NSUUID UUID] UUIDString];
+	[avAudioPlayerDictionary setObject:avAudioPlayer forKey:avAudioPlayerId];
+	[avAudioPlayer play];
+	resolve(@{
+			  @"id": avAudioPlayerId,
+			  @"duration": [NSNumber numberWithDouble:avAudioPlayer.duration]
+			  });
+}
+
+RCT_EXPORT_METHOD(stopMusic:(NSString *)avAudioPlayerId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	AVAudioPlayer *avAudioPlayer = [avAudioPlayerDictionary objectForKey:avAudioPlayerId];
+	if(avAudioPlayer){
+		[avAudioPlayer pause];
+		[avAudioPlayerDictionary removeObjectForKey:avAudioPlayerId];
+	}
+}
+
+RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	for(id avAudioPlayerId in avAudioPlayerDictionary){
+		AVAudioPlayer *avAudioPlayer = [avAudioPlayerDictionary objectForKey:avAudioPlayerId];
+		[avAudioPlayer pause];
+	}
+	[avAudioPlayerDictionary removeAllObjects];
 }
 
 -(void) changeScreen: (CGFloat)ratio{

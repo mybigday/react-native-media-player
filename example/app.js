@@ -29,30 +29,30 @@ const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	spaceContainer:{
-		flex: 5
+		flex: 3
 	}
 });
 
 function showErrorMessage(error){
-	Toast.show(error, {
-		duration: Toast.durations.LONG,
-		position: Toast.positions.BOTTOM,
-		shadow: true,
-		animation: true,
-		hideOnPress: true,
-		delay: 0
-	});
+	// Toast.show(error, {
+	// 	duration: Toast.durations.LONG,
+	// 	position: Toast.positions.BOTTOM,
+	// 	shadow: true,
+	// 	animation: true,
+	// 	hideOnPress: true,
+	// 	delay: 0
+	// });
 }
 
 function showInfoMessage(message, position){
-	Toast.show(message, {
-		duration: Toast.durations.SHORT,
-		position: position,
-		shadow: true,
-		animation: true,
-		hideOnPress: true,
-		delay: 0
-	});
+	// Toast.show(message, {
+	// 	duration: Toast.durations.SHORT,
+	// 	position: position,
+	// 	shadow: true,
+	// 	animation: true,
+	// 	hideOnPress: true,
+	// 	delay: 0
+	// });
 }
 
 class ExampleApp extends Component{
@@ -60,6 +60,7 @@ class ExampleApp extends Component{
 		super(props);
 		let dataSource1 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		let dataSource2 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		let dataSource3 = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		this.state = {
 			current_jobs: 0,
 			finished_jobs: 0,
@@ -69,6 +70,9 @@ class ExampleApp extends Component{
 			video_file_list: [],
 			video_list_data_source: dataSource2.cloneWithRows([]),
 			selected_video_file_list: [],
+			audio_file_list: [],
+			audio_list_data_source: dataSource3.cloneWithRows([]),
+			selected_audio_file_list: [],
 			random: false,
 			repeat: false
 		};
@@ -108,8 +112,56 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handlePlayMusic = async () => {
+		try{
+			if(this.state.selected_audio_file_list.length > 0){
+				let music = await MediaPlayer.playMusic(this.state.selected_audio_file_list[0], true);
+				this.setState({
+					last_music_id: music.id
+				});
+				showInfoMessage("Play Music: " + music.id + " Duration:" + music.duration, Toast.positions.BOTTOM);
+			}
+			else{
+				showErrorMessage("You need select a music file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handleStopMusic = async () => {
+		try{
+			if(this.state.last_music_id && this.state.last_music_id != ""){
+				console.log(this.state.last_music_id);
+				await MediaPlayer.stopMusic(this.state.last_music_id);
+				showInfoMessage("Stop Music: " + this.state.last_music_id, Toast.positions.BOTTOM);
+				this.setState({
+					last_music_id: null
+				});
+			}
+			else{
+				showErrorMessage("There is no playing music.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handlePlaySound = async () => {
+		try{
+			if(this.state.selected_audio_file_list.length > 0){
+				await MediaPlayer.playMusic(this.state.selected_audio_file_list[0]);
+			}
+			else{
+				showErrorMessage("You need select a music file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
 	handleDownload = () => {
-		console.log(RNFS.DocumentDirectoryPath);
+		// Download Photo
 		fetch("https://api.flickr.com/services/feeds/photos_faves.gne?id=49840387@N03&format=json").then((response) => response.text()).then((responseText) => {
 			let results = responseText.match(/"m":"https(.)+_m.jpg/g);
 			let index = 1;
@@ -131,6 +183,8 @@ class ExampleApp extends Component{
 		}).catch((err) => {
 			showErrorMessage(err);
 		});
+
+		// Download Video
 		let videoUrlList = [
 			"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4",
 			"http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_5mb.mp4",
@@ -139,6 +193,29 @@ class ExampleApp extends Component{
 		let index = 1;
 		videoUrlList.forEach((url) => {
 			RNFS.downloadFile(url, RNFS.DocumentDirectoryPath + "/" + index + ".mp4", () => {
+				this.setState({
+					current_jobs: this.state.current_jobs + 1
+				});
+			}, (downloadResult) => {
+				if(downloadResult.contentLength == downloadResult.bytesWritten){
+					this.setState({
+						finished_jobs: this.state.finished_jobs + 1
+					});
+					this.loadResource();
+				}
+			});
+			index++;
+		});
+
+		// Download Music
+		let audioUrlList = [
+			"http://www.sample-videos.com/audio/mp3/india-national-anthem.mp3",
+			"http://www.sample-videos.com/audio/mp3/crowd-cheering.mp3",
+			"http://www.sample-videos.com/audio/mp3/wave.mp3"
+		];
+		index = 1;
+		audioUrlList.forEach((url) => {
+			RNFS.downloadFile(url, RNFS.DocumentDirectoryPath + "/" + index + ".mp3", () => {
 				this.setState({
 					current_jobs: this.state.current_jobs + 1
 				});
@@ -167,11 +244,19 @@ class ExampleApp extends Component{
 					name: file.name
 				};
 			});
+			let audioFileList = files.filter((file) => (file.path.indexOf("mp3") >= 0)).map((file) => {
+				return {
+					path: file.path,
+					name: file.name
+				};
+			});
 			this.setState({
 				image_file_list: imageFileList,
 				image_list_data_source: this.state.image_list_data_source.cloneWithRows(imageFileList),
 				video_file_list: videoFileList,
-				video_list_data_source: this.state.video_list_data_source.cloneWithRows(videoFileList)
+				video_list_data_source: this.state.video_list_data_source.cloneWithRows(videoFileList),
+				audio_file_list: audioFileList,
+				audio_list_data_source: this.state.audio_list_data_source.cloneWithRows(audioFileList)
 			});
 		}).catch((err) => {
 			showErrorMessage(err);
@@ -272,6 +357,20 @@ class ExampleApp extends Component{
 				</View>
 				<View style={styles.buttonContainer}>
 					<Button
+						title={"Play Music"}
+						onPress={this.handlePlayMusic}
+					/>
+					<Button
+						title={"Stop Music"}
+						onPress={this.handleStopMusic}
+					/>
+					<Button
+						title={"Play Sound"}
+						onPress={this.handlePlaySound}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
 						title={"Create Group"}
 						onPress={this.handleCreateGroup}
 					/>
@@ -311,6 +410,31 @@ class ExampleApp extends Component{
 					style={styles.imageContainer}
 					contentContainerStyle={styles.imageListContentContainer}
 					horizontal={true}
+					dataSource={this.state.audio_list_data_source}
+					renderRow={(rowData) => (
+						<SelectableItem
+							type={"text"}
+							title={rowData.name}
+							enableCheckBox={true}
+							onChangeState={(selected) => {
+								var newSelectedAudioFileList = [];
+								if(selected){
+									newSelectedAudioFileList = _(this.state.selected_audio_file_list).union(this.state.selected_audio_file_list, [rowData.path]);
+								}
+								else{
+									newSelectedAudioFileList = _(this.state.selected_audio_file_list).without(this.state.selected_audio_file_list, rowData.path);
+								}
+								this.setState({
+									selected_audio_file_list: newSelectedAudioFileList
+								});
+							}}
+						/>
+					)}
+				/>
+				<ListView
+					style={styles.imageContainer}
+					contentContainerStyle={styles.imageListContentContainer}
+					horizontal={true}
 					dataSource={this.state.video_list_data_source}
 					renderRow={(rowData) => (
 						<SelectableItem
@@ -325,7 +449,6 @@ class ExampleApp extends Component{
 								else{
 									newSelectedVideoFileList = _(this.state.selected_video_file_list).without(this.state.selected_video_file_list, rowData.path);
 								}
-								console.log(newSelectedVideoFileList);
 								this.setState({
 									selected_video_file_list: newSelectedVideoFileList
 								});
@@ -352,7 +475,6 @@ class ExampleApp extends Component{
 								else{
 									newSelectedImageFileList = _(this.state.selected_image_file_list).without(this.state.selected_image_file_list, rowData.path);
 								}
-								console.log(newSelectedImageFileList);
 								this.setState({
 									selected_image_file_list: newSelectedImageFileList
 								});
