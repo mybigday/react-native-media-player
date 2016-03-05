@@ -128,6 +128,13 @@ RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTProm
 	window.screen = screen;
 	window.frame = CGRectMake(0, 0, screen.bounds.size.width * ratio, screen.bounds.size.height * ratio);
 	[window makeKeyAndVisible];
+	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
+}
+
+-(void) setDefaultKeyWindow:(NSTimer *)timer{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[[[UIApplication sharedApplication] windows] objectAtIndex:0] makeKeyWindow];
+	});
 }
 
 -(void) handleScreenDidConnectNotification: (NSNotification *)notification{
