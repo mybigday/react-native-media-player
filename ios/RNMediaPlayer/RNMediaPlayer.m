@@ -60,7 +60,6 @@ RCT_EXPORT_METHOD(initialize){
 	if(currentContainer){
 		[currentContainer rendOut];
 	}
-	//	[self clearAll];
 }
 
 RCT_EXPORT_METHOD(rendImage: (NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
@@ -99,6 +98,7 @@ RCT_EXPORT_METHOD(playMusic:(NSString *)path resolver:(RCTPromiseResolveBlock)re
 	if(error){
 		return reject([NSString stringWithFormat: @"%lu", (long)error.code], error.localizedDescription, error);
 	}
+	avAudioPlayer.delegate = self;
 	NSString *avAudioPlayerId = [[NSUUID UUID] UUIDString];
 	[avAudioPlayerDictionary setObject:avAudioPlayer forKey:avAudioPlayerId];
 	[avAudioPlayer play];
@@ -106,6 +106,7 @@ RCT_EXPORT_METHOD(playMusic:(NSString *)path resolver:(RCTPromiseResolveBlock)re
 			  @"id": avAudioPlayerId,
 			  @"duration": [NSNumber numberWithDouble:avAudioPlayer.duration]
 			  });
+	[self.bridge.eventDispatcher sendAppEventWithName:@"MusicStart" body:@{@"musicId": avAudioPlayerId}];
 }
 
 RCT_EXPORT_METHOD(stopMusic:(NSString *)avAudioPlayerId resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
@@ -122,6 +123,12 @@ RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTProm
 		[avAudioPlayer pause];
 	}
 	[avAudioPlayerDictionary removeAllObjects];
+}
+
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+	NSString *avAudioPlayerId = (NSString *)[[avAudioPlayerDictionary allKeysForObject:player] firstObject];
+	[avAudioPlayerDictionary removeObjectForKey:avAudioPlayerId];
+	[self.bridge.eventDispatcher sendAppEventWithName:@"MusicEnd" body:@{@"musicId": avAudioPlayerId}];
 }
 
 -(void) changeScreen: (CGFloat)ratio{

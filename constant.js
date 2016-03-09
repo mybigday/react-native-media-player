@@ -14,15 +14,21 @@ const PushWayList = [
 const GroupStatusList = [
 	"Start",
 	"Stop",
-	"Finished",
+	"RendStart",
+	"RendStop",
+	"RendFinished",
 	"ReRend",
-	"Push"
+	"PushRend",
+	"MusicStart",
+	"MusicStop",
+	"MusicFinished",
+	"PushMusic"
 ];
 
 const EventChannelList = [
 	"RENDER_STATUS",
 	"GROUP_STATUS"
-]
+];
 
 let RENDER_STATUS = {};
 RenderStatusList.forEach((renderStatus) => {

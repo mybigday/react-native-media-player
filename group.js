@@ -5,6 +5,10 @@ export default class Group {
 		this.running = false;
 		this.player = player;
 		this.groupList = [];
+		this.musicList = [];
+		this.musicQueue = [];
+		this.currentMusicId = null;
+		this.musicRunning = false;
 		if(replay == true){
 			this.replay = true;
 		}
@@ -12,6 +16,20 @@ export default class Group {
 			this.random = true;
 		}
 	}
+
+	// Group
+	async start(){
+		await this.startRender();
+		await this.startMusic();
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Start);
+	}
+	async stop(){
+		await this.stopRender();
+		await this.stopMusic();
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Stop);
+	}
+
+	// Render
 	async pushImages(pathList, dutation, reRendAll){
 		await this.pushItems(pathList.map((path) => {
 			return {
@@ -30,7 +48,7 @@ export default class Group {
 		}), reRendAll);
 	}
 	async pushItems(itemList, reRendAll){
-		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Push);
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.PushRend);
 		return new Promise(async (resolve, reject) => {
 			if(this.groupList){
 				itemList.forEach((item) => {
@@ -40,7 +58,7 @@ export default class Group {
 					if(reRendAll && this.running){
 						this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.ReRend);
 						await this.player.clear(true);
-						await this.start(true);
+						await this.startRender(true);
 					}
 					resolve();
 				}
@@ -56,8 +74,8 @@ export default class Group {
 	getItems(){
 		return this.groupList;
 	}
-	async start(keepCurrentQueue){
-		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Start);
+	async startRender(keepCurrentQueue){
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.RendStart);
 		return new Promise(async (resolve, reject) => {
 			this.running = false;
 			if(this.groupList && this.groupList.length > 0){
@@ -77,6 +95,7 @@ export default class Group {
 							return await this.player.pushVideo(item.path, PUSH_WAY.AtLast);
 					}
 				});
+
 				try{
 					await Promise.all(promiseList);
 					this.running = true;
@@ -89,24 +108,93 @@ export default class Group {
 			else{
 				reject(new Error("Must initialize group and push something to rend."));
 			}
+
+			
 		});
 	}
-	async stop(){
+	async stopRender(){
 		if(this.running == true){
 			this.running = false;
-			this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Stop);
+			this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.RendStop);
 		}
 		await this.player.clear();
 	}
 	async finish(){
-		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.Finished);
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.RendFinished);
 		if(this.running == true && this.replay == true){
-			await this.start();
+			await this.startRender();
 			return false;
 		}
 		else{
-			await this.stop();
+			await this.stopRender();
 			return true;
+		}
+	}
+
+	// Music
+	async pushMusics(pathList){
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.PushMusic);
+		return new Promise((resolve, reject) => {
+			if(this.musicList){
+				pathList.forEach((item) => {
+					this.musicList.push(item);
+				});
+				resolve();
+			}
+			else{
+				reject(new Error("Must initialize group first."));
+			}
+		});
+	}
+	async startMusic(){
+		if(!this.musicRunning){
+			this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.MusicStart);
+			if(this.random){
+				this.musicQueue = this.musicList.map((musicPath) => {
+					return musicPath;
+				}).sort(() => {
+					return Math.random() > 0.5;
+				});
+			}
+			else{
+				this.musicQueue = this.musicList.map((musicPath) => {
+					return musicPath;
+				});
+			}
+			await this.playNextMusic();
+			this.musicRunning = true;
+		}
+	}
+	async stopMusic(){
+		// Stop music
+		await this.player.stopMusic(this.currentMusicId);
+		// Clear queue
+		this.musicQueue = [];
+		this.musicRunning = false;
+		this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.MusicStop);
+	}
+	async playNextMusic(){
+		if(!this.currentMusicId){
+			let musicPath = this.musicQueue.shift();
+			if(musicPath){
+				let music = await this.player.playMusic(musicPath);
+				this.currentMusicId = music.id;
+			}
+			else{
+				this.musicRunning = false;
+				this.player.emitter.emit(EVENT_CHANNEL.GROUP_STATUS, GROUP_STATUS.MusicFinished);
+				if(this.replay){
+					await this.startMusic();
+				}
+			}
+		}
+	}
+	async musicEnd(musicId){
+		if(musicId == this.currentMusicId){
+			this.currentMusicId = null;
+			if(this.musicRunning){
+				await this.playNextMusic();
+			}
 		}
 	}
 }

@@ -21,6 +21,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		564032E41C9090910009DBB1 /* libReactNativeToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 564032DF1C9090860009DBB1 /* libReactNativeToast.a */; };
 		56D747851C8716620029987C /* libRNMediaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D747841C8716580029987C /* libRNMediaPlayer.a */; };
 		56D747A21C8717500029987C /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D747A01C8717470029987C /* libRNFS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -90,6 +91,20 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		564032DE1C9090860009DBB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 564032CF1C9090860009DBB1 /* ReactNativeToast.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 91B849681B3D3DA7000C8B92;
+			remoteInfo = ReactNativeToast;
+		};
+		564032E01C9090860009DBB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 564032CF1C9090860009DBB1 /* ReactNativeToast.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 91B849731B3D3DA7000C8B92;
+			remoteInfo = ReactNativeToastTests;
+		};
 		56D747831C8716580029987C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 56D7477F1C8716580029987C /* RNMediaPlayer.xcodeproj */;
@@ -140,6 +155,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = example/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = example/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		564032CF1C9090860009DBB1 /* ReactNativeToast.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeToast.xcodeproj; path = "../node_modules/react-native-sk-toast/ReactNativeToast.xcodeproj"; sourceTree = "<group>"; };
 		56D7477F1C8716580029987C /* RNMediaPlayer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNMediaPlayer.xcodeproj; path = ../../ios/RNMediaPlayer.xcodeproj; sourceTree = "<group>"; };
 		56D747911C8717470029987C /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -158,6 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				564032E41C9090910009DBB1 /* libReactNativeToast.a in Frameworks */,
 				56D747A21C8717500029987C /* libRNFS.a in Frameworks */,
 				56D747851C8716620029987C /* libRNMediaPlayer.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -271,6 +288,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		564032D01C9090860009DBB1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				564032DF1C9090860009DBB1 /* libReactNativeToast.a */,
+				564032E11C9090860009DBB1 /* ReactNativeToastTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		56D747801C8716580029987C /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +324,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				564032CF1C9090860009DBB1 /* ReactNativeToast.xcodeproj */,
 				56D747911C8717470029987C /* RNFS.xcodeproj */,
 				56D7477F1C8716580029987C /* RNMediaPlayer.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -450,6 +477,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 564032D01C9090860009DBB1 /* Products */;
+					ProjectRef = 564032CF1C9090860009DBB1 /* ReactNativeToast.xcodeproj */;
+				},
+				{
 					ProductGroup = 56D747921C8717470029987C /* Products */;
 					ProjectRef = 56D747911C8717470029987C /* RNFS.xcodeproj */;
 				},
@@ -521,6 +552,20 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		564032DF1C9090860009DBB1 /* libReactNativeToast.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactNativeToast.a;
+			remoteRef = 564032DE1C9090860009DBB1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		564032E11C9090860009DBB1 /* ReactNativeToastTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ReactNativeToastTests.xctest;
+			remoteRef = 564032E01C9090860009DBB1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		56D747841C8716580029987C /* libRNMediaPlayer.a */ = {

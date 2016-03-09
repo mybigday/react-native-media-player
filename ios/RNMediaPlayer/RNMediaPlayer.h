@@ -23,5 +23,5 @@ enum ContainerPushType{
 	AtLast, AfterNow, Interrupt, ClearOther
 };
 
-@interface RNMediaPlayer : NSObject <RCTBridgeModule, RenderDelegate>
+@interface RNMediaPlayer : NSObject <RCTBridgeModule, RenderDelegate, AVAudioPlayerDelegate>
 @end

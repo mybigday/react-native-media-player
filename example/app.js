@@ -4,7 +4,7 @@ import React, {AppRegistry, Component, PropTypes, StyleSheet, View, Text, ListVi
 import MediaPlayer from "react-native-media-player";
 import RNFS from "react-native-fs";
 import _ from "underscore";
-import Toast from "react-native-root-toast";
+import Toast from "react-native-sk-toast";
 
 const styles = StyleSheet.create({
 	container:{
@@ -34,25 +34,11 @@ const styles = StyleSheet.create({
 });
 
 function showErrorMessage(error){
-	// Toast.show(error, {
-	// 	duration: Toast.durations.LONG,
-	// 	position: Toast.positions.BOTTOM,
-	// 	shadow: true,
-	// 	animation: true,
-	// 	hideOnPress: true,
-	// 	delay: 0
-	// });
+	alert(error);
 }
 
 function showInfoMessage(message, position){
-	// Toast.show(message, {
-	// 	duration: Toast.durations.SHORT,
-	// 	position: position,
-	// 	shadow: true,
-	// 	animation: true,
-	// 	hideOnPress: true,
-	// 	delay: 0
-	// });
+	Toast.bottom(message);
 }
 
 class ExampleApp extends Component{
@@ -78,11 +64,12 @@ class ExampleApp extends Component{
 		};
 		this.loadResource();
 		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, (stats, containerId) => {
-			showInfoMessage("Render: " + stats + " ID:" + containerId, Toast.positions.BOTTOM);
+			// showInfoMessage("Render: " + stats + " ID:" + containerId);
 		});
 		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, (stats) => {
-			showInfoMessage("Group: " + stats, Toast.positions.TOP);
+			showInfoMessage("Group: " + stats);
 		});
+		console.log(RNFS.DocumentDirectoryPath);
 	}
 	handlePushImage = async () => {
 		try{
@@ -119,7 +106,7 @@ class ExampleApp extends Component{
 				this.setState({
 					last_music_id: music.id
 				});
-				showInfoMessage("Play Music: " + music.id + " Duration:" + music.duration, Toast.positions.BOTTOM);
+				showInfoMessage("Play Music: " + music.id + " Duration:" + music.duration);
 			}
 			else{
 				showErrorMessage("You need select a music file.");
@@ -134,7 +121,7 @@ class ExampleApp extends Component{
 			if(this.state.last_music_id && this.state.last_music_id != ""){
 				console.log(this.state.last_music_id);
 				await MediaPlayer.stopMusic(this.state.last_music_id);
-				showInfoMessage("Stop Music: " + this.state.last_music_id, Toast.positions.BOTTOM);
+				showInfoMessage("Stop Music: " + this.state.last_music_id);
 				this.setState({
 					last_music_id: null
 				});
@@ -305,6 +292,19 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handlePushMusicToGroup = async () => {
+		try{
+			if(this.state.selected_audio_file_list.length > 0){
+				await MediaPlayer.group.pushMusics(this.state.selected_audio_file_list);
+			}
+			else{
+				showErrorMessage("You need select one or more music file.");
+			}
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
 	handleStartGroup = async () => {
 		try{
 			await MediaPlayer.group.start();
@@ -396,6 +396,12 @@ class ExampleApp extends Component{
 						title={"Add Video To Group"}
 						onPress={this.handlePushVideoToGroup}
 					/>
+					<Button
+						title={"Add Music To Group"}
+						onPress={this.handlePushMusicToGroup}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
 					<Button
 						title={"Start Group"}
 						onPress={this.handleStartGroup}

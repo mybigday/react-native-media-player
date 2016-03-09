@@ -66,8 +66,6 @@
 }
 
 -(void) rendOut{
-	NSLog(@"rendOut");
-	
 	// Delegate notify
 	[self.delegate containerRendOutStart];
 	
@@ -79,7 +77,6 @@
 			[self.contentView removeFromSuperview];
 			[self afterRendOut];
 			// Delegate notify
-			NSLog(@"Call containerRendOutFinish");
 			[self.delegate containerRendOutFinish];
 		}];
 	});

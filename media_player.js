@@ -31,23 +31,37 @@ export default class MediaPlayer {
 
 		// Subsript native event
 		this.subscription = [];
-		this.subscription.push(nativeAppEventEmitter.addListener("RendInStart",() => {
+		this.subscription.push(nativeAppEventEmitter.addListener("RendInStart", () => {
 			this.renderStatus = RENDER_STATUS.Rending;
 			if(this.rending){
 				this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.Rending, this.rending.id);
 			}
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("RendOutStart",() => {
+		this.subscription.push(nativeAppEventEmitter.addListener("RendOutStart", () => {
 			this.renderStatus = RENDER_STATUS.RendOut;
 			if(this.rending){
 				this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.RendOut, this.rending.id);
 				this.rending = null;
 			}
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("RendOutFinish",() => {
+		this.subscription.push(nativeAppEventEmitter.addListener("RendOutFinish", () => {
 			this.renderStatus = RENDER_STATUS.Idle;
 			this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.Idle);
 			this.rendNextItem();
+		}));
+		this.subscription.push(nativeAppEventEmitter.addListener("MusicStart", (event) => {
+			// this.musicSet[music.id] = music;
+			console.log(event);
+			console.log("Start music:" + event.musicId);
+		}));
+		this.subscription.push(nativeAppEventEmitter.addListener("MusicEnd", (event) => {
+			console.log("MusicEnd" + event.musicId);
+			if(this.musicSet[event.musicId]){
+				delete this.musicSet[event.musicId];
+			}
+			if(this.group){
+				this.group.musicEnd(event.musicId);
+			}
 		}));
 	}
 	destructors(){
@@ -174,7 +188,6 @@ export default class MediaPlayer {
 	async stopMusic(id){
 		if(this.musicSet[id]){
 			this.musicSet[id].stop();
-			delete this.musicSet[id];
 		}
 	}
 
