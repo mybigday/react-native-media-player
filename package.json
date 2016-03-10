@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0",
-    "eslint": "^2.2.0",
+    "eslint": "~2.2.0",
     "eslint-plugin-mocha": "^2.0.0",
     "eslint-plugin-react": "^4.1.0",
     "expect.js": "^0.3.1",
