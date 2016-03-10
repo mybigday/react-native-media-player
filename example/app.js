@@ -37,7 +37,7 @@ function showErrorMessage(error){
 	alert(error);
 }
 
-function showInfoMessage(message, position){
+function showInfoMessage(message){
 	Toast.bottom(message);
 }
 
@@ -201,7 +201,16 @@ class ExampleApp extends Component{
 		let audioUrlList = [
 			"http://www.sample-videos.com/audio/mp3/india-national-anthem.mp3",
 			"http://www.sample-videos.com/audio/mp3/crowd-cheering.mp3",
-			"http://www.sample-videos.com/audio/mp3/wave.mp3"
+			"http://www.sample-videos.com/audio/mp3/wave.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_1_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_2_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_3_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_4_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_5_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_6_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_7_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_8_Sound_Effect.mp3",
+			"http://soundfxcenter.com/human/speech/8d82b5_The_Number_9_Sound_Effect.mp3"
 		];
 		index = 1;
 		audioUrlList.forEach((url) => {
