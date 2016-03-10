@@ -1,6 +1,6 @@
 {
   "name": "react-native-media-player",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This is a react native media player with external display controller. Support photo, video, misic and background mode.",
   "main": "index.js",
   "scripts": {
