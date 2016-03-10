@@ -24,7 +24,7 @@
   ],
   "author": "Pepper Yen <pepper.yen@gmail.com>",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "react-native-fs": "^1.2.0"
   },
   "devDependencies": {
