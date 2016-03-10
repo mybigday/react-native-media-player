@@ -4,34 +4,37 @@ This is a react native media player with external display controller. Support ph
 
 ## Installation
 ### Mostly automatic install
-1. `npm install rnpm --global`
-2. `npm install react-native-media-player`
-3. `rnpm link react-native-media-player`
+
+```bash
+$ npm install rnpm --global
+$ npm install react-naitve-fs react-native-media-player --save
+$ rnpm link
+```
 
 ### Manual install
 #### iOS
-1. `npm install react-native-media-player@https://bitbucket.org/mlifeteam/react-native-media-player.git --save`
-2. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-3. Go to `node_modules` ➜ `react-native-media-player` and add `RNMediaPlayer.xcodeproj`
-4. In XCode, in the project navigator, select your project. Add `libRNMediaPlayer.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-5. Click `RNMediaPlayer.xcodeproj` in the project navigator and go the `Build Settings` tab. Make sure 'All' is toggled on (instead of 'Basic'). In the `Search Paths` section, look for `Header Search Paths` and make sure it contains both `$(SRCROOT)/../../react-native/React` and `$(SRCROOT)/../../../React` - mark both as `recursive`.
-5. Run your project (`Cmd+R`)
+
+1. Run `npm install react-naitve-fs react-native-media-player --save`
+1. To refer [react-native-fs install guide](https://github.com/johanneslumpe/react-native-fs/blob/master/README.md).
+1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
+1. Go to `node_modules` ➜ `react-native-media-player` and add `RNMediaPlayer.xcodeproj`
+1. In XCode, in the project navigator, select your project. Add `libRNMediaPlayer.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+1. Click `RNMediaPlayer.xcodeproj` in the project navigator and go the `Build Settings` tab. Make sure 'All' is toggled on (instead of 'Basic'). In the `Search Paths` section, look for `Header Search Paths` and make sure it contains both `$(SRCROOT)/../../react-native/React` and `$(SRCROOT)/../../../React` - mark both as `recursive`.
+1. Run your project (`Cmd+R`)
 
 ## Usage
 
 ### Initialize
 You just simply need to import react-native-media-player in your js world
 
-```
-:::javascript
+```js
 import MediaPlayer from "react-native-media-player";
 ```
 
 ### Push Image or Video
 Currently only support rend image file type `*.png`, `*.jpg` and video file type `*.mp4`.
 
-```
-:::javascript
+```js
 // Push Image
 // path:     string        # The absolute path for image source
 // duration: number        # Image rend duration in milliseconds
@@ -105,8 +108,7 @@ MediaPlayer.createGroup(repeat, random);
 #### Make your playlist
 Like the queue, you can push image, video, audio(not support yet) to rend.
 
-```
-:::javascript
+```js
 // Push image or video
 // pathList:  string        # The absolute path list for images, videos, musics source
 // duration:  number        # Image rend duration in milliseconds
@@ -136,8 +138,7 @@ MediaPlayer.deleteGroup();
 ### Event
 Media player will emit render status and group status. You can subscribe the channel to receive below event.
 
-```
-:::javascript
+```js
 MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, callback);
 MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.MUSIC_STATUS, callback);
 MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
