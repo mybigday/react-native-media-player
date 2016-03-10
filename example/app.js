@@ -64,7 +64,10 @@ class ExampleApp extends Component{
 		};
 		this.loadResource();
 		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, (stats, containerId) => {
-			// showInfoMessage("Render: " + stats + " ID:" + containerId);
+			showInfoMessage("Render: " + stats + " ID:" + containerId);
+		});
+		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.MUSIC_STATUS, (stats, musicId) => {
+			showInfoMessage("Music: " + stats + " ID:" + musicId);
 		});
 		MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, (stats) => {
 			showInfoMessage("Group: " + stats);

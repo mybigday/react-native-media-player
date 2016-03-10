@@ -2,14 +2,10 @@
 
 This is a react native media player with external display controller. Support photo, video, misic and background mode.
 
-## Known Issues
-
-- Don't use `alert` at javascript world this make whole app crash, because alert at iOS platform will find current key window to add NSAlertView when key window is external display it will crash.
-
 ## Installation
 ### Mostly automatic install
 1. `npm install rnpm --global`
-2. `npm install react-native-media-player@git+ssh://git@bitbucket.org/mlifeteam/react-native-media-player.git --save`
+2. `npm install react-native-media-player`
 3. `rnpm link react-native-media-player`
 
 ### Manual install
@@ -112,11 +108,12 @@ Like the queue, you can push image, video, audio(not support yet) to rend.
 ```
 :::javascript
 // Push image or video
-// pathList:  string        # The absolute path list for images source
+// pathList:  string        # The absolute path list for images, videos, musics source
 // duration:  number        # Image rend duration in milliseconds
 // reRendAll: bool          # When push a new item to group rerend all item immediately
 MediaPlayer.group.pushImages(pathList, duration, reRendAll);
 MediaPlayer.group.pushVideos(pathList, reRendAll);
+MediaPlayer.group.pushMusics(pathList);
 ```
 
 #### Let's rock
@@ -142,6 +139,7 @@ Media player will emit render status and group status. You can subscribe the cha
 ```
 :::javascript
 MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.RENDER_STATUS, callback);
+MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.MUSIC_STATUS, callback);
 MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 ```
 
@@ -150,11 +148,26 @@ MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 | **EVENT\_CHANNEL.RENDER\_STATUS** | **Idle** | containerId | Fire when there is no item to rend |
 | **EVENT\_CHANNEL.RENDER\_STATUS** | **Rending** | containerId | Start rend an item |
 | **EVENT\_CHANNEL.RENDER\_STATUS** | **RendOut** |  | Fire when an item **start rend out** |
-| **EVENT\_CHANNEL.GROUP\_STATUS** | **Start** |  | Start rend a group, include auto replay |
-| **EVENT\_CHANNEL.GROUP\_STATUS** | **Stop** |  | Stop rend a group |
-| **EVENT\_CHANNEL.GROUP\_STATUS** | **Finished** |  | All item in group are rended once, both before replay group and stop rend a group will fire this event  |
+
+| Channel | Status | Parameter | Description |
+|---|---|---|---|
+| **EVENT\_CHANNEL.MUSIC\_STATUS** | **Playing** | musicId | Start play a music |
+| **EVENT\_CHANNEL.MUSIC\_STATUS** | **End** | musicId | Music stopped |
+
+| Channel | Status | Parameter | Description |
+|---|---|---|---|
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Start** |  | Start a group, include auto replay |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **Stop** |  | Stop a group |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **RendStart** |  | Rend start, include auto replay |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **RendStop** |  | Stop rend |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **RendFinished** |  | All item in group are rended once, both before replay group and stop rend a group will fire this event  |
 | **EVENT\_CHANNEL.GROUP\_STATUS** | **ReRend** |  | When push a new item and set reRendAll |
-| **EVENT\_CHANNEL.GROUP\_STATUS** | **Push** |  | Add new item to rend |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **PushRend** |  | Add new item to rend |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **MusicStart** |  | Start play a music in group |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **MusicStop** |  | Music stopped |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **MusicFinished** |  | All music in group are played once, both before replay group and stop a group will fire this event   |
+| **EVENT\_CHANNEL.GROUP\_STATUS** | **PushMusic** |  | When push a music into group |
+
 
 ## Contributing
 
@@ -164,13 +177,16 @@ MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-
 ## Roadmap
 
 - [ ] Test coverage
 - [ ] Image transitions
-- [ ] Music play
-- [ ] Support react native reload
+- [x] Music play
+- [x] Support react native reload
+- [ ] Stop music when video playing
+- [ ] Virtual display control
+
+## Known Issues
 
 ## History
 
@@ -182,4 +198,4 @@ TODO: Write credits
 
 ## License
 
-TODO: Write license
+[MIT](LICENSE.md)

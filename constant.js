@@ -4,6 +4,11 @@ const RenderStatusList = [
 	"RendOut"
 ];
 
+const MusicStatusList = [
+	"Playing",
+	"End"
+];
+
 const PushWayList = [
 	"AtLast",
 	"AfterNow",
@@ -27,12 +32,17 @@ const GroupStatusList = [
 
 const EventChannelList = [
 	"RENDER_STATUS",
+	"MUSIC_STATUS",
 	"GROUP_STATUS"
 ];
 
 let RENDER_STATUS = {};
 RenderStatusList.forEach((renderStatus) => {
 	RENDER_STATUS[renderStatus] = renderStatus;
+});
+let MUSIC_STATUS = {};
+MusicStatusList.forEach((musicStatus) => {
+	MUSIC_STATUS[musicStatus] = musicStatus;
 });
 let PUSH_WAY = {};
 PushWayList.forEach((pushWay) => {
@@ -49,6 +59,7 @@ EventChannelList.forEach((eventChannel) => {
 
 module.exports = {
 	RENDER_STATUS: RENDER_STATUS,
+	MUSIC_STATUS: MUSIC_STATUS,
 	PUSH_WAY: PUSH_WAY,
 	GROUP_STATUS: GROUP_STATUS,
 	EVENT_CHANNEL: EVENT_CHANNEL

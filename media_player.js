@@ -1,4 +1,4 @@
-import { RENDER_STATUS, PUSH_WAY, EVENT_CHANNEL } from "./constant";
+import { RENDER_STATUS, MUSIC_STATUS, PUSH_WAY, EVENT_CHANNEL } from "./constant";
 import { Image, Video, Music } from "./container";
 import Group from "./group";
 
@@ -50,12 +50,10 @@ export default class MediaPlayer {
 			this.rendNextItem();
 		}));
 		this.subscription.push(nativeAppEventEmitter.addListener("MusicStart", (event) => {
-			// this.musicSet[music.id] = music;
-			console.log(event);
-			console.log("Start music:" + event.musicId);
+			this.emitter.emit(EVENT_CHANNEL.MUSIC_STATUS, MUSIC_STATUS.Playing, event.musicId);
 		}));
 		this.subscription.push(nativeAppEventEmitter.addListener("MusicEnd", (event) => {
-			console.log("MusicEnd" + event.musicId);
+			this.emitter.emit(EVENT_CHANNEL.MUSIC_STATUS, MUSIC_STATUS.End, event.musicId);
 			if(this.musicSet[event.musicId]){
 				delete this.musicSet[event.musicId];
 			}
