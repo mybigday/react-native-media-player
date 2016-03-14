@@ -3,7 +3,11 @@
   "version": "0.0.2",
   "description": "This is a react native media player with external display controller. Support photo, video, music and background mode.",
   "main": "index.js",
+  "eslintConfig": {
+    "extends": "mybigday"
+  },
   "scripts": {
+    "lint": "eslint *.js test/*.js example/*.js",
     "test": "mocha --require mocha_babel"
   },
   "repository": {
@@ -29,9 +33,9 @@
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0",
-    "eslint": "~2.2.0",
-    "eslint-plugin-mocha": "^2.0.0",
-    "eslint-plugin-react": "^4.1.0",
+    "eslint": "^2.4.0",
+    "eslint-config-mybigday": "0.0.1",
+    "eslint-plugin-react": "^4.2.1",
     "expect.js": "^0.3.1",
     "fs-promise": "^0.5.0"
   }
