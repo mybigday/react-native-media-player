@@ -1,6 +1,6 @@
 # React Native Media Player
 
-This is a react native media player with external display controller. Support photo, video, misic and background mode.
+This is a react native media player with external display controller. Support photo, video, music and background mode.
 
 ## Installation
 ### Mostly automatic install
@@ -74,21 +74,18 @@ This player have a simple rend queue. So you can push your media with four kind 
 ### Clear Queue
 You can simply call `clear()` to remove all item in playlist.
 
-```
-:::javascript
+```js
 // Clear all item
 // keepCurrentPlaying: bool   # Set true if you do not want to disturb current playing item 
 
 let keepCurrentPlaying = true;
-MediaPlayer.clear(keepCurrentPlaying);
-
+MediaPlayer.clear(keepCurrentPlaying);m
 ```
 
 ### Backgroud
 If set the backgroud image for media player. The image will auto rend when render is idle.
 
-```
-:::javascript
+```js
 MediaPlayer.setBackground(background_image_path);
 ```
 
@@ -97,8 +94,7 @@ This player support a single group let you can play a bunch of media with random
 
 #### Create your group first
 
-```
-:::javascript
+```js
 // repeat: bool    # Group will auto replay when all item rend finished
 // random: bool    # Group will random the queue order every time to start playing group
 
@@ -121,8 +117,7 @@ MediaPlayer.group.pushMusics(pathList);
 #### Let's rock
 Now you can play your playlist just one call, sure you can stop it. The better thing is we will keep the group let you start again util you delete it.
 
-```
-:::javascript
+```js
 MediaPlayer.group.start();
 MediaPlayer.group.stop();
 ```
@@ -130,8 +125,7 @@ MediaPlayer.group.stop();
 #### Delete group
 Currently you can only have one group at a time, so when you need a new group you will need delete old group first.
 
-```
-:::javascript
+```js
 MediaPlayer.deleteGroup();
 ```
 
