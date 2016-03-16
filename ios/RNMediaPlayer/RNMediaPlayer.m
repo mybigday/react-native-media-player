@@ -15,6 +15,7 @@
 	UIViewController *viewController;
 	Container *currentContainer;
 	NSMutableDictionary *avAudioPlayerDictionary;
+	double virtualScreenRatio;
 }
 
 @synthesize bridge = _bridge;
@@ -32,12 +33,13 @@ RCT_EXPORT_METHOD(initialize){
 		dispatch_async(dispatch_get_main_queue(), ^{
 			NSArray *screens = [UIScreen screens];
 			CGFloat ratio = 1.0f;
+			virtualScreenRatio = 0.3f;
 			if([screens count] > 1){
 				screen = [screens objectAtIndex:1];
 			}
 			else{
 				screen = [screens objectAtIndex:0];
-				ratio = 0.3f;
+				ratio = virtualScreenRatio;
 			}
 			window = [[UIWindow alloc] init];
 			[window setBackgroundColor:[UIColor blackColor]];
@@ -50,6 +52,16 @@ RCT_EXPORT_METHOD(initialize){
 			[window addGestureRecognizer:pan];
 			UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
 			[window addGestureRecognizer:pinch];
+			UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+			UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+			[singleTap requireGestureRecognizerToFail:doubleTap];
+			[doubleTap setDelaysTouchesBegan:YES];
+			[singleTap setDelaysTouchesBegan:YES];
+			
+			[doubleTap setNumberOfTapsRequired:2];
+			[singleTap setNumberOfTapsRequired:1];
+			[window addGestureRecognizer:doubleTap];
+			[window addGestureRecognizer:singleTap];
 		});
 		
 		// Audio initialize
@@ -198,6 +210,20 @@ RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTProm
 		recognizer.view.transform = CGAffineTransformScale(recognizer.view.transform, recognizer.scale, recognizer.scale);
 		recognizer.scale = 1;
 	}
+}
+
+-(void) handleDoubleTap: (UITapGestureRecognizer *)recognizer{
+	if(virtualScreenRatio == 1.0f){
+		virtualScreenRatio = 0.3f;
+	}
+	else{
+		virtualScreenRatio = 1.0f;
+	}
+	[self changeScreen:virtualScreenRatio];
+}
+
+-(void) handleSingleTap: (UITapGestureRecognizer *)recognizer{
+	
 }
 
 @end
