@@ -50,7 +50,7 @@ class Image extends Container {
 	constructor(mediaPlayer){
 		super({
 			type: "image",
-			supportedTypeList: ["jpg", "jpeg", "png"]
+			supportedTypeList: ["jpg", "jpeg", "png", "bmp"]
 		}, mediaPlayer);
 	}
 	setDuration(duration){
@@ -87,7 +87,7 @@ class Video extends Container {
 	constructor(mediaPlayer){
 		super({
 			type: "video",
-			supportedTypeList: ["mp4"]
+			supportedTypeList: ["mp4", "mov", "m4v"]
 		}, mediaPlayer);
 	}
 	async rendIn(){
@@ -100,7 +100,7 @@ class Music extends Container {
 	constructor(mediaPlayer){
 		super({
 			type: "music",
-			supportedTypeList: ["mp3"]
+			supportedTypeList: ["mp3", "m4a", "aac"]
 		}, mediaPlayer);
 	}
 	async play(){

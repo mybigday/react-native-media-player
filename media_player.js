@@ -209,4 +209,16 @@ export default class MediaPlayer {
 			this.group = null;
 		}
 	}
+
+	// Utilities
+	getSupportFileTypeList(){
+		let music = new Music(this);
+		let image = new Image(this);
+		let video = new Video(this);
+		return {
+			"music": music.supportedTypeList,
+			"image": image.supportedTypeList,
+			"video": video.supportedTypeList
+		};
+	}
 }

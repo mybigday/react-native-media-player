@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row"
 	},
 	spaceContainer:{
-		flex: 3
+		flex: 2
 	}
 });
 
@@ -346,6 +346,9 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handlePrintSupportFileType = () => {
+		console.log(MediaPlayer.getSupportFileTypeList());
+	};
 	render(){
 		return (
 			<View style={styles.container}>
@@ -421,6 +424,12 @@ class ExampleApp extends Component{
 					<Button
 						title={"Stop Group"}
 						onPress={this.handleStopGroup}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
+						title={"Print Support File Type"}
+						onPress={this.handlePrintSupportFileType}
 					/>
 				</View>
 				<View style={styles.spaceContainer}></View>

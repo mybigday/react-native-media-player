@@ -31,6 +31,13 @@ You just simply need to import react-native-media-player in your js world
 import MediaPlayer from "react-native-media-player";
 ```
 
+### Get Support File Type List
+You can get the support file type list programatically
+
+```js
+MediaPlayer.getSupportFileTypeList();
+```
+
 ### Push Image or Video
 Currently only support rend image file type `*.png`, `*.jpg` and video file type `*.mp4`.
 
@@ -174,12 +181,13 @@ MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 
 ## Roadmap
 
+- [ ] Android support
 - [ ] Test coverage
 - [ ] Image transitions
 - [x] Music play
 - [x] Support react native reload
 - [ ] Stop music when video playing
-- [ ] Virtual display control
+- [x] Virtual display control
 
 ## Known Issues
 
