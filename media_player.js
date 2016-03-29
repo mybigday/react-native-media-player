@@ -86,11 +86,17 @@ export default class MediaPlayer {
 		await image.setDuration(0);
 		this.background = image;
 		if(oldBackground && oldBackground.rending){
-			oldBackground.rendOut();
+			await oldBackground.rendOut();
 		}
 		else{
 			await this.pushBackground();
 		}
+	}
+	async clearBackground(){
+		if(this.background && this.background.rending){
+			await this.background.rendOut();
+		}
+		this.background = null;
 	}
 	async pushImage(path, duration, way){
 		let image = new Image(this);

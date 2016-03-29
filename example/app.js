@@ -346,6 +346,9 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handleClearBackground = async () => {
+		await MediaPlayer.clearBackground();
+	};
 	handlePrintSupportFileType = () => {
 		console.log(MediaPlayer.getSupportFileTypeList());
 	};
@@ -356,6 +359,10 @@ class ExampleApp extends Component{
 					<Button
 						title={"Set Background"}
 						onPress={this.handleSetBackground}
+					/>
+					<Button
+						title={"Clear Background"}
+						onPress={this.handleClearBackground}
 					/>
 					<Button
 						title={"Push Image"}
