@@ -74,10 +74,10 @@ export default class MediaPlayer {
 	}
 	subscribe(channel, listener){
 		// TODO: Must test channel
-		this.emitter.addListener(channel, listener);
+		return this.emitter.addListener(channel, listener);
 	}
-	unSubstribe(channel, listener){
-		this.emitter.removeListener(channel, listener);
+	unsubscribe(subscription){
+		subscription.remove();
 	}
 	async setBackground(path){
 		let oldBackground = this.background;
