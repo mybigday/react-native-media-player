@@ -87,7 +87,8 @@ RCT_EXPORT_METHOD(rendImage: (NSString *)path resolver:(RCTPromiseResolveBlock)r
 }
 
 RCT_EXPORT_METHOD(rendVideo: (NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-	Container *container = [[VideoContainer alloc] initWithURL:[NSURL URLWithString:path] renderView:window];
+	NSURL *fileURL = [NSURL fileURLWithPath: path];
+	Container *container = [[VideoContainer alloc] initWithURL:fileURL renderView:window];
 	if([self rendin:container]){
 		resolve(@{});
 	}

@@ -43,7 +43,7 @@
 	PlayerView *containerView = [[PlayerView alloc] init];
 	
 	// Prepare play item
-	AVURLAsset *avUrlAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath: sourceFileURL.absoluteString] options:nil];
+	AVURLAsset *avUrlAsset = [AVURLAsset URLAssetWithURL:sourceFileURL options:nil];
 	avPlayerItem = [AVPlayerItem playerItemWithAsset:avUrlAsset];
 	avPlayer = [AVPlayer playerWithPlayerItem:avPlayerItem];
 	[containerView setPlayer:avPlayer];
