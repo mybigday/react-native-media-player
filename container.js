@@ -87,7 +87,7 @@ class Video extends Container {
 	constructor(mediaPlayer){
 		super({
 			type: "video",
-			supportedTypeList: ["mp4", "mov", "m4v"]
+			supportedTypeList: ["mp4", "mov", "m4v", "mpg", "mpeg"]
 		}, mediaPlayer);
 	}
 	async rendIn(){
