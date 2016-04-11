@@ -352,6 +352,22 @@ class ExampleApp extends Component{
 	handlePrintSupportFileType = () => {
 		console.log(MediaPlayer.getSupportFileTypeList());
 	};
+	handleHideVirtualScreen = async () => {
+		try{
+			await MediaPlayer.hideVirtualScreen();
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
+	handleShowVirtualScreen = async () => {
+		try{
+			await MediaPlayer.showVirtualScreen();
+		}
+		catch(err){
+			showErrorMessage(err);
+		}
+	};
 	render(){
 		return (
 			<View style={styles.container}>
@@ -437,6 +453,14 @@ class ExampleApp extends Component{
 					<Button
 						title={"Print Support File Type"}
 						onPress={this.handlePrintSupportFileType}
+					/>
+					<Button
+						title={"Hide Virtual Screen"}
+						onPress={this.handleHideVirtualScreen}
+					/>
+					<Button
+						title={"Show Virtual Screen"}
+						onPress={this.handleShowVirtualScreen}
 					/>
 				</View>
 				<View style={styles.spaceContainer}></View>

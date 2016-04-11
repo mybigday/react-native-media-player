@@ -46,6 +46,7 @@ RCT_EXPORT_METHOD(initialize){
 			viewController = [[UIViewController alloc] init];
 			window.rootViewController = viewController;
 			[self changeScreen:ratio];
+			[self setVirtualScreenVisible:YES];
 			
 			// Add UIPanGestureRecognizer
 			UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
@@ -138,6 +139,16 @@ RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTProm
 	[avAudioPlayerDictionary removeAllObjects];
 }
 
+RCT_EXPORT_METHOD(showVirtualScreen:(BOOL)visible resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+	if([self setVirtualScreenVisible:visible]){
+		resolve(@{});
+	}
+	else{
+		NSError *err = [NSError errorWithDomain:@"Can't set virtual screen visible state then content is rending in or rending out." code:-15 userInfo:nil];
+		reject([NSString stringWithFormat: @"%lu", (long)err.code], err.localizedDescription, err);
+	}
+}
+
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
 	NSString *avAudioPlayerId = (NSString *)[[avAudioPlayerDictionary allKeysForObject:player] firstObject];
 	[avAudioPlayerDictionary removeObjectForKey:avAudioPlayerId];
@@ -176,8 +187,45 @@ RCT_EXPORT_METHOD(stopAllMusic:(RCTPromiseResolveBlock)resolve rejecter:(RCTProm
 	[self changeScreen:0.3f];
 }
 
+-(BOOL) setVirtualScreenVisible: (BOOL) visible{
+	NSArray *screens = [UIScreen screens];
+	if(currentContainer){
+		NSString *state = @"Not set";
+		switch(currentContainer.rendState){
+			case New:
+				state = @"New";
+				break;
+			case Rend:
+				state = @"Rend";
+				break;
+			case Rendout:
+				state = @"Rendout";
+				break;
+			case End:
+				state = @"End";
+				break;
+		}
+		if(currentContainer && (currentContainer.rendState == New || currentContainer.rendState == Rendout) ){
+			return NO;
+		}
+	}
+	if([screens count] == 1){
+		if(visible){
+			[window makeKeyAndVisible];
+			[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
+		}
+		else{
+			[window setHidden:YES];
+		}
+	}
+	return YES;
+}
+
 -(BOOL) rendin: (Container *)container{
 	if(alreadyInitialize){
+		if(currentContainer && currentContainer.rendState == Rend){
+			[currentContainer rendOut];
+		}
 		currentContainer = container;
 		currentContainer.delegate = self;
 		[currentContainer rendIn];

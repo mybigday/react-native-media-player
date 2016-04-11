@@ -43,6 +43,7 @@
 			[self.contentView setAlpha:0.0];
 			[UIView animateWithDuration:self.rendinAnimationDuration animations:^(){
 				[self.contentView setAlpha:1.0];
+				self.rendState = Rend;
 			}];
 		}
 	});
@@ -68,6 +69,7 @@
 -(void) rendOut{
 	// Delegate notify
 	[self.delegate containerRendOutStart];
+	self.rendState = Rendout;
 	
 	// Rend-Out animation
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -75,6 +77,7 @@
 			[self.contentView setAlpha:0.0];
 		} completion:^(BOOL finishied){
 			[self.contentView removeFromSuperview];
+			self.rendState = End;
 			[self afterRendOut];
 			// Delegate notify
 			[self.delegate containerRendOutFinish];

@@ -38,6 +38,16 @@ You can get the support file type list programatically
 MediaPlayer.getSupportFileTypeList();
 ```
 
+### Virtual Screen
+When initialize react-native-media-player you can see one black virtual screen on your main screen. Once you plug your external display it will disappear and turn you content rend on external display. You also can show / hide your virtual screen manually when there is no external display connected.
+
+```js
+// Show the virtual screen
+await MediaPlayer.showVirtualScreen();
+// Hide the virtual screen
+await MediaPlayer.hideVirtualScreen();
+```
+
 ### Push Image or Video
 Currently only support rend image file type `*.png`, `*.jpg` and video file type `*.mp4`.
 

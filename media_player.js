@@ -227,4 +227,10 @@ export default class MediaPlayer {
 			"video": video.supportedTypeList
 		};
 	}
+	async showVirtualScreen(){
+		await this.RNMediaPlayer.showVirtualScreen(true);
+	}
+	async hideVirtualScreen(){
+		await this.RNMediaPlayer.showVirtualScreen(false);
+	}
 }
