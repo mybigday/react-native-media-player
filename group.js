@@ -105,6 +105,9 @@ export default class Group {
 					reject(err);
 				}
 			}
+			else if(this.musicList.length > 0){
+				resolve();
+			}
 			else{
 				reject(new Error("Must initialize group and push something to rend."));
 			}

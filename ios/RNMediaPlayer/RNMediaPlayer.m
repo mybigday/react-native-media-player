@@ -108,7 +108,8 @@ RCT_EXPORT_METHOD(rendOut:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRe
 
 RCT_EXPORT_METHOD(playMusic:(NSString *)path resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
 	NSError *error = nil;
-	AVAudioPlayer *avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:path] error:&error];
+	NSURL *fileURL = [NSURL fileURLWithPath: path];
+	AVAudioPlayer *avAudioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&error];
 	if(error){
 		return reject([NSString stringWithFormat: @"%lu", (long)error.code], error.localizedDescription, error);
 	}
