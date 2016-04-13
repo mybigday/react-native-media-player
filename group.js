@@ -164,8 +164,10 @@ export default class Group {
 					return musicPath;
 				});
 			}
-			await this.playNextMusic();
-			this.musicRunning = true;
+			if(this.musicQueue.length > 0){
+				await this.playNextMusic();
+				this.musicRunning = true;
+			}
 		}
 	}
 	async stopMusic(){
