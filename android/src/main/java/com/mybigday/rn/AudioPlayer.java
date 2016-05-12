@@ -45,7 +45,8 @@ public class AudioPlayer {
     public void stopMusic(String id) {
         MediaPlayer mediaPlayer = audioIdMap.get(id);
         if (mediaPlayer != null) {
-            audioIdMap.get(id).stop();
+            mediaPlayer.stop();
+            mediaPlayer.release();
             audioIdMap.remove(id);
         }
     }
@@ -57,6 +58,7 @@ public class AudioPlayer {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
+            mediaPlayer.release();
             it.remove();
         }
     }

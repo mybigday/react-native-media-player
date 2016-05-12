@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -40,13 +39,16 @@ class ExternalDisplayPresentation extends Presentation {
 }
 
 public class ExternalDisplay implements LifecycleEventListener {
+  private Root root;
   private Context context;
-  private View containerView;
+  private ReactApplicationContext reactContext;
+  private LinearLayout containerView;
   private ExternalDisplayPresentation preso;
   private Preview preview;
   private boolean isShowVirtualScreen = false;
   
   private static final int HANDLE_PAUSE = 0;
+  private static final int HANDLE_RESUME = 999;
   private Handler handler;
 
   MediaRouter router = null;
@@ -54,6 +56,7 @@ public class ExternalDisplay implements LifecycleEventListener {
 
   ExternalDisplay(Context ctx, ReactApplicationContext reactContext) {
     this.context = ctx;
+    this.reactContext = reactContext;
 
     reactContext.addLifecycleEventListener(this);
 
@@ -62,7 +65,12 @@ public class ExternalDisplay implements LifecycleEventListener {
       public void handleMessage(Message msg) {
         switch (msg.what) {
           case HANDLE_PAUSE:
+            showVirtualScreen(false);
             handlePause();
+            break;
+          case HANDLE_RESUME:
+            start();
+            showVirtualScreen(true);
             break;
         }
         super.handleMessage(msg);
@@ -80,6 +88,10 @@ public class ExternalDisplay implements LifecycleEventListener {
     }
   }
 
+  public Root getRoot() {
+    return root;
+  }
+
   public void start() {
     initLayoutView();
     tryShowPreview();
@@ -92,6 +104,7 @@ public class ExternalDisplay implements LifecycleEventListener {
       handleRoute(router.getSelectedRoute(MediaRouter.ROUTE_TYPE_LIVE_VIDEO));
       router.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, cb);
     }
+    root = new Root(context, reactContext, containerView);
   }
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -142,13 +155,17 @@ public class ExternalDisplay implements LifecycleEventListener {
   }
 
   @Override
-  public void onHostResume() {}
+  public void onHostResume() {
+    Message msg = new Message();
+    msg.what = HANDLE_RESUME;
+    handler.sendMessage(msg);
+  }
 
   @Override
   public void onHostPause() {
-    Message m = new Message();
-    m.what = HANDLE_PAUSE;
-    handler.sendMessage(m);
+    Message msg = new Message();
+    msg.what = HANDLE_PAUSE;
+    handler.sendMessage(msg);
   }
 
   @Override

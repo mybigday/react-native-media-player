@@ -6,7 +6,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.WritableMap;
 
@@ -29,13 +28,11 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
     return "RNMediaPlayer";
   }
 
-
   @ReactMethod
   public void initialize() {
     if (!alreadyInitialize) {
       audioPlayer = new AudioPlayer(activity, context);
       externalDisplay = new ExternalDisplay(activity, context);
-      externalDisplay.start();
 
       alreadyInitialize = true;
     }
@@ -50,6 +47,38 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
 
     externalDisplay.showVirtualScreen(bool);
     promise.resolve(true);
+  }
+
+  @ReactMethod
+  public void rendImage(String filePath, Promise promise) {
+    if (!alreadyInitialize) {
+      promise.reject("-11", "Can\'t push image, maybe need initialize MediaPlayer first.");
+      return;
+    }
+
+    Root root = externalDisplay.getRoot();
+    root.rendIn("image", filePath);
+    promise.resolve(Arguments.createMap());
+  }
+
+  @ReactMethod
+  public void rendVideo(String filePath, Promise promise) {
+    if (!alreadyInitialize) {
+      promise.reject("-13", "Can\'t push video, maybe need initialize MediaPlayer first.");
+      return;
+    }
+
+    Root root = externalDisplay.getRoot();
+    root.rendIn("video", filePath);
+    promise.resolve(Arguments.createMap());
+  }
+
+  @ReactMethod
+  public void rendOut(Promise promise) {
+    if (alreadyInitialize) {
+      externalDisplay.getRoot().rendOut(null);
+    }
+    promise.resolve(Arguments.createMap());
   }
 
   @ReactMethod
