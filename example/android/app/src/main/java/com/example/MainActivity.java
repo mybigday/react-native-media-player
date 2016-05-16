@@ -1,8 +1,8 @@
 package com.example;
 
 import com.facebook.react.ReactActivity;
-import com.remobile.toast.RCTToastPackage;
 import com.rnfs.RNFSPackage;
+import com.mybigday.rn.RNMediaPlayerPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
@@ -37,8 +37,8 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-        new RCTToastPackage(),
-        new RNFSPackage()
+            new RNFSPackage(),
+            new RNMediaPlayerPackage(this)
         );
     }
 }

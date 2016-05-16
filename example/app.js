@@ -1,6 +1,7 @@
 "use strict";
 
-import React, {AppRegistry, Component, PropTypes, StyleSheet, View, Text, ListView, Image, TouchableHighlight} from "react-native";
+import React, { Component, PropTypes } from "react";
+import {AppRegistry, StyleSheet, View, Text, ListView, Image, TouchableHighlight} from "react-native";
 import MediaPlayer from "react-native-media-player";
 import RNFS from "react-native-fs";
 import _ from "underscore";
@@ -465,6 +466,7 @@ class ExampleApp extends Component{
 				</View>
 				<View style={styles.spaceContainer}></View>
 				<ListView
+					enableEmptySections={true}
 					style={styles.imageContainer}
 					contentContainerStyle={styles.imageListContentContainer}
 					horizontal={true}
@@ -490,6 +492,7 @@ class ExampleApp extends Component{
 					)}
 				/>
 				<ListView
+					enableEmptySections={true}
 					style={styles.imageContainer}
 					contentContainerStyle={styles.imageListContentContainer}
 					horizontal={true}
@@ -515,6 +518,7 @@ class ExampleApp extends Component{
 					)}
 				/>
 				<ListView
+					enableEmptySections={true}
 					style={styles.imageContainer}
 					contentContainerStyle={styles.imageListContentContainer}
 					horizontal={true}

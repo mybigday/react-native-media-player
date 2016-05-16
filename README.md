@@ -22,6 +22,47 @@ $ rnpm link
 1. Click `RNMediaPlayer.xcodeproj` in the project navigator and go the `Build Settings` tab. Make sure 'All' is toggled on (instead of 'Basic'). In the `Search Paths` section, look for `Header Search Paths` and make sure it contains both `$(SRCROOT)/../../react-native/React` and `$(SRCROOT)/../../../React` - mark both as `recursive`.
 1. Run your project (`Cmd+R`)
 
+#### Android
+
+* Edit `android/settings.gradle` of your project:
+
+```gradle
+...
+include ':react-native-media-player'
+project(':react-native-media-player').projectDir = new File(settingsDir, '../node_modules/react-native-media-player/android')
+```
+
+* Edit `android/app/build.gradle` of your project:
+
+```gradle
+...
+dependencies {
+    ...
+    compile project(':react-native-media-player')
+}
+```
+
+* Add package to `MainActivity`
+
+```java
+......
+
+import com.mybigday.rn.*;   // import
+
+public class MainActivity extends ReactActivity {
+
+    ......
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+            new RNMediaPlayerPackage(this)   // add package
+        );
+    }
+}
+```
+
 ## Usage
 
 ### Initialize
