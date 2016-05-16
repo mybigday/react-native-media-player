@@ -10,7 +10,6 @@ import android.media.MediaRouter.SimpleCallback;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -46,10 +45,6 @@ public class ExternalDisplay implements LifecycleEventListener {
   private ExternalDisplayPresentation preso;
   private Preview preview;
   private boolean isShowVirtualScreen = false;
-  
-  private static final int HANDLE_PAUSE = 0;
-  private static final int HANDLE_RESUME = 999;
-  private Handler handler;
 
   MediaRouter router = null;
   SimpleCallback cb = null;
@@ -59,24 +54,6 @@ public class ExternalDisplay implements LifecycleEventListener {
     this.reactContext = reactContext;
 
     reactContext.addLifecycleEventListener(this);
-
-    handler = new Handler() {
-
-      public void handleMessage(Message msg) {
-        switch (msg.what) {
-          case HANDLE_PAUSE:
-            showVirtualScreen(false);
-            handlePause();
-            break;
-          case HANDLE_RESUME:
-            start();
-            showVirtualScreen(true);
-            break;
-        }
-        super.handleMessage(msg);
-      }
-
-    };
   }
 
   public void showVirtualScreen(boolean bool) {
@@ -156,16 +133,14 @@ public class ExternalDisplay implements LifecycleEventListener {
 
   @Override
   public void onHostResume() {
-    Message msg = new Message();
-    msg.what = HANDLE_RESUME;
-    handler.sendMessage(msg);
+    start();
+    showVirtualScreen(true);
   }
 
   @Override
   public void onHostPause() {
-    Message msg = new Message();
-    msg.what = HANDLE_PAUSE;
-    handler.sendMessage(msg);
+    showVirtualScreen(false);
+    handlePause();
   }
 
   @Override

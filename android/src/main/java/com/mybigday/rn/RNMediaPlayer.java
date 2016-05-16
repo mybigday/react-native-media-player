@@ -50,35 +50,52 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void rendImage(String filePath, Promise promise) {
+  public void rendImage(final String filePath, final Promise promise) {
     if (!alreadyInitialize) {
       promise.reject("-11", "Can\'t push image, maybe need initialize MediaPlayer first.");
       return;
     }
 
-    Root root = externalDisplay.getRoot();
-    root.rendIn("image", filePath);
-    promise.resolve(Arguments.createMap());
+    final Root root = externalDisplay.getRoot();
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        root.rendIn("image", filePath);
+        promise.resolve(Arguments.createMap());
+      }
+    });
   }
 
   @ReactMethod
-  public void rendVideo(String filePath, Promise promise) {
+  public void rendVideo(final String filePath, final Promise promise) {
     if (!alreadyInitialize) {
       promise.reject("-13", "Can\'t push video, maybe need initialize MediaPlayer first.");
       return;
     }
 
-    Root root = externalDisplay.getRoot();
-    root.rendIn("video", filePath);
-    promise.resolve(Arguments.createMap());
+    final Root root = externalDisplay.getRoot();
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        root.rendIn("video", filePath);
+        promise.resolve(Arguments.createMap());
+      }
+    });
   }
 
   @ReactMethod
-  public void rendOut(Promise promise) {
+  public void rendOut(final Promise promise) {
     if (alreadyInitialize) {
-      externalDisplay.getRoot().rendOut(null);
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          externalDisplay.getRoot().rendOut(null);
+          promise.resolve(Arguments.createMap());
+        }
+      });
+    } else {
+      promise.resolve(Arguments.createMap());
     }
-    promise.resolve(Arguments.createMap());
   }
 
   @ReactMethod
