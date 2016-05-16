@@ -233,7 +233,7 @@ MediaPlayer.subscribe(MediaPlayer.EVENT_CHANNEL.GROUP_STATUS, callback);
 
 ## Roadmap
 
-- [ ] Android support
+- [x] Android support
 - [ ] Test coverage
 - [ ] Image transitions
 - [x] Music play
