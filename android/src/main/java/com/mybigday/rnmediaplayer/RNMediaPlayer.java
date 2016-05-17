@@ -39,14 +39,19 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void showVirtualScreen(boolean bool, Promise promise) {
+  public void showVirtualScreen(final boolean bool, final Promise promise) {
     if (!alreadyInitialize) {
       promise.resolve(false);
       return;
     }
 
-    externalDisplay.showVirtualScreen(bool);
-    promise.resolve(true);
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        externalDisplay.showVirtualScreen(bool);
+        promise.resolve(true);
+      }
+    });
   }
 
   @ReactMethod
