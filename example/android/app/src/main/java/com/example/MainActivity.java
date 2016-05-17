@@ -2,7 +2,7 @@ package com.example;
 
 import com.facebook.react.ReactActivity;
 import com.rnfs.RNFSPackage;
-import com.mybigday.rn.RNMediaPlayerPackage;
+import com.mybigday.rnmediaplayer.RNMediaPlayerPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 

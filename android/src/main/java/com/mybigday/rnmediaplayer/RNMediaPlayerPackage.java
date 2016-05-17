@@ -1,4 +1,4 @@
-package com.mybigday.rn;
+package com.mybigday.rnmediaplayer;
 
 import java.util.*;
 

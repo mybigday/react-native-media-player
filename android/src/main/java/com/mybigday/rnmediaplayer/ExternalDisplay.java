@@ -1,4 +1,4 @@
-package com.mybigday.rn;
+package com.mybigday.rnmediaplayer;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
