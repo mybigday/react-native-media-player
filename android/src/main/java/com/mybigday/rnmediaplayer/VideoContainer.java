@@ -58,11 +58,16 @@ public class VideoContainer extends Container {
 
     @Override
     public void rendOut(Callback cb) {
+        destroy();
+        super.rendOut(cb);
+    }
+
+    @Override
+    public void destroy() {
         ScalableVideoView view = ((ScalableVideoView) getView());
         if (view.isPlaying()) {
             view.stop();
         }
         view.release();
-        super.rendOut(cb);
     }
 }

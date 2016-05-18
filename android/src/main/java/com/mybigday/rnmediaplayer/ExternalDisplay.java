@@ -121,6 +121,9 @@ public class ExternalDisplay implements LifecycleEventListener {
   }
 
   private void handlePause() {
+    if (root != null) {
+      root.destroyContainer();
+    }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
       clearPreso();
 

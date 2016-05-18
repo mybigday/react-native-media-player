@@ -96,6 +96,8 @@ public abstract class Container {
         view.startAnimation(am);
     }
 
+    public abstract void destroy();
+
     public interface Callback {
         void call();
     }
