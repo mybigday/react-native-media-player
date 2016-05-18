@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
@@ -14,7 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-public class AudioPlayer {
+public class AudioPlayer implements LifecycleEventListener {
     private Context context;
     private ReactApplicationContext reactContext;
     private Map<String, MediaPlayer> audioIdMap = new HashMap<String, MediaPlayer>();
@@ -22,6 +23,8 @@ public class AudioPlayer {
     public AudioPlayer(Context context, ReactApplicationContext reactContext) {
         this.context = context;
         this.reactContext = reactContext;
+
+        reactContext.addLifecycleEventListener(this);
     }
 
     public WritableMap playMusic(String filePath) {
@@ -67,4 +70,15 @@ public class AudioPlayer {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
     }
+
+    @Override
+    public void onHostResume() {}
+
+    @Override
+    public void onHostPause() {
+        stopAllMusic();
+    }
+
+    @Override
+    public void onHostDestroy() {}
 }
