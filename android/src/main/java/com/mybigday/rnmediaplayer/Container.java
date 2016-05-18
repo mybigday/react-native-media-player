@@ -43,7 +43,6 @@ public abstract class Container {
     }
 
     public void rendIn(String filePath, final Callback cb) {
-
         sendEvent("RendInStart", Arguments.createMap());
 
         rendState = RendState.NEW;
@@ -67,14 +66,16 @@ public abstract class Container {
     }
 
     public void rendOut(final Callback cb) {
-        if (rendState == RendState.NEW) {
+        sendEvent("RendOutStart", Arguments.createMap());
+
+        if (rendState == RendState.NEW || rendState == RendState.RENDOUT) {
             view.clearAnimation();
             view.setAlpha(0);
+            rendState = RendState.END;
+            sendEvent("RendOutFinish", Arguments.createMap());
             if (cb != null) cb.call();
             return;
         }
-
-        sendEvent("RendOutStart", Arguments.createMap());
 
         rendState = RendState.RENDOUT;
 
