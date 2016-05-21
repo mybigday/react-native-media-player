@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
 public abstract class Container {
     public enum RendState {
@@ -38,7 +38,7 @@ public abstract class Container {
     }
 
     protected void sendEvent(String eventName, WritableMap params) {
-        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        reactContext.getJSModule(RCTNativeAppEventEmitter.class)
                 .emit(eventName, params);
     }
 
