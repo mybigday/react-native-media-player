@@ -12,62 +12,62 @@ import com.yqritc.scalablevideoview.ScalableVideoView;
 
 public class VideoContainer extends Container {
 
-    public VideoContainer(Context context, ReactApplicationContext reactContext) {
-        super(context, reactContext);
-        MScalableVideoView video = (MScalableVideoView) new MScalableVideoView(context);
-        video.setBackgroundColor(Color.BLACK);
-        video.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        init(video);
+  public VideoContainer(Context context, ReactApplicationContext reactContext) {
+    super(context, reactContext);
+    MScalableVideoView video = (MScalableVideoView) new MScalableVideoView(context);
+    video.setBackgroundColor(Color.BLACK);
+    video.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+    init(video);
+  }
+
+  private class MScalableVideoView extends ScalableVideoView {
+
+    public MScalableVideoView(Context context) {
+      super(context);
     }
 
-    private class MScalableVideoView extends ScalableVideoView {
+    public void setOnCompletionListener(MediaPlayer.OnCompletionListener listener) {
+      mMediaPlayer.setOnCompletionListener(listener);
+    }
+  }
 
-        public MScalableVideoView(Context context) {
-            super(context);
+  @Override
+  public void rendIn(String filePath, final Container.Callback finishedCallback) {
+    final MScalableVideoView view = ((MScalableVideoView) getView());
+    try {
+      view.setDataSource(context, Uri.parse(filePath));
+      view.setScalableType(ScalableType.FIT_CENTER);
+      view.invalidate();
+      view.prepare(new MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+          view.start();
         }
-
-        public void setOnCompletionListener(MediaPlayer.OnCompletionListener listener) {
-            mMediaPlayer.setOnCompletionListener(listener);
+      });
+      view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+          rendOut(finishedCallback);
         }
+      });
+    } catch(Exception e) {
+      e.printStackTrace();
     }
+    super.rendIn(filePath, null);
+  }
 
-    @Override
-    public void rendIn(String filePath, final Container.Callback finishedCallback) {
-        final MScalableVideoView view = ((MScalableVideoView) getView());
-        try {
-            view.setDataSource(context, Uri.parse(filePath));
-            view.setScalableType(ScalableType.FIT_CENTER);
-            view.invalidate();
-            view.prepare(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    view.start();
-                }
-            });
-            view.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    rendOut(finishedCallback);
-                }
-            });
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        super.rendIn(filePath, null);
-    }
+  @Override
+  public void rendOut(Callback cb) {
+    destroy();
+    super.rendOut(cb);
+  }
 
-    @Override
-    public void rendOut(Callback cb) {
-        destroy();
-        super.rendOut(cb);
+  @Override
+  public void destroy() {
+    ScalableVideoView view = ((ScalableVideoView) getView());
+    if (view.isPlaying()) {
+      view.stop();
     }
-
-    @Override
-    public void destroy() {
-        ScalableVideoView view = ((ScalableVideoView) getView());
-        if (view.isPlaying()) {
-            view.stop();
-        }
-        view.release();
-    }
+    view.release();
+  }
 }
