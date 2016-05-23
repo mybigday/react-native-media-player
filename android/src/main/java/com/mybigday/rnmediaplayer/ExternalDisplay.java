@@ -122,6 +122,13 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   private boolean alreadyStarted = false;
   private ExternalDisplayHelper helper = null;
 
+  // Preview params
+  private int x = 0;
+  private int y = 0;
+  private int width = 0;
+  private int height = 0;
+  private boolean lock = false;
+
   ExternalDisplay(Context ctx, ReactApplicationContext reactContext) {
     this.context = ctx;
     this.reactContext = reactContext;
@@ -150,6 +157,18 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
     }
   }
 
+  public void setVirtualScreenLayout(int x, int y, int w, int h, boolean lock) {
+    this.x = x;
+    this.y = y;
+    this.width = w;
+    this.height = h;
+    this.lock = lock;
+
+    if (preview != null) {
+      preview.setLayout(x, y, w, h, lock);
+    }
+  }
+
   public Root getRoot() {
     return root;
   }
@@ -170,7 +189,12 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
     ((Activity) this.context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
     int height = displaymetrics.heightPixels;
     int width = displaymetrics.widthPixels;
-    preview = new Preview(this.context, containerView, (int) (width * 0.3), (int) (height * 0.3));
+    preview = new Preview(
+      this.context, containerView,
+      400, 300,
+      this.x, this.y,
+      this.lock
+    );
   }
 
   private void tryShowPreview() {

@@ -20,17 +20,21 @@ public class Preview {
   private GestureDetector mGestureDetector;
   private ScaleGestureDetector mScaleGestureDetector;
   private boolean isFullScreen = false;
+  private boolean lock = false;
 
   private int touchState;
   private final int IDLE = 0;
   private final int TOUCH = 1;
   private final int PINCH = 2;
 
-  Preview(Context ctx, View containerView, int width, int height) {
+  Preview(Context ctx, View containerView, int width, int height, int x, int y, boolean lock) {
     this.ctx = ctx;
     this.containerView = containerView;
     this.width = this.currentWidth = width;
     this.height = this.currentHeight = height;
+    this.mPosX = x;
+    this.mPosY = y;
+    this.lock = lock;
 
     popupWindow = new PopupWindow(containerView, width, height, false);
     mGestureDetector = new GestureDetector(ctx, new PreviewOnGestureListener());
@@ -44,12 +48,24 @@ public class Preview {
     containerView.setOnTouchListener(new PreviewOnTouchListener());
   }
 
+  public void setLayout(int x, int y, int w, int h, boolean lock) {
+    this.lock = lock;
+
+    mPosX = x >= 0 ? x : mPosX;
+    mPosY = y >= 0 ? y : mPosY;
+    width = w >= 0 ? w : width;
+    height = h >= 0 ? h : height;
+    popupWindow.update(mPosX, mPosY, width, height, lock);
+  }
+
   class PreviewOnTouchListener implements View.OnTouchListener {
     private int dx = 0;
     private int dy = 0;
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+      if (lock) return false;
+
       switch (motionEvent.getAction()) {
         case MotionEvent.ACTION_DOWN:
           dx = mPosX - (int) motionEvent.getRawX();
