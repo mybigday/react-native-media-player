@@ -15,7 +15,15 @@
 	UIViewController *viewController;
 	Container *currentContainer;
 	NSMutableDictionary *avAudioPlayerDictionary;
-	double virtualScreenRatio;
+    CGRect virtualScreenLayout;
+    CGRect virtualScreenLayoutBackup;
+    BOOL virtualScreenFullscreenMode;
+    
+    UIPanGestureRecognizer *pan;
+    UIPinchGestureRecognizer *pinch;
+    UITapGestureRecognizer *doubleTap;
+    UITapGestureRecognizer *singleTap;
+    
 }
 
 @synthesize bridge = _bridge;
@@ -31,30 +39,21 @@ RCT_EXPORT_METHOD(initialize){
 		
 		// Window initialize
 		dispatch_async(dispatch_get_main_queue(), ^{
-			NSArray *screens = [UIScreen screens];
-			CGFloat ratio = 1.0f;
-			virtualScreenRatio = 0.3f;
-			if([screens count] > 1){
-				screen = [screens objectAtIndex:1];
-			}
-			else{
-				screen = [screens objectAtIndex:0];
-				ratio = virtualScreenRatio;
-			}
 			window = [[UIWindow alloc] init];
 			[window setBackgroundColor:[UIColor blackColor]];
 			viewController = [[UIViewController alloc] init];
 			window.rootViewController = viewController;
-			[self changeScreen:ratio];
+            virtualScreenLayout = CGRectMake(0, 0, 400, 300);
+			[self changeScreen];
 			[self setVirtualScreenVisible:YES];
 			
 			// Add UIPanGestureRecognizer
-			UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+			pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 			[window addGestureRecognizer:pan];
-			UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+			pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
 			[window addGestureRecognizer:pinch];
-			UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-			UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+			doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+			singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
 			[singleTap requireGestureRecognizerToFail:doubleTap];
 			[doubleTap setDelaysTouchesBegan:YES];
 			[singleTap setDelaysTouchesBegan:YES];
@@ -150,45 +149,61 @@ RCT_EXPORT_METHOD(showVirtualScreen:(BOOL)visible resolver:(RCTPromiseResolveBlo
 	}
 }
 
+RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(NSInteger) width height:(NSInteger) height lock:(BOOL) lock resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    virtualScreenLayout = CGRectMake(x, y, width, height);
+    [self changeScreen];
+    if(lock){
+        [window removeGestureRecognizer:pan];
+        [window removeGestureRecognizer:pinch];
+        [window removeGestureRecognizer:singleTap];
+        [window removeGestureRecognizer:doubleTap];
+    }
+    else{
+        [window addGestureRecognizer:pan];
+        [window addGestureRecognizer:pinch];
+        [window addGestureRecognizer:doubleTap];
+        [window addGestureRecognizer:singleTap];
+    }
+}
+
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
 	NSString *avAudioPlayerId = (NSString *)[[avAudioPlayerDictionary allKeysForObject:player] firstObject];
 	[avAudioPlayerDictionary removeObjectForKey:avAudioPlayerId];
 	[self.bridge.eventDispatcher sendAppEventWithName:@"MusicEnd" body:@{@"musicId": avAudioPlayerId}];
 }
 
--(void) changeScreen: (CGFloat)ratio{
-	window.screen = screen;
-	window.frame = CGRectMake(0, 0, screen.bounds.size.width * ratio, screen.bounds.size.height * ratio);
-	[window makeKeyAndVisible];
-	[NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
+-(void) changeScreen{
+    NSArray *screens = [UIScreen screens];
+    if([screens count] > 1){
+        window.screen = [screens objectAtIndex:1];
+        window.frame = CGRectMake(0, 0, screen.bounds.size.width, screen.bounds.size.height);
+    }
+    else{
+        window.screen = [screens objectAtIndex:0];
+        window.frame = virtualScreenLayout;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [window makeKeyAndVisible];
+
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
+    });
 }
 
 -(void) setDefaultKeyWindow:(NSTimer *)timer{
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[[[UIApplication sharedApplication] windows] objectAtIndex:0] makeKeyWindow];
-	});
+        [[[[UIApplication sharedApplication] windows] objectAtIndex:0] makeKeyWindow];
+    });
 }
 
 -(void) handleScreenDidConnectNotification: (NSNotification *)notification{
-	// Must inishiate event
-	NSLog(@"Screen Connect");
-	// Change screen to external screen
-	NSArray *screens = [UIScreen screens];
-	if([screens count] > 1){
-		screen = [screens objectAtIndex:1];
-		[self changeScreen:1.0f];
-	}
+	[self changeScreen];
 }
 
 -(void) handleScreenDidDisconnectNotification: (NSNotification *)notification{
-	NSLog(@"Screen Disconnect");
-	// Change screen to internal screen
-	NSArray *screens = [UIScreen screens];
-	screen = [screens objectAtIndex:0];
-	[self changeScreen:0.3f];
+	[self changeScreen];
 }
 
--(BOOL) setVirtualScreenVisible: (BOOL) visible{
+-(BOOL) setVirtualScreenVisible: (BOOL) visible {
 	NSArray *screens = [UIScreen screens];
 	if(currentContainer){
 		NSString *state = @"Not set";
@@ -263,13 +278,15 @@ RCT_EXPORT_METHOD(showVirtualScreen:(BOOL)visible resolver:(RCTPromiseResolveBlo
 }
 
 -(void) handleDoubleTap: (UITapGestureRecognizer *)recognizer{
-	if(virtualScreenRatio == 1.0f){
-		virtualScreenRatio = 0.3f;
-	}
-	else{
-		virtualScreenRatio = 1.0f;
-	}
-	[self changeScreen:virtualScreenRatio];
+    if(virtualScreenFullscreenMode){
+        virtualScreenLayout = virtualScreenLayoutBackup;
+    }
+    else{
+        virtualScreenLayoutBackup = virtualScreenLayout;
+        virtualScreenLayout = CGRectMake(0, 0, [[UIScreen screens] objectAtIndex:0].bounds.size.width, [[UIScreen screens] objectAtIndex:0].bounds.size.height);
+    }
+    virtualScreenFullscreenMode = !virtualScreenFullscreenMode;
+    [self changeScreen];
 }
 
 -(void) handleSingleTap: (UITapGestureRecognizer *)recognizer{

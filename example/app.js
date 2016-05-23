@@ -369,6 +369,17 @@ class ExampleApp extends Component{
 			showErrorMessage(err);
 		}
 	};
+	handleSetVirtualScreenLayout = () => {
+		MediaPlayer.setVirtualScreenLayout(this.state.virtual_layout.x, this.state.virtual_layout.y, this.state.virtual_layout.width, this.state.virtual_layout.height, true);
+	};
+	handleSetVirtualScreenFreeLayout = () => {
+		MediaPlayer.setVirtualScreenLayout(0, 0, 400, 300, false);
+	};
+	handleGetDemoLayout = (event) => {
+		this.setState({
+			virtual_layout: event.nativeEvent.layout
+		});
+	};
 	render(){
 		return (
 			<View style={styles.container}>
@@ -463,8 +474,16 @@ class ExampleApp extends Component{
 						title={"Show Virtual Screen"}
 						onPress={this.handleShowVirtualScreen}
 					/>
+					<Button
+						title={"Set Layout"}
+						onPress={this.handleSetVirtualScreenLayout}
+					/>
+					<Button
+						title={"Set Free Layout"}
+						onPress={this.handleSetVirtualScreenFreeLayout}
+					/>
 				</View>
-				<View style={styles.spaceContainer}></View>
+				<View style={styles.spaceContainer} onLayout={this.handleGetDemoLayout}></View>
 				<ListView
 					enableEmptySections={true}
 					style={styles.imageContainer}

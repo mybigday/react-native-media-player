@@ -28,6 +28,7 @@ export default class MediaPlayer {
 		this.RNMediaPlayer = nativeModules.RNMediaPlayer;
 		this.RNFS = RNFS;
 		this.RNMediaPlayer.initialize();
+		this.setVirtualScreenLayout();
 
 		// Subsript native event
 		this.subscription = [];
@@ -227,10 +228,13 @@ export default class MediaPlayer {
 			"video": video.supportedTypeList
 		};
 	}
-	async showVirtualScreen(){
+	async showVirtualScreen(layout, lock){
 		await this.RNMediaPlayer.showVirtualScreen(true);
 	}
 	async hideVirtualScreen(){
 		await this.RNMediaPlayer.showVirtualScreen(false);
+	}
+	setVirtualScreenLayout(x = 0, y = 0, width = 400, height = 300, lock = false){
+		this.RNMediaPlayer.setVirtualScreenLayout(x, y, width, height, lock);
 	}
 }
