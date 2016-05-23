@@ -3,7 +3,7 @@ import { Image, Video, Music } from "./container";
 import Group from "./group";
 
 export default class MediaPlayer {
-	constructor(nativeModules, nativeAppEventEmitter, eventEmitter, RNFS){
+	constructor({ PixelRatio, NativeModules, NativeAppEventEmitter, DeviceEventEmitter, RNFS }){
 		// Define constant
 		this.PUSH_WAY = PUSH_WAY;
 		this.RENDER_STATUS = RENDER_STATUS;
@@ -22,38 +22,41 @@ export default class MediaPlayer {
 		this.musicSet = {};
 
 		// Event
-		this.emitter = eventEmitter;
+		this.emitter = DeviceEventEmitter;
+
+		// PixelRatio
+		this.pixelRatio = PixelRatio;
 
 		// RNMediaPlayer Init
-		this.RNMediaPlayer = nativeModules.RNMediaPlayer;
+		this.RNMediaPlayer = NativeModules.RNMediaPlayer;
 		this.RNFS = RNFS;
 		this.RNMediaPlayer.initialize();
 		this.setVirtualScreenLayout();
 
 		// Subsript native event
 		this.subscription = [];
-		this.subscription.push(nativeAppEventEmitter.addListener("RendInStart", () => {
+		this.subscription.push(NativeAppEventEmitter.addListener("RendInStart", () => {
 			this.renderStatus = RENDER_STATUS.Rending;
 			if(this.rending){
 				this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.Rending, this.rending.id);
 			}
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("RendOutStart", () => {
+		this.subscription.push(NativeAppEventEmitter.addListener("RendOutStart", () => {
 			this.renderStatus = RENDER_STATUS.RendOut;
 			if(this.rending){
 				this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.RendOut, this.rending.id);
 				this.rending = null;
 			}
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("RendOutFinish", () => {
+		this.subscription.push(NativeAppEventEmitter.addListener("RendOutFinish", () => {
 			this.renderStatus = RENDER_STATUS.Idle;
 			this.emitter.emit(EVENT_CHANNEL.RENDER_STATUS, RENDER_STATUS.Idle);
 			this.rendNextItem();
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("MusicStart", (event) => {
+		this.subscription.push(NativeAppEventEmitter.addListener("MusicStart", (event) => {
 			this.emitter.emit(EVENT_CHANNEL.MUSIC_STATUS, MUSIC_STATUS.Playing, event.musicId);
 		}));
-		this.subscription.push(nativeAppEventEmitter.addListener("MusicEnd", (event) => {
+		this.subscription.push(NativeAppEventEmitter.addListener("MusicEnd", (event) => {
 			this.emitter.emit(EVENT_CHANNEL.MUSIC_STATUS, MUSIC_STATUS.End, event.musicId);
 			if(this.musicSet[event.musicId]){
 				delete this.musicSet[event.musicId];
@@ -235,6 +238,12 @@ export default class MediaPlayer {
 		await this.RNMediaPlayer.showVirtualScreen(false);
 	}
 	setVirtualScreenLayout(x = 0, y = 0, width = 400, height = 300, lock = false){
-		this.RNMediaPlayer.setVirtualScreenLayout(x, y, width, height, lock);
+		this.RNMediaPlayer.setVirtualScreenLayout(
+			this.pixelRatio.getPixelSizeForLayoutSize(x),
+			this.pixelRatio.getPixelSizeForLayoutSize(y),
+			this.pixelRatio.getPixelSizeForLayoutSize(width),
+			this.pixelRatio.getPixelSizeForLayoutSize(height),
+			lock
+		);
 	}
 }
