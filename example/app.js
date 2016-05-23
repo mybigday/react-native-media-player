@@ -1,11 +1,20 @@
 "use strict";
 
 import React, { Component, PropTypes } from "react";
-import {AppRegistry, StyleSheet, View, Text, ListView, Image, TouchableHighlight} from "react-native";
+import {AppRegistry, StyleSheet, View, Text, ListView, Image, TouchableHighlight, Platform} from "react-native";
 import MediaPlayer from "react-native-media-player";
 import RNFS from "react-native-fs";
 import _ from "underscore";
 import Toast from "react-native-sk-toast";
+import ExtraDimensions from "react-native-extra-dimensions-android";
+
+let statusBarHeight = 0;
+if (Platform.OS === "android") {
+	try {
+		statusBarHeight = ExtraDimensions.get("STATUS_BAR_HEIGHT");
+	/* eslint no-empty:0 */
+	} catch(e) {}
+}
 
 const styles = StyleSheet.create({
 	container:{
@@ -370,7 +379,7 @@ class ExampleApp extends Component{
 		}
 	};
 	handleSetVirtualScreenLayout = () => {
-		MediaPlayer.setVirtualScreenLayout(this.state.virtual_layout.x, this.state.virtual_layout.y, this.state.virtual_layout.width, this.state.virtual_layout.height, true);
+		MediaPlayer.setVirtualScreenLayout(this.state.virtual_layout.x, this.state.virtual_layout.y + statusBarHeight, this.state.virtual_layout.width, this.state.virtual_layout.height, true);
 	};
 	handleSetVirtualScreenFreeLayout = () => {
 		MediaPlayer.setVirtualScreenLayout(0, 0, 400, 300, false);

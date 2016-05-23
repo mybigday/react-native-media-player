@@ -8,6 +8,7 @@
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "^0.25.1",
+    "react-native-extra-dimensions-android": "^0.17.0",
     "react-native-fs": "^1.2.0",
     "react-native-media-player": "*",
     "react-native-sk-toast": "^1.0.1",

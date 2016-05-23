@@ -3,6 +3,7 @@ package com.example;
 import com.facebook.react.ReactActivity;
 import com.rnfs.RNFSPackage;
 import com.mybigday.rnmediaplayer.RNMediaPlayerPackage;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
@@ -38,7 +39,8 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
             new RNFSPackage(),
-            new RNMediaPlayerPackage(this)
+            new RNMediaPlayerPackage(this),
+            new ExtraDimensionsPackage(this)
         );
     }
 }
