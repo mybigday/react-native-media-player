@@ -1,69 +1,20 @@
 {
-  "_args": [
-    [
-      "react-native-media-player@*",
-      "/Users/pepper/Workspace/MyBigDay/react-native-media-player/example"
-    ]
-  ],
-  "_from": "react-native-media-player@*",
-  "_id": "react-native-media-player@0.1.6",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/react-native-media-player",
-  "_nodeVersion": "5.4.0",
-  "_npmOperationalInternal": {
-    "host": "packages-16-east.internal.npmjs.com",
-    "tmp": "tmp/react-native-media-player-0.1.6.tgz_1463645543088_0.3656190182082355"
-  },
-  "_npmUser": {
-    "email": "iainst0409@gmail.com",
-    "name": "jhen0409"
-  },
-  "_npmVersion": "3.3.12",
-  "_phantomChildren": {},
-  "_requested": {
-    "name": "react-native-media-player",
-    "raw": "react-native-media-player@*",
-    "rawSpec": "*",
-    "scope": null,
-    "spec": "*",
-    "type": "range"
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/react-native-media-player/-/react-native-media-player-0.1.6.tgz",
-  "_shasum": "ac19d9ad3956de91b8361cd234e250e6e5710239",
-  "_shrinkwrap": null,
-  "_spec": "react-native-media-player@*",
-  "_where": "/Users/pepper/Workspace/MyBigDay/react-native-media-player/example",
-  "author": {
-    "email": "pepper.yen@gmail.com",
-    "name": "Pepper Yen"
-  },
-  "bugs": {
-    "url": "https://github.com/mybigday/react-native-media-player/issues"
-  },
-  "dependencies": {},
+  "name": "react-native-media-player",
+  "version": "0.1.6",
   "description": "This is a react native media player with external display controller. Support photo, video, music and background mode.",
-  "devDependencies": {
-    "babel-eslint": "^5.0.0",
-    "eslint": "^2.4.0",
-    "eslint-config-mybigday": "0.0.1",
-    "eslint-plugin-react": "^4.2.1",
-    "expect.js": "^0.3.1",
-    "fs-promise": "^0.5.0"
-  },
-  "directories": {},
-  "dist": {
-    "shasum": "ac19d9ad3956de91b8361cd234e250e6e5710239",
-    "tarball": "https://registry.npmjs.org/react-native-media-player/-/react-native-media-player-0.1.6.tgz"
-  },
+  "main": "index.js",
   "eslintConfig": {
     "extends": "mybigday"
   },
-  "gitHead": "b8bf090b3f80c76ec73da7f1dc3b4b42dff9fb28",
-  "homepage": "https://github.com/mybigday/react-native-media-player#readme",
+  "scripts": {
+    "lint": "eslint *.js test/*.js example/*.js",
+    "test": "mocha --require mocha_babel"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mybigday/react-native-media-player"
+  },
+  "nativePackage": true,
   "keywords": [
     "react-native",
     "react",
@@ -75,32 +26,17 @@
     "react-component",
     "android"
   ],
+  "author": "Pepper Yen <pepper.yen@gmail.com>",
   "license": "MIT",
-  "main": "index.js",
-  "maintainers": [
-    {
-      "email": "iainst0409@gmail.com",
-      "name": "jhen0409"
-    },
-    {
-      "email": "pepper.yen@gmail.com",
-      "name": "pepper.yen"
-    }
-  ],
-  "name": "react-native-media-player",
-  "nativePackage": true,
-  "optionalDependencies": {},
   "peerDependencies": {
     "react-native-fs": "^1.2.0"
   },
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mybigday/react-native-media-player.git"
-  },
-  "scripts": {
-    "lint": "eslint *.js test/*.js example/*.js",
-    "test": "mocha --require mocha_babel"
-  },
-  "version": "0.1.6"
+  "devDependencies": {
+    "babel-eslint": "^5.0.0",
+    "eslint": "^2.4.0",
+    "eslint-config-mybigday": "0.0.1",
+    "eslint-plugin-react": "^4.2.1",
+    "expect.js": "^0.3.1",
+    "fs-promise": "^0.5.0"
+  }
 }
