@@ -38,5 +38,10 @@
     "eslint-plugin-react": "^4.2.1",
     "expect.js": "^0.3.1",
     "fs-promise": "^0.5.0"
+  },
+  "rnpm": {
+    "android": {
+      "packageInstance": "new RNMediaPlayerPackage(this)"
+    }
   }
 }
