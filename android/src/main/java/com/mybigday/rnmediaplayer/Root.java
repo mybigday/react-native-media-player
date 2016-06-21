@@ -24,7 +24,7 @@ public class Root {
   }
 
   public void setUpsideDownMode(final boolean enable) {
-    upsideDownMode = true;
+    upsideDownMode = enable;
   }
 
   private void finalRendIn(String type, String filePath) {
