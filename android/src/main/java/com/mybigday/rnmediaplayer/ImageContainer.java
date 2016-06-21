@@ -11,8 +11,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 
 public class ImageContainer extends Container {
 
-  public ImageContainer(Context context, ReactApplicationContext reactContext) {
-    super(context, reactContext);
+  public ImageContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+    super(context, reactContext, upsideDownMode);
     ImageView image = new ImageView(context);
     image.setBackgroundColor(Color.BLACK);
     image.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));

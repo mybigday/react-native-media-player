@@ -18,15 +18,20 @@ public abstract class Container {
   protected ReactApplicationContext reactContext;
   protected RendState rendState = RendState.NEW;
   private View view;
+  private boolean upsideDownMode;
 
-  public Container(Context context, ReactApplicationContext reactContext) {
+  public Container(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
     this.context = context;
     this.reactContext = reactContext;
+    this.upsideDownMode = upsideDownMode;
   }
 
   protected void init(View view) {
     if (this.view != null) return;
     this.view = view;
+    if(upsideDownMode == true){
+      this.view.setRotation(180);
+    }
   }
 
   public RendState getState() {

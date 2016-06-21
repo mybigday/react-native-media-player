@@ -12,8 +12,8 @@ import com.yqritc.scalablevideoview.ScalableVideoView;
 
 public class VideoContainer extends Container {
 
-  public VideoContainer(Context context, ReactApplicationContext reactContext) {
-    super(context, reactContext);
+  public VideoContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+    super(context, reactContext, upsideDownMode);
     MScalableVideoView video = (MScalableVideoView) new MScalableVideoView(context);
     video.setBackgroundColor(Color.BLACK);
     video.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));

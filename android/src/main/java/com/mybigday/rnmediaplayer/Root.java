@@ -11,6 +11,7 @@ public class Root {
   ReactApplicationContext reactContext;
   private LinearLayout containerLayout;
   private Container currentReadyContainer;
+  private boolean upsideDownMode = false;
 
   public Root(Context context, ReactApplicationContext reactContext, LinearLayout layout) {
     this.context = context;
@@ -22,8 +23,12 @@ public class Root {
     return containerLayout;
   }
 
+  public void setUpsideDownMode(final boolean enable) {
+    upsideDownMode = true;
+  }
+
   private void finalRendIn(String type, String filePath) {
-    Container container = type == "image" ? new ImageContainer(context, reactContext) : new VideoContainer(context, reactContext);
+    Container container = type == "image" ? new ImageContainer(context, reactContext, upsideDownMode) : new VideoContainer(context, reactContext, upsideDownMode);
     containerLayout.removeAllViews();
     containerLayout.refreshDrawableState();
     containerLayout.addView(container.getView());

@@ -70,6 +70,16 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setUpsideDownMode(final boolean enable) {
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        externalDisplay.getRoot().setUpsideDownMode(enable);
+      }
+    });
+  }
+
+  @ReactMethod
   public void rendImage(final String filePath, final Promise promise) {
     if (!alreadyInitialize) {
       promise.reject("-11", "Can\'t push image, maybe need initialize MediaPlayer first.");
