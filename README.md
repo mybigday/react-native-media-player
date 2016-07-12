@@ -7,7 +7,7 @@ This is a react native media player with external display controller. Support ph
 
 ```bash
 $ npm install rnpm --global
-$ npm install react-naitve-fs react-native-media-player --save
+$ npm install react-native-fs react-native-media-player --save
 $ rnpm link
 ```
 
