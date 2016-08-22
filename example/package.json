@@ -6,8 +6,8 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^0.14.8",
-    "react-native": "^0.25.1",
+    "react": "~15.2.1",
+    "react-native": "^0.31.0",
     "react-native-extra-dimensions-android": "github:BelinChung/react-native-extra-dimensions-android",
     "react-native-fs": "^1.2.0",
     "react-native-media-player": "*",
