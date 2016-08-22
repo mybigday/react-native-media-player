@@ -40,7 +40,7 @@ public class MainActivity extends ReactActivity {
             new MainReactPackage(),
             new RNFSPackage(),
             new RNMediaPlayerPackage(this),
-            new ExtraDimensionsPackage(this)
+            new ExtraDimensionsPackage()
         );
     }
 }
