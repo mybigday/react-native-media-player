@@ -231,11 +231,15 @@ export default class MediaPlayer {
 			"video": video.supportedTypeList
 		};
 	}
-	async showVirtualScreen(layout, lock){
-		await this.RNMediaPlayer.showVirtualScreen(true);
+	async showVirtualScreen(layout){
+		const result = await this.RNMediaPlayer.showVirtualScreen(true);
+		if (result && layout) {
+			const { x = 0, y = 0, width = 400, height = 300, lock = false } = layout;
+			return this.setVirtualScreenLayout(x, y, width, height, lock);
+		}
 	}
-	async hideVirtualScreen(){
-		await this.RNMediaPlayer.showVirtualScreen(false);
+	hideVirtualScreen(){
+		return this.RNMediaPlayer.showVirtualScreen(false);
 	}
 	setVirtualScreenLayout(x = 0, y = 0, width = 400, height = 300, lock = false){
 		this.RNMediaPlayer.setVirtualScreenLayout(
