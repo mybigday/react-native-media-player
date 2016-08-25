@@ -102,9 +102,6 @@ export default class MediaPlayer {
 		}
 		this.background = null;
 	}
-	setUpsideDownMode(enable){
-		this.RNMediaPlayer.setUpsideDownMode(enable);
-	}
 	async pushImage(path, duration, way){
 		let image = new Image(this);
 		await image.setPath(path);
@@ -248,6 +245,9 @@ export default class MediaPlayer {
 			this.pixelRatio.getPixelSizeForLayoutSize(height),
 			lock
 		);
+	}
+	setUpsideDownMode(enable){
+		return this.RNMediaPlayer.setUpsideDownMode(enable);
 	}
 	enableExternalDisplay(enable){
 		return this.RNMediaPlayer.enableExternalDisplay(enable);
