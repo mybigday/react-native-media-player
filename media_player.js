@@ -249,4 +249,7 @@ export default class MediaPlayer {
 			lock
 		);
 	}
+	enableExternalDisplay(enable){
+		return this.RNMediaPlayer.enableExternalDisplay(enable);
+	}
 }

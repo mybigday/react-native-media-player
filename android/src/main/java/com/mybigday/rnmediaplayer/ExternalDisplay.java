@@ -128,6 +128,7 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   private int width = 0;
   private int height = 0;
   private boolean lock = false;
+  private boolean enabled = true;
 
   ExternalDisplay(Context ctx, ReactApplicationContext reactContext) {
     this.context = ctx;
@@ -166,6 +167,13 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
 
     if (preview != null) {
       preview.setLayout(x, y, w, h, lock);
+    }
+  }
+
+  public void enable(boolean enable) {
+    this.enabled = enable;
+    if (!enable) {
+      clearScreen();
     }
   }
 
@@ -211,6 +219,8 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
 
   @Override
   public void showScreen(Display display) {
+    if (!this.enabled) return;
+
     tryRemovePreview();
     screen = new ExternalDisplayScreen(this.context, display, containerView);
     screen.show();
@@ -218,7 +228,7 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
 
   @Override
   public void clearScreen() {
-    if (screen == null) return;
+    if (!this.enabled || screen == null) return;
 
     ViewGroup parent = (ViewGroup) containerView.getParent();
     if (parent != null) parent.removeView(containerView);

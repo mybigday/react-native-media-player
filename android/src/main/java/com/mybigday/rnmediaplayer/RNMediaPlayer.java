@@ -70,6 +70,21 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void enableExternalDisplay(final boolean enable, final Promise promise) {
+    if (!alreadyInitialize) {
+      promise.resolve(false);
+      return;
+    }
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        externalDisplay.enable(enable);
+        promise.resolve(true);
+      }
+    });
+  }
+
+  @ReactMethod
   public void setUpsideDownMode(final boolean enable) {
     activity.runOnUiThread(new Runnable() {
       @Override
