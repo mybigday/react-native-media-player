@@ -11,10 +11,11 @@ import com.yqritc.scalablevideoview.ScalableType;
 import com.yqritc.scalablevideoview.ScalableVideoView;
 
 public class VideoContainer extends Container {
+  private MScalableVideoView video;
 
   public VideoContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
     super(context, reactContext, upsideDownMode);
-    MScalableVideoView video = (MScalableVideoView) new MScalableVideoView(context);
+    video = (MScalableVideoView) new MScalableVideoView(context);
     video.setBackgroundColor(Color.BLACK);
     video.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     init(video);
@@ -28,6 +29,10 @@ public class VideoContainer extends Container {
 
     public void setOnCompletionListener(MediaPlayer.OnCompletionListener listener) {
       mMediaPlayer.setOnCompletionListener(listener);
+    }
+
+    public MediaPlayer getMediaPlayer() {
+      return mMediaPlayer;
     }
   }
 
@@ -65,6 +70,7 @@ public class VideoContainer extends Container {
   @Override
   public void destroy() {
     ScalableVideoView view = ((ScalableVideoView) getView());
+    if (video.getMediaPlayer() == null) return;
     if (view.isPlaying()) {
       view.stop();
     }
