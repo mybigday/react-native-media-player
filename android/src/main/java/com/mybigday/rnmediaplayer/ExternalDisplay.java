@@ -125,8 +125,8 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   // Preview params
   private int x = 0;
   private int y = 0;
-  private int width = 0;
-  private int height = 0;
+  private int width = 400;
+  private int height = 300;
   private boolean lock = false;
   private boolean enabled = true;
 
@@ -199,7 +199,7 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
     int width = displaymetrics.widthPixels;
     preview = new Preview(
       this.context, containerView,
-      400, 300,
+      this.width, this.height,
       this.x, this.y,
       this.lock
     );
