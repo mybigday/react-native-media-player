@@ -242,7 +242,7 @@ export default class MediaPlayer {
 		return this.RNMediaPlayer.showVirtualScreen(false);
 	}
 	setVirtualScreenLayout(x = 0, y = 0, width = 400, height = 300, lock = false){
-		this.RNMediaPlayer.setVirtualScreenLayout(
+		return this.RNMediaPlayer.setVirtualScreenLayout(
 			this.pixelRatio.getPixelSizeForLayoutSize(x),
 			this.pixelRatio.getPixelSizeForLayoutSize(y),
 			this.pixelRatio.getPixelSizeForLayoutSize(width),
