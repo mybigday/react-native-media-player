@@ -3,7 +3,7 @@ import { Image, Video, Music } from "./container";
 import Group from "./group";
 
 export default class MediaPlayer {
-	constructor({ PixelRatio, NativeModules, NativeAppEventEmitter, DeviceEventEmitter, RNFS }){
+	constructor({ PixelRatio, NativeModules, NativeAppEventEmitter, DeviceEventEmitter, RNFS, Platform }){
 		// Define constant
 		this.PUSH_WAY = PUSH_WAY;
 		this.RENDER_STATUS = RENDER_STATUS;
@@ -30,8 +30,16 @@ export default class MediaPlayer {
 		// RNMediaPlayer Init
 		this.RNMediaPlayer = NativeModules.RNMediaPlayer;
 		this.RNFS = RNFS;
-		this.RNMediaPlayer.initialize();
-		this.setVirtualScreenLayout();
+
+		if (Platform.OS === 'android') {
+			setTimeout(() => {
+				this.RNMediaPlayer.initializeRNMediaPlayer();
+				this.setVirtualScreenLayout();
+			}, 50);
+		} else {
+			this.RNMediaPlayer.initialize();
+			this.setVirtualScreenLayout();
+		}
 
 		// Subsript native event
 		this.subscription = [];

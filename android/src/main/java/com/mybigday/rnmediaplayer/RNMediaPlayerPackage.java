@@ -13,15 +13,11 @@ import com.facebook.react.uimanager.ViewManager;
 public class RNMediaPlayerPackage implements ReactPackage {
   private Activity mCurrentActivity;
 
-  public RNMediaPlayerPackage(Activity activity) {
-    mCurrentActivity = activity;
-  }
-
   @Override
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
 
-    modules.add(new RNMediaPlayer(reactContext, mCurrentActivity));
+    modules.add(new RNMediaPlayer(reactContext));
     return modules;
   }
 

@@ -2,65 +2,13 @@
 
 This is a react native media player with external display controller. Support photo, video, music and background mode.
 
+__*NOTE*__ If your RN version <= 0.28, please keep use v0.2.x.
+
 ## Installation
-### Mostly automatic install
 
 ```bash
-$ npm install rnpm --global
 $ npm install react-native-fs react-native-media-player --save
-$ rnpm link
-```
-
-### Manual install
-#### iOS
-
-1. Run `npm install react-naitve-fs react-native-media-player --save`
-1. To refer [react-native-fs install guide](https://github.com/johanneslumpe/react-native-fs/blob/master/README.md).
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-1. Go to `node_modules` ➜ `react-native-media-player` and add `RNMediaPlayer.xcodeproj`
-1. In XCode, in the project navigator, select your project. Add `libRNMediaPlayer.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-1. Click `RNMediaPlayer.xcodeproj` in the project navigator and go the `Build Settings` tab. Make sure 'All' is toggled on (instead of 'Basic'). In the `Search Paths` section, look for `Header Search Paths` and make sure it contains both `$(SRCROOT)/../../react-native/React` and `$(SRCROOT)/../../../React` - mark both as `recursive`.
-1. Run your project (`Cmd+R`)
-
-#### Android
-
-* Edit `android/settings.gradle` of your project:
-
-```gradle
-...
-include ':react-native-media-player'
-project(':react-native-media-player').projectDir = new File(settingsDir, '../node_modules/react-native-media-player/android')
-```
-
-* Edit `android/app/build.gradle` of your project:
-
-```gradle
-...
-dependencies {
-    ...
-    compile project(':react-native-media-player')
-}
-```
-
-* Add package to `MainActivity`
-
-```java
-......
-
-import com.mybigday.rnmediaplayer.*;   // import
-
-public class MainActivity extends ReactActivity {
-
-    ......
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-        return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new RNMediaPlayerPackage(this)   // add package
-        );
-    }
-}
+$ react-native link
 ```
 
 ## Usage

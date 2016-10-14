@@ -2,7 +2,8 @@ import ReactNative, {
   PixelRatio,
   NativeModules,
   NativeAppEventEmitter,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  Platform
 } from "react-native";
 import RNFS from "react-native-fs";
 

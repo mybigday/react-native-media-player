@@ -12,15 +12,12 @@ import com.facebook.react.bridge.WritableMap;
 public class RNMediaPlayer extends ReactContextBaseJavaModule {
   private AudioPlayer audioPlayer;
   private ReactApplicationContext context;
-  private Activity activity;
   private ExternalDisplay externalDisplay;
   private boolean alreadyInitialize = false;
 
-  public RNMediaPlayer(ReactApplicationContext reactContext, Activity activity) {
+  public RNMediaPlayer(ReactApplicationContext reactContext) {
     super(reactContext);
-
     this.context = reactContext;
-    this.activity = activity;
   }
 
   @Override
@@ -29,11 +26,18 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void initialize() {
+  public void initializeRNMediaPlayer() {
+    Activity activity = getCurrentActivity();
     if (!alreadyInitialize) {
       audioPlayer = new AudioPlayer(activity, context);
       externalDisplay = new ExternalDisplay(activity, context);
-
+      activity.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+          externalDisplay.start();
+          externalDisplay.showVirtualScreen(true);
+        }
+      });
       alreadyInitialize = true;
     }
   }
@@ -45,6 +49,7 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
       return;
     }
 
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -60,6 +65,8 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
       promise.resolve(false);
       return;
     }
+
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -75,6 +82,8 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
       promise.resolve(false);
       return;
     }
+
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -90,6 +99,8 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
       promise.resolve(false);
       return;
     }
+
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -107,6 +118,7 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
     }
 
     final Root root = externalDisplay.getRoot();
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -124,6 +136,7 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
     }
 
     final Root root = externalDisplay.getRoot();
+    Activity activity = getCurrentActivity();
     activity.runOnUiThread(new Runnable() {
       @Override
       public void run() {
@@ -136,6 +149,7 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   @ReactMethod
   public void rendOut(final Promise promise) {
     if (alreadyInitialize) {
+      Activity activity = getCurrentActivity();
       activity.runOnUiThread(new Runnable() {
         @Override
         public void run() {
