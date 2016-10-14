@@ -75,6 +75,7 @@ public class Root {
   public void destroyContainer() {
     if (currentReadyContainer != null) {
       currentReadyContainer.destroy();
+      currentReadyContainer = null;
     }
   }
 }

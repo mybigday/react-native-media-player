@@ -155,6 +155,9 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
       tryShowPreview();
     } else {
       tryRemovePreview();
+      if (!this.enabled) {
+        root.destroyContainer();
+      }
     }
   }
 
