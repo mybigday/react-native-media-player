@@ -14,5 +14,6 @@ module.exports = new MediaPlayer({
   NativeModules,
   NativeAppEventEmitter,
   DeviceEventEmitter,
-  RNFS
+  RNFS,
+  Platform
 });
