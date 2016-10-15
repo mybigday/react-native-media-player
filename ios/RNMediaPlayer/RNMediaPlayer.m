@@ -38,31 +38,29 @@ RCT_EXPORT_METHOD(initialize){
 		[center addObserver:self selector:@selector(handleScreenDidDisconnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
 		
 		// Window initialize
-		dispatch_async(dispatch_get_main_queue(), ^{
-			window = [[UIWindow alloc] init];
-			[window setBackgroundColor:[UIColor blackColor]];
-			viewController = [[UIViewController alloc] init];
-			window.rootViewController = viewController;
-            virtualScreenLayout = CGRectMake(0, 0, 400, 300);
-			[self changeScreen];
-			[self setVirtualScreenVisible:YES];
-			
-			// Add UIPanGestureRecognizer
-			pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-			[window addGestureRecognizer:pan];
-			pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
-			[window addGestureRecognizer:pinch];
-			doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-			singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
-			[singleTap requireGestureRecognizerToFail:doubleTap];
-			[doubleTap setDelaysTouchesBegan:YES];
-			[singleTap setDelaysTouchesBegan:YES];
-			
-			[doubleTap setNumberOfTapsRequired:2];
-			[singleTap setNumberOfTapsRequired:1];
-			[window addGestureRecognizer:doubleTap];
-			[window addGestureRecognizer:singleTap];
-		});
+		window = [[UIWindow alloc] init];
+		[window setBackgroundColor:[UIColor blackColor]];
+		viewController = [[UIViewController alloc] init];
+		window.rootViewController = viewController;
+          virtualScreenLayout = CGRectMake(0, 0, 400, 300);
+		[self changeScreen];
+		[self setVirtualScreenVisible:YES];
+		
+		// Add UIPanGestureRecognizer
+		pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+		[window addGestureRecognizer:pan];
+		pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+		[window addGestureRecognizer:pinch];
+		doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+		singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTap:)];
+		[singleTap requireGestureRecognizerToFail:doubleTap];
+		[doubleTap setDelaysTouchesBegan:YES];
+		[singleTap setDelaysTouchesBegan:YES];
+		
+		[doubleTap setNumberOfTapsRequired:2];
+		[singleTap setNumberOfTapsRequired:1];
+		[window addGestureRecognizer:doubleTap];
+		[window addGestureRecognizer:singleTap];
 		
 		// Audio initialize
 		avAudioPlayerDictionary = [NSMutableDictionary new];
@@ -182,17 +180,13 @@ RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(
         window.screen = [screens objectAtIndex:0];
         window.frame = virtualScreenLayout;
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [window makeKeyAndVisible];
+    [window makeKeyAndVisible];
 
-        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
-    });
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(setDefaultKeyWindow:) userInfo:nil repeats:NO];
 }
 
 -(void) setDefaultKeyWindow:(NSTimer *)timer{
-	dispatch_async(dispatch_get_main_queue(), ^{
-        [[[[UIApplication sharedApplication] windows] objectAtIndex:0] makeKeyWindow];
-    });
+  [[[[UIApplication sharedApplication] windows] objectAtIndex:0] makeKeyWindow];
 }
 
 -(void) handleScreenDidConnectNotification: (NSNotification *)notification{
@@ -291,6 +285,11 @@ RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(
 
 -(void) handleSingleTap: (UITapGestureRecognizer *)recognizer{
 	
+}
+
+- (dispatch_queue_t)methodQueue
+{
+  return dispatch_get_main_queue();
 }
 
 @end

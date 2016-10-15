@@ -23,30 +23,28 @@
 }
 
 -(void) rendIn{
-	dispatch_async(dispatch_get_main_queue(), ^{
-		// Prepare content
-		self.contentView = [self prepareContent];
-		if(self.contentView){
-			[self beforeRendIn];
-			[self.renderView addSubview:self.contentView];
-			
-			// TODO: Autolayout need fix to support UIPanGestureRecognizer
-			[self.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
-			
-			[self.renderView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.renderView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0]];
-			[self.renderView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.renderView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0]];
-			
-			[self.delegate containerRendInStart];
-			
-			// Rend-In animation
-			// TODO: anamation need move to seperate function
-			[self.contentView setAlpha:0.0];
-			[UIView animateWithDuration:self.rendinAnimationDuration animations:^(){
-				[self.contentView setAlpha:1.0];
-				self.rendState = Rend;
-			}];
-		}
-	});
+	// Prepare content
+	self.contentView = [self prepareContent];
+	if(self.contentView){
+		[self beforeRendIn];
+		[self.renderView addSubview:self.contentView];
+		
+		// TODO: Autolayout need fix to support UIPanGestureRecognizer
+		[self.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+		
+		[self.renderView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.renderView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0]];
+		[self.renderView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.renderView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0]];
+		
+		[self.delegate containerRendInStart];
+		
+		// Rend-In animation
+		// TODO: anamation need move to seperate function
+		[self.contentView setAlpha:0.0];
+		[UIView animateWithDuration:self.rendinAnimationDuration animations:^(){
+			[self.contentView setAlpha:1.0];
+			self.rendState = Rend;
+		}];
+	}
 }
 
 -(UIView *) prepareContent{
@@ -72,17 +70,15 @@
 	self.rendState = Rendout;
 	
 	// Rend-Out animation
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[UIView animateWithDuration:self.rendinAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[self.contentView setAlpha:0.0];
-		} completion:^(BOOL finishied){
-			[self.contentView removeFromSuperview];
-			self.rendState = End;
-			[self afterRendOut];
-			// Delegate notify
-			[self.delegate containerRendOutFinish];
-		}];
-	});
+	[UIView animateWithDuration:self.rendinAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+		[self.contentView setAlpha:0.0];
+	} completion:^(BOOL finishied){
+		[self.contentView removeFromSuperview];
+		self.rendState = End;
+		[self afterRendOut];
+		// Delegate notify
+		[self.delegate containerRendOutFinish];
+	}];
 }
 
 -(void) afterRendOut{
