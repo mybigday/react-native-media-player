@@ -31,7 +31,7 @@ export default class MediaPlayer {
 		this.RNMediaPlayer = NativeModules.RNMediaPlayer;
 		this.RNFS = RNFS;
 
-		if (Platform.OS === 'android') {
+		if (Platform.OS === "android") {
 			setTimeout(() => {
 				this.RNMediaPlayer.initializeRNMediaPlayer();
 				this.setVirtualScreenLayout();
@@ -130,25 +130,25 @@ export default class MediaPlayer {
 	}
 	async push(item, way){
 		switch(way){
-			case PUSH_WAY.AfterNow:
-				if(this.queue.length > 0){
-					this.queue.splice(1, 0, item);
-				}
-				else{
-					this.queue.push(item);
-				}
-				break;
-			case PUSH_WAY.Interrupt:
-				await this.clear();
-				this.queue.unshift(item);
-				break;
-			case PUSH_WAY.ClearOther:
-				await this.clear();
-				this.queue = [item];
-				break;
-			case PUSH_WAY.AtLast:
-			default:
+		case PUSH_WAY.AfterNow:
+			if(this.queue.length > 0){
+				this.queue.splice(1, 0, item);
+			}
+			else{
 				this.queue.push(item);
+			}
+			break;
+		case PUSH_WAY.Interrupt:
+			await this.clear();
+			this.queue.unshift(item);
+			break;
+		case PUSH_WAY.ClearOther:
+			await this.clear();
+			this.queue = [item];
+			break;
+		case PUSH_WAY.AtLast:
+		default:
+			this.queue.push(item);
 		}
 		// Check render state to call rend in
 		if((this.renderStatus == RENDER_STATUS.Idle && !this.rending)|| (this.background && this.background.rending)){

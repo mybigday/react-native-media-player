@@ -89,10 +89,10 @@ export default class Group {
 				}
 				let promiseList = this.groupList.map(async (item) => {
 					switch(item.type){
-						case "image":
-							return await this.player.pushImage(item.path, item.dutation, PUSH_WAY.AtLast);
-						case "video":
-							return await this.player.pushVideo(item.path, PUSH_WAY.AtLast);
+					case "image":
+						return await this.player.pushImage(item.path, item.dutation, PUSH_WAY.AtLast);
+					case "video":
+						return await this.player.pushVideo(item.path, PUSH_WAY.AtLast);
 					}
 				});
 

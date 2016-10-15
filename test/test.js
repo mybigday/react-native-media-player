@@ -1,4 +1,3 @@
-var assert = require("assert");
 var expect = require("expect.js");
 import path from "path";
 

@@ -616,7 +616,7 @@ const selectableImageStyle = StyleSheet.create({
 	container:{
 		flex: 1,
 		position: "relative",
-		backgroundColor: "#333333",
+		backgroundColor: "#333333"
 	},
 	image:{
 		width: 100,
