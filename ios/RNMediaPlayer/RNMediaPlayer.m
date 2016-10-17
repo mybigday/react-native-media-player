@@ -10,7 +10,6 @@
 
 @implementation RNMediaPlayer {
 	BOOL alreadyInitialize;
-	UIScreen *screen;
 	UIWindow *window;
 	UIViewController *viewController;
 	Container *currentContainer;
@@ -173,7 +172,8 @@ RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(
 -(void) changeScreen{
     NSArray *screens = [UIScreen screens];
     if([screens count] > 1){
-        window.screen = [screens objectAtIndex:1];
+        UIScreen *screen = [screens objectAtIndex:1];
+        window.screen = screen;
         window.frame = CGRectMake(0, 0, screen.bounds.size.width, screen.bounds.size.height);
     }
     else{
