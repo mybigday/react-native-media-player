@@ -174,10 +174,10 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   }
 
   public void enable(boolean enable) {
-    this.enabled = enable;
     if (!enable) {
       clearScreen();
     }
+    this.enabled = enable;
   }
 
   public Root getRoot() {
