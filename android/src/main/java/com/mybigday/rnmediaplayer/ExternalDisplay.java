@@ -142,7 +142,7 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
     if (alreadyStarted) return;
     initLayoutView();
     tryShowPreview();
-    
+
     root = new Root(context, reactContext, containerView);
     alreadyStarted = true;
   }
@@ -244,14 +244,20 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   @Override
   public void onHostResume() {
     start();
-    helper.onResume();
+    // Don't know why this would be null at this point
+    if (helper != null) {
+      helper.onResume();
+    }
     showVirtualScreen(true);
   }
 
   @Override
   public void onHostPause() {
     showVirtualScreen(false);
-    helper.onPause();
+    // Don't know why this would be null at this point
+    if (helper != null) {
+      helper.onResume();
+    }
     tryRemovePreview();
   }
 
