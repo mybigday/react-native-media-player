@@ -254,10 +254,7 @@ public class ExternalDisplay implements LifecycleEventListener, ExternalDisplayH
   @Override
   public void onHostPause() {
     showVirtualScreen(false);
-    // Don't know why this would be null at this point
-    if (helper != null) {
-      helper.onResume();
-    }
+    helper.onResume();
     tryRemovePreview();
   }
 
