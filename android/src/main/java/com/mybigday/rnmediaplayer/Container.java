@@ -19,11 +19,24 @@ public abstract class Container {
   protected RendState rendState = RendState.NEW;
   private View view;
   private boolean upsideDownMode;
+  private int animationLength;
+  private BetweenAnimation rendInAnimation;
+  private BetweenAnimation rendOutAnimation;
 
-  public Container(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+  public Container(Context context, ReactApplicationContext reactContext, boolean upsideDownMode, int animationLength) {
     this.context = context;
     this.reactContext = reactContext;
     this.upsideDownMode = upsideDownMode;
+    this.animationLength = animationLength;
+
+    if (this.animationLength > 0) {
+      this.rendInAnimation = new BetweenAnimation(0, 1, this.animationLength);
+      this.rendOutAnimation = new BetweenAnimation(1, 0, this.animationLength);
+    }
+  }
+
+  public Container(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+    this(context, reactContext, upsideDownMode, 1000);
   }
 
   protected void init(View view) {
@@ -53,22 +66,22 @@ public abstract class Container {
 
     rendState = RendState.NEW;
 
-    Animation am = new AlphaAnimation(0, 1);
-    am.setDuration(1000);
-    am.setAnimationListener(new AlphaAnimation.AnimationListener() {
-
+    Runnable runnable = new Runnable() {
       @Override
-      public void onAnimationEnd(Animation animation) {
+      public void run() {
         view.setAlpha(1);
         rendState = RendState.REND;
         view.clearAnimation();
         if (cb != null) cb.call();
       }
+    };
 
-      public void onAnimationStart(Animation animation) {}
-      public void onAnimationRepeat(Animation animation) {}
-    });
-    view.startAnimation(am);
+    if (animationLength == 0) {
+      runnable.run();
+    } else {
+      rendInAnimation.setOnAnimEndRunnable(runnable);
+      view.startAnimation(rendInAnimation);
+    }
   }
 
   public void rendOut(final Callback cb) {
@@ -85,25 +98,49 @@ public abstract class Container {
 
     rendState = RendState.RENDOUT;
 
-    Animation am = new AlphaAnimation(1, 0);
-    am.setDuration(1000);
-    am.setAnimationListener(new AlphaAnimation.AnimationListener() {
-
+    Runnable runnable = new Runnable() {
       @Override
-      public void onAnimationEnd(Animation animation) {
+      public void run() {
         view.setAlpha(0);
         rendState = RendState.END;
         sendEvent("RendOutFinish", Arguments.createMap());
         if (cb != null) cb.call();
       }
+    };
 
-      public void onAnimationStart(Animation animation) {}
-      public void onAnimationRepeat(Animation animation) {}
-    });
-    view.startAnimation(am);
+    if (animationLength == 0) {
+      runnable.run();
+    } else {
+      rendOutAnimation.setOnAnimEndRunnable(runnable);
+      view.startAnimation(rendOutAnimation);
+    }
   }
 
   public abstract void destroy();
+
+  private class BetweenAnimation extends AlphaAnimation {
+    private Runnable onAnimEndRunnable;
+
+    public BetweenAnimation(float fromAlpha, float toAlpha, int duration) {
+      super(fromAlpha, toAlpha);
+      this.setDuration(duration);
+      this.setAnimationListener(new AnimationListener() {
+        @Override
+        public void onAnimationEnd(Animation animation) {
+          if (onAnimEndRunnable == null)
+            return;
+          onAnimEndRunnable.run();
+        }
+        @Override
+        public void onAnimationStart(Animation animation) {}
+        @Override
+        public void onAnimationRepeat(Animation animation) {}
+      });
+    }
+    public void setOnAnimEndRunnable(Runnable onAnimEndRunnable) {
+      this.onAnimEndRunnable = onAnimEndRunnable;
+    }
+  }
 
   public interface Callback {
     void call();

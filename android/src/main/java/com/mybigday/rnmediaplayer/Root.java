@@ -12,6 +12,7 @@ public class Root {
   private LinearLayout containerLayout;
   private Container currentReadyContainer;
   private boolean upsideDownMode = false;
+  private int animationLength = 1000;
 
   public Root(Context context, ReactApplicationContext reactContext, LinearLayout layout) {
     this.context = context;
@@ -27,8 +28,20 @@ public class Root {
     upsideDownMode = enable;
   }
 
+  public void setAnimationLength(int animationLength) {
+    if (animationLength < 0) {
+      animationLength = 1000;
+    }
+    this.animationLength = animationLength;
+  }
+
   private void finalRendIn(String type, String filePath) {
-    Container container = type == "image" ? new ImageContainer(context, reactContext, upsideDownMode) : new VideoContainer(context, reactContext, upsideDownMode);
+    Container container;
+    if (type.equals("image"))
+      container = new ImageContainer(context, reactContext, upsideDownMode, animationLength);
+    else
+      container = new VideoContainer(context, reactContext, upsideDownMode, animationLength);
+
     containerLayout.removeAllViews();
     containerLayout.refreshDrawableState();
     containerLayout.addView(container.getView());
