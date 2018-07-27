@@ -30,7 +30,7 @@
   "author": "Pepper Yen <pepper.yen@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "react-native-fs": "^1.2.0"
+    "react-native-fs": "^1.2.0 || ^2.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.0",
