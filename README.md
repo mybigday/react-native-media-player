@@ -117,7 +117,7 @@ let keepCurrentPlaying = true;
 MediaPlayer.clear(keepCurrentPlaying);m
 ```
 
-### Backgroud
+### Background
 If set the backgroud image for media player. The image will auto rend when render is idle. And you can use `clearBackground` to remove background image.
 
 ```js
