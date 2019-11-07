@@ -17,12 +17,12 @@
     CGRect virtualScreenLayout;
     CGRect virtualScreenLayoutBackup;
     BOOL virtualScreenFullscreenMode;
-    
+
     UIPanGestureRecognizer *pan;
     UIPinchGestureRecognizer *pinch;
     UITapGestureRecognizer *doubleTap;
     UITapGestureRecognizer *singleTap;
-    
+
 }
 
 @synthesize bridge = _bridge;
@@ -35,7 +35,7 @@ RCT_EXPORT_METHOD(initialize){
 		NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 		[center addObserver:self selector:@selector(handleScreenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
 		[center addObserver:self selector:@selector(handleScreenDidDisconnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
-		
+
 		// Window initialize
 		window = [[UIWindow alloc] init];
 		[window setBackgroundColor:[UIColor blackColor]];
@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(initialize){
           virtualScreenLayout = CGRectMake(0, 0, 400, 300);
 		[self changeScreen];
 		[self setVirtualScreenVisible:YES];
-		
+
 		// Add UIPanGestureRecognizer
 		pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 		[window addGestureRecognizer:pan];
@@ -55,15 +55,15 @@ RCT_EXPORT_METHOD(initialize){
 		[singleTap requireGestureRecognizerToFail:doubleTap];
 		[doubleTap setDelaysTouchesBegan:YES];
 		[singleTap setDelaysTouchesBegan:YES];
-		
+
 		[doubleTap setNumberOfTapsRequired:2];
 		[singleTap setNumberOfTapsRequired:1];
 		[window addGestureRecognizer:doubleTap];
 		[window addGestureRecognizer:singleTap];
-		
+
 		// Audio initialize
 		avAudioPlayerDictionary = [NSMutableDictionary new];
-		
+
 		alreadyInitialize = YES;
 	}
 	if(currentContainer){
@@ -173,6 +173,7 @@ RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(
     NSArray *screens = [UIScreen screens];
     if([screens count] > 1){
         UIScreen *screen = [screens objectAtIndex:1];
+				screen.overscanCompensation = UIScreenOverscanCompensationNone;
         window.screen = screen;
         window.frame = CGRectMake(0, 0, screen.bounds.size.width, screen.bounds.size.height);
     }
@@ -284,7 +285,7 @@ RCT_EXPORT_METHOD(setVirtualScreenLayout: (NSInteger) x y: (NSInteger) y width:(
 }
 
 -(void) handleSingleTap: (UITapGestureRecognizer *)recognizer{
-	
+
 }
 
 - (dispatch_queue_t)methodQueue
