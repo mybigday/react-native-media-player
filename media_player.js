@@ -209,7 +209,7 @@ export default class MediaPlayer {
 
 	async clear(keepCurrentPlaying){
 		this.queue = [];
-		
+
 		// Call rendout
 		if(this.rending && !keepCurrentPlaying){
 			await this.rending.rendOut();
@@ -257,6 +257,9 @@ export default class MediaPlayer {
 			this.pixelRatio.getPixelSizeForLayoutSize(height),
 			lock
 		);
+	}
+	setAnimationLength(milis){
+		return this.RNMediaPlayer.setAnimationLength(milis);
 	}
 	setUpsideDownMode(enable){
 		return this.RNMediaPlayer.setUpsideDownMode(enable);

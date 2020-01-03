@@ -11,12 +11,16 @@ import com.facebook.react.bridge.ReactApplicationContext;
 
 public class ImageContainer extends Container {
 
-  public ImageContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
-    super(context, reactContext, upsideDownMode);
+  public ImageContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode, int animationLength) {
+    super(context, reactContext, upsideDownMode, animationLength);
     ImageView image = new ImageView(context);
     image.setBackgroundColor(Color.BLACK);
     image.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     init(image);
+  }
+
+  public ImageContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+    this(context, reactContext, upsideDownMode, 1000);
   }
 
   @Override

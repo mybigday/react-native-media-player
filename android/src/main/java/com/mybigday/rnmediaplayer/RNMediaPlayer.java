@@ -111,6 +111,23 @@ public class RNMediaPlayer extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setAnimationLength(final int milis, final Promise promise) {
+    if (!alreadyInitialize) {
+      promise.resolve(false);
+      return;
+    }
+
+    Activity activity = getCurrentActivity();
+    activity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        externalDisplay.getRoot().setAnimationLength(milis);
+        promise.resolve(true);
+      }
+    });
+  }
+
+  @ReactMethod
   public void rendImage(final String filePath, final Promise promise) {
     if (!alreadyInitialize) {
       promise.reject("-11", "Can\'t push image, maybe need initialize MediaPlayer first.");

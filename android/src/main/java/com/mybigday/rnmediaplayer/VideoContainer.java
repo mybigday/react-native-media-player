@@ -13,12 +13,16 @@ import com.yqritc.scalablevideoview.ScalableVideoView;
 public class VideoContainer extends Container {
   private MScalableVideoView video;
 
-  public VideoContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
-    super(context, reactContext, upsideDownMode);
+  public VideoContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode, int animationLength) {
+    super(context, reactContext, upsideDownMode, animationLength);
     video = (MScalableVideoView) new MScalableVideoView(context);
     video.setBackgroundColor(Color.BLACK);
     video.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     init(video);
+  }
+
+  public VideoContainer(Context context, ReactApplicationContext reactContext, boolean upsideDownMode) {
+    this(context, reactContext, upsideDownMode, 1000);
   }
 
   private class MScalableVideoView extends ScalableVideoView {
